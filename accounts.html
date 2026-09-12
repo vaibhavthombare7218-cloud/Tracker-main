@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#5b0b18">
+
+    <meta name="description"
+          content="रोजचा जमा खर्च अहवाल - Accounts">
+
+    <title>Accounts - रोजचा जमा खर्च अहवाल</title>
+
+    <link rel="stylesheet"
+          href="style.css">
+
+    <style>
+
+        .accounts-page {
+            padding: 16px;
+        }
+
+        .accounts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .accounts-header h2 {
+            margin: 0;
+        }
+
+        .account-summary-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .account-summary-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow:
+                0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .account-summary-card .label {
+            font-size: 13px;
+            opacity: .7;
+            margin-bottom: 8px;
+        }
+
+        .account-summary-card .value {
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+        .accounts-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .account-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow:
+                0 2px 10px rgba(0,0,0,.08);
+        }
+
+        .account-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .account-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .account-type {
+            display: inline-block;
+            margin-top: 4px;
+            font-size: 11px;
+            padding: 3px 7px;
+            border-radius: 20px;
+            background: #f1f1f1;
+        }
+
+        .account-balance {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 10px 0 16px;
+        }
+
+        .account-detail {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 7px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        .account-detail:last-child {
+            border-bottom: 0;
+        }
+
+        .account-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .account-actions button {
+            flex: 1;
+        }
+
+        .empty-accounts {
+            background: #fff;
+            padding: 30px 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow:
+                0 2px 8px rgba(0,0,0,.07);
+        }
+
+        .amount-income {
+            color: #16803c;
+            font-weight: 600;
+        }
+
+        .amount-expense {
+            color: #c62828;
+            font-weight: 600;
+        }
+
+        .amount-balance {
+            color: #5b0b18;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+        }
+
+        .danger-button {
+            background: #c62828 !important;
+            color: #fff !important;
+        }
+
+        @media (max-width: 900px) {
+
+            .accounts-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .account-summary-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .accounts-page {
+                padding: 10px;
+            }
+
+            .accounts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .account-summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .account-summary-card {
+                padding: 12px;
+            }
+
+            .account-summary-card .value {
+                font-size: 17px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="app-header">
+
+    <button
+        class="menu-btn"
+        id="menuBtn">
+        ☰
+    </button>
+
+    <div class="header-title">
+        <span class="desktop-title">
+            रोजचा जमा खर्च अहवाल
+        </span>
+
+        <span class="mobile-title">
+            जमा खर्च
+        </span>
+    </div>
+
+    <div
+        id="currentDate"
+        class="header-date">
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     SIDE MENU
+===================================================== -->
+
+<div
+    id="sideMenu"
+    class="side-menu">
+
+    <button
+        data-page="dashboard">
+        🏠 Dashboard
+    </button>
+
+    <button
+        data-page="income">
+        💰 जमा
+    </button>
+
+    <button
+        data-page="expense">
+        💸 खर्च
+    </button>
+
+    <button
+        data-page="budget">
+        📊 Budget
+    </button>
+
+    <button
+        data-page="accounts">
+        🏦 Accounts
+    </button>
+
+    <button
+        data-page="transactions">
+        📋 Transactions
+    </button>
+
+    <button
+        data-page="reports">
+        📑 Reports
+    </button>
+
+    <button
+        data-page="lending">
+        🤝 उधारी
+    </button>
+
+    <button
+        data-page="workplan">
+        📝 Work Plan
+    </button>
+
+    <button
+        data-page="settings">
+        ⚙️ Settings
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main-content">
+
+    <section
+        id="accountsPage"
+        class="page active">
+
+        <div class="accounts-page">
+
+
+            <!-- HEADER -->
+
+            <div class="accounts-header">
+
+                <div>
+
+                    <h2>
+                        🏦 Accounts
+                    </h2>
+
+                    <p>
+                        तुमच्या सर्व खात्यांची
+                        जमा, खर्च आणि शिल्लक
+                    </p>
+
+                </div>
+
+                <button
+                    id="addAccountBtn"
+                    class="primary-btn">
+                    ＋ Add Account
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 SUMMARY
+            ================================================= -->
+
+            <div
+                class="account-summary-grid">
+
+                <div
+                    class="account-summary-card">
+
+                    <div class="label">
+                        Total Opening Balance
+                    </div>
+
+                    <div
+                        id="totalOpeningBalance"
+                        class="value">
+                        ₹0.00
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="account-summary-card">
+
+                    <div class="label">
+                        Total Income
+                    </div>
+
+                    <div
+                        id="totalAccountIncome"
+                        class="value amount-income">
+                        ₹0.00
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="account-summary-card">
+
+                    <div class="label">
+                        Total Expense
+                    </div>
+
+                    <div
+                        id="totalAccountExpense"
+                        class="value amount-expense">
+                        ₹0.00
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="account-summary-card">
+
+                    <div class="label">
+                        Total Balance
+                    </div>
+
+                    <div
+                        id="totalAccountBalance"
+                        class="value amount-balance">
+                        ₹0.00
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACCOUNT LIST
+            ================================================= -->
+
+            <div
+                id="accountsList"
+                class="accounts-grid">
+            </div>
+
+
+            <div
+                id="emptyAccounts"
+                class="empty-accounts"
+                style="display:none;">
+
+                <h3>
+                    कोणतेही Account नाही
+                </h3>
+
+                <p>
+                    नवीन Account add करण्यासाठी
+                    Add Account बटन वापरा.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     ADD / EDIT ACCOUNT MODAL
+===================================================== -->
+
+<div
+    id="accountModal"
+    class="modal-overlay"
+    style="display:none;">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3 id="accountModalTitle">
+                Add Account
+            </h3>
+
+            <button
+                id="closeAccountModal"
+                class="close-btn">
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            id="accountForm">
+
+            <input
+                type="hidden"
+                id="accountId">
+
+
+            <div class="form-group">
+
+                <label for="accountName">
+                    Account Name
+                </label>
+
+                <input
+                    type="text"
+                    id="accountName"
+                    placeholder="उदा. SBI / Wallet"
+                    required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="openingBalance">
+                    Opening Balance
+                </label>
+
+                <input
+                    type="number"
+                    id="openingBalance"
+                    step="0.01"
+                    min="0"
+                    value="0"
+                    placeholder="0">
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    id="cancelAccountBtn"
+                    class="secondary-btn">
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+                    Save Account
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DELETE MODAL
+===================================================== -->
+
+<div
+    id="deleteAccountModal"
+    class="modal-overlay"
+    style="display:none;">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3>
+                Delete Account
+            </h3>
+
+            <button
+                id="closeDeleteModal"
+                class="close-btn">
+                ×
+            </button>
+
+        </div>
+
+        <p>
+            हा Account delete करायचा आहे का?
+        </p>
+
+        <p id="deleteAccountName"></p>
+
+        <div class="modal-actions">
+
+            <button
+                type="button"
+                id="cancelDeleteBtn"
+                class="secondary-btn">
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                id="confirmDeleteBtn"
+                class="danger-button">
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    id="accountToast"
+    class="toast"
+    style="display:none;">
+</div>
+
+
+<!-- =====================================================
+     SCRIPTS
+===================================================== -->
+
+<script src="app.js"></script>
+
+<script src="transactions.js"></script>
+
+<script src="accounts.js"></script>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* =================================================
+           ELEMENTS
+        ================================================= */
+
+        const list =
+            document.getElementById(
+                "accountsList"
+            );
+
+        const empty =
+            document.getElementById(
+                "emptyAccounts"
+            );
+
+        const modal =
+            document.getElementById(
+                "accountModal"
+            );
+
+        const deleteModal =
+            document.getElementById(
+                "deleteAccountModal"
+            );
+
+        const form =
+            document.getElementById(
+                "accountForm"
+            );
+
+        const accountId =
+            document.getElementById(
+                "accountId"
+            );
+
+        const accountName =
+            document.getElementById(
+                "accountName"
+            );
+
+        const openingBalance =
+            document.getElementById(
+                "openingBalance"
+            );
+
+        const modalTitle =
+            document.getElementById(
+                "accountModalTitle"
+            );
+
+        let accountToDelete = null;
+
+
+        /* =================================================
+           TOAST
+        ================================================= */
+
+        function showToast(message) {
+
+            const toast =
+                document.getElementById(
+                    "accountToast"
+                );
+
+            toast.textContent =
+                message;
+
+            toast.style.display =
+                "block";
+
+            setTimeout(
+                function () {
+
+                    toast.style.display =
+                        "none";
+
+                },
+                2500
+            );
+        }
+
+
+        /* =================================================
+           FORMAT
+        ================================================= */
+
+        function formatAmount(amount) {
+
+            return RJKA_Accounts
+                .formatAmount(amount);
+
+        }
+
+
+        /* =================================================
+           RENDER SUMMARY
+        ================================================= */
+
+        function renderSummary() {
+
+            document.getElementById(
+                "totalOpeningBalance"
+            ).textContent =
+                formatAmount(
+                    RJKA_Accounts
+                        .getTotalOpeningBalance()
+                );
+
+
+            document.getElementById(
+                "totalAccountIncome"
+            ).textContent =
+                formatAmount(
+                    RJKA_Accounts
+                        .getTotalIncome()
+                );
+
+
+            document.getElementById(
+                "totalAccountExpense"
+            ).textContent =
+                formatAmount(
+                    RJKA_Accounts
+                        .getTotalExpense()
+                );
+
+
+            document.getElementById(
+                "totalAccountBalance"
+            ).textContent =
+                formatAmount(
+                    RJKA_Accounts
+                        .getTotalBalance()
+                );
+
+        }
+
+
+        /* =================================================
+           RENDER ACCOUNTS
+        ================================================= */
+
+        function renderAccountsPage() {
+
+            const accounts =
+                RJKA_Accounts
+                    .getAllSummaries();
+
+            list.innerHTML = "";
+
+            if (accounts.length === 0) {
+
+                empty.style.display =
+                    "block";
+
+                renderSummary();
+
+                return;
+            }
+
+            empty.style.display =
+                "none";
+
+
+            accounts.forEach(
+                function (account) {
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+                    card.className =
+                        "account-card";
+
+
+                    const typeText =
+                        account.type === "default"
+                            ? "Default Account"
+                            : "Custom Account";
+
+
+                    card.innerHTML = `
+
+                        <div class="account-card-header">
+
+                            <div>
+
+                                <div class="account-name">
+                                    ${escapeHtmlSafe(account.name)}
+                                </div>
+
+                                <span class="account-type">
+                                    ${typeText}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-balance">
+                            ${formatAmount(account.balance)}
+                        </div>
+
+
+                        <div class="account-detail">
+
+                            <span>
+                                Opening Balance
+                            </span>
+
+                            <strong>
+                                ${formatAmount(account.openingBalance)}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="account-detail">
+
+                            <span>
+                                Income
+                            </span>
+
+                            <strong class="amount-income">
+                                ${formatAmount(account.income)}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="account-detail">
+
+                            <span>
+                                Expense
+                            </span>
+
+                            <strong class="amount-expense">
+                                ${formatAmount(account.expense)}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="account-actions">
+
+                            <button
+                                class="secondary-btn edit-account-btn"
+                                data-id="${account.id}">
+                                Edit
+                            </button>
+
+                            ${
+                                account.type !== "default"
+                                ? `
+                                    <button
+                                        class="danger-button delete-account-btn"
+                                        data-id="${account.id}">
+                                        Delete
+                                    </button>
+                                  `
+                                : ""
+                            }
+
+                        </div>
+
+                    `;
+
+                    list.appendChild(card);
+
+                }
+            );
+
+
+            renderSummary();
+
+        }
+
+
+        /* =================================================
+           ESCAPE HTML
+        ================================================= */
+
+        function escapeHtmlSafe(value) {
+
+            if (
+                typeof escapeHtml ===
+                "function"
+            ) {
+                return escapeHtml(
+                    String(value)
+                );
+            }
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+
+        /* =================================================
+           OPEN ADD MODAL
+        ================================================= */
+
+        function openAddModal() {
+
+            modalTitle.textContent =
+                "Add Account";
+
+            accountId.value =
+                "";
+
+            accountName.value =
+                "";
+
+            openingBalance.value =
+                "0";
+
+            modal.style.display =
+                "flex";
+
+            setTimeout(
+                function () {
+                    accountName.focus();
+                },
+                100
+            );
+
+        }
+
+
+        /* =================================================
+           OPEN EDIT MODAL
+        ================================================= */
+
+        function openEditModal(id) {
+
+            const account =
+                RJKA_Accounts
+                    .getById(id);
+
+            if (!account) {
+                return;
+            }
+
+            modalTitle.textContent =
+                "Edit Account";
+
+            accountId.value =
+                account.id;
+
+            accountName.value =
+                account.name;
+
+            openingBalance.value =
+                account.openingBalance;
+
+            modal.style.display =
+                "flex";
+
+        }
+
+
+        /* =================================================
+           CLOSE ACCOUNT MODAL
+        ================================================= */
+
+        function closeAccountModal() {
+
+            modal.style.display =
+                "none";
+
+        }
+
+
+        /* =================================================
+           SAVE ACCOUNT
+        ================================================= */
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                const name =
+                    accountName.value.trim();
+
+                const balance =
+                    Number(
+                        openingBalance.value
+                    ) || 0;
+
+
+                try {
+
+                    if (accountId.value) {
+
+                        RJKA_Accounts.update(
+                            accountId.value,
+                            {
+                                name: name,
+                                openingBalance:
+                                    balance
+                            }
+                        );
+
+                        showToast(
+                            "Account updated successfully."
+                        );
+
+                    } else {
+
+                        RJKA_Accounts.add(
+                            {
+                                name: name,
+                                openingBalance:
+                                    balance
+                            }
+                        );
+
+                        showToast(
+                            "Account added successfully."
+                        );
+
+                    }
+
+                    closeAccountModal();
+
+                    renderAccountsPage();
+
+                } catch (error) {
+
+                    showToast(
+                        error.message ||
+                        "Unable to save account."
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           EDIT / DELETE CLICK
+        ================================================= */
+
+        list.addEventListener(
+            "click",
+            function (event) {
+
+                const editButton =
+                    event.target.closest(
+                        ".edit-account-btn"
+                    );
+
+                const deleteButton =
+                    event.target.closest(
+                        ".delete-account-btn"
+                    );
+
+
+                if (editButton) {
+
+                    openEditModal(
+                        editButton.dataset.id
+                    );
+
+                    return;
+                }
+
+
+                if (deleteButton) {
+
+                    const id =
+                        deleteButton.dataset.id;
+
+                    const account =
+                        RJKA_Accounts
+                            .getById(id);
+
+                    if (!account) {
+                        return;
+                    }
+
+                    accountToDelete =
+                        id;
+
+                    document.getElementById(
+                        "deleteAccountName"
+                    ).textContent =
+                        account.name;
+
+                    deleteModal.style.display =
+                        "flex";
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           CONFIRM DELETE
+        ================================================= */
+
+        document.getElementById(
+            "confirmDeleteBtn"
+        ).addEventListener(
+            "click",
+            function () {
+
+                if (!accountToDelete) {
+                    return;
+                }
+
+                try {
+
+                    RJKA_Accounts.remove(
+                        accountToDelete
+                    );
+
+                    showToast(
+                        "Account deleted successfully."
+                    );
+
+                    accountToDelete =
+                        null;
+
+                    deleteModal.style.display =
+                        "none";
+
+                    renderAccountsPage();
+
+                } catch (error) {
+
+                    showToast(
+                        error.message ||
+                        "Unable to delete account."
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           BUTTONS
+        ================================================= */
+
+        document.getElementById(
+            "addAccountBtn"
+        ).addEventListener(
+            "click",
+            openAddModal
+        );
+
+
+        document.getElementById(
+            "closeAccountModal"
+        ).addEventListener(
+            "click",
+            closeAccountModal
+        );
+
+
+        document.getElementById(
+            "cancelAccountBtn"
+        ).addEventListener(
+            "click",
+            closeAccountModal
+        );
+
+
+        document.getElementById(
+            "closeDeleteModal"
+        ).addEventListener(
+            "click",
+            function () {
+
+                deleteModal.style.display =
+                    "none";
+
+                accountToDelete =
+                    null;
+
+            }
+        );
+
+
+        document.getElementById(
+            "cancelDeleteBtn"
+        ).addEventListener(
+            "click",
+            function () {
+
+                deleteModal.style.display =
+                    "none";
+
+                accountToDelete =
+                    null;
+
+            }
+        );
+
+
+        /* =================================================
+           OUTSIDE MODAL CLICK
+        ================================================= */
+
+        modal.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === modal
+                ) {
+                    closeAccountModal();
+                }
+
+            }
+        );
+
+
+        deleteModal.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === deleteModal
+                ) {
+
+                    deleteModal.style.display =
+                        "none";
+
+                    accountToDelete =
+                        null;
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           ACCOUNT CHANGE EVENT
+        ================================================= */
+
+        window.addEventListener(
+            "accountsChanged",
+            function () {
+
+                renderAccountsPage();
+
+            }
+        );
+
+
+        /* =================================================
+           TRANSACTION CHANGE EVENT
+        ================================================= */
+
+        window.addEventListener(
+            "transactionsChanged",
+            function () {
+
+                renderAccountsPage();
+
+            }
+        );
+
+
+        /* =================================================
+           INITIAL RENDER
+        ================================================= */
+
+        renderAccountsPage();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>
