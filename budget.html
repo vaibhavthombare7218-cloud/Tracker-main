@@ -1,0 +1,2324 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#5b0b18">
+
+    <meta name="description"
+          content="रोजचा जमा खर्च अहवाल - Monthly Budget">
+
+    <title>Budget - रोजचा जमा खर्च अहवाल</title>
+
+    <link rel="stylesheet" href="style.css">
+
+
+    <style>
+
+        /* =====================================================
+           BUDGET PAGE
+        ===================================================== */
+
+        .budget-page {
+            padding-bottom: 30px;
+        }
+
+
+        .budget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+
+        .budget-header h2 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+
+        .budget-header p {
+            margin: 4px 0 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+
+        .budget-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+
+        .budget-btn:hover {
+            background: var(--primary-dark);
+        }
+
+
+        /* =====================================================
+           MONTH SELECTOR
+        ===================================================== */
+
+        .budget-month-box {
+            background: #fff;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+
+        .budget-month-box label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 7px;
+        }
+
+
+        .budget-month-box input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .budget-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+
+        .budget-summary-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+
+        .budget-summary-card h4 {
+            margin: 0 0 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+
+        .budget-summary-value {
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+
+        .budget-value {
+            color: var(--primary);
+        }
+
+
+        .budget-actual {
+            color: var(--expense);
+        }
+
+
+        .budget-remaining {
+            color: var(--income);
+        }
+
+
+        .budget-percent {
+            color: var(--primary);
+        }
+
+
+        /* =====================================================
+           OVERALL PROGRESS
+        ===================================================== */
+
+        .budget-overview {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+
+        .budget-overview-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+
+        .budget-overview-title h3 {
+            margin: 0;
+        }
+
+
+        .budget-progress {
+            width: 100%;
+            height: 14px;
+            background: #eee;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+
+        .budget-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+
+        .budget-progress-bar.warning {
+            background: #d68a00;
+        }
+
+
+        .budget-progress-bar.over {
+            background: var(--expense);
+        }
+
+
+        .budget-progress-text {
+            margin-top: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+
+        /* =====================================================
+           CATEGORY LIST
+        ===================================================== */
+
+        .budget-category-box {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+
+        .budget-category-header {
+            padding: 18px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .budget-category-header h3 {
+            margin: 0;
+        }
+
+
+        .budget-category-list {
+            padding: 0;
+        }
+
+
+        .budget-category-card {
+            padding: 17px 18px;
+            border-bottom: 1px solid #eee;
+        }
+
+
+        .budget-category-card:last-child {
+            border-bottom: none;
+        }
+
+
+        .budget-category-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+
+        .budget-category-name {
+            font-weight: 700;
+            color: #333;
+        }
+
+
+        .budget-category-amount {
+            text-align: right;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+
+        .budget-category-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+
+        .budget-detail-item {
+            color: #666;
+        }
+
+
+        .budget-detail-item strong {
+            display: block;
+            color: #333;
+            margin-top: 2px;
+        }
+
+
+        .budget-category-progress {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+
+        .budget-category-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+        }
+
+
+        .budget-category-progress-bar.warning {
+            background: #d68a00;
+        }
+
+
+        .budget-category-progress-bar.over {
+            background: var(--expense);
+        }
+
+
+        .budget-category-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 7px;
+        }
+
+
+        .budget-action-btn {
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+
+        .budget-edit-btn {
+            background: #eee;
+            color: #333;
+        }
+
+
+        .budget-delete-btn {
+            background: #fdeaea;
+            color: #c62828;
+        }
+
+
+        .budget-no-budget {
+            color: #999;
+            font-size: 13px;
+        }
+
+
+        .budget-over {
+            color: var(--expense);
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .budget-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+
+        .budget-modal.show {
+            display: flex;
+        }
+
+
+        .budget-modal-content {
+            background: #fff;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 14px;
+            padding: 22px;
+            box-sizing: border-box;
+        }
+
+
+        .budget-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+
+        .budget-modal-header h3 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+
+        .budget-close {
+            border: none;
+            background: transparent;
+            font-size: 26px;
+            cursor: pointer;
+            color: #666;
+        }
+
+
+        .budget-form {
+            display: grid;
+            gap: 14px;
+        }
+
+
+        .budget-form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+
+        .budget-form-field label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+        }
+
+
+        .budget-form-field input,
+        .budget-form-field select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 14px;
+            background: #fff;
+        }
+
+
+        .budget-form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+
+
+        .budget-save-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+
+        .budget-cancel-btn {
+            background: #eee;
+            color: #333;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           DELETE
+        ===================================================== */
+
+        .budget-confirm-text {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+
+        .budget-confirm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+
+        .budget-confirm-delete {
+            background: #c62828;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .budget-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 11px 18px;
+            border-radius: 8px;
+            display: none;
+            z-index: 10000;
+            font-size: 14px;
+        }
+
+
+        .budget-toast.show {
+            display: block;
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .budget-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #777;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .budget-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .budget-summary {
+                grid-template-columns: 1fr;
+            }
+
+
+            .budget-category-details {
+                grid-template-columns: 1fr;
+            }
+
+
+            .budget-category-top {
+                flex-direction: column;
+            }
+
+
+            .budget-category-amount {
+                text-align: left;
+            }
+
+
+            .budget-header {
+                align-items: stretch;
+            }
+
+
+            .budget-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="app-header">
+
+        <button id="menuBtn"
+                class="menu-btn"
+                type="button">
+
+            ☰
+
+        </button>
+
+
+        <h1>
+            रोजचा जमा खर्च अहवाल
+        </h1>
+
+    </header>
+
+
+    <!-- =====================================================
+         SIDE MENU
+    ====================================================== -->
+
+    <aside id="sideMenu"
+           class="side-menu">
+
+
+        <button data-page="dashboard">
+            🏠 Dashboard
+        </button>
+
+
+        <button data-page="income">
+            💰 जमा
+        </button>
+
+
+        <button data-page="expense">
+            💸 खर्च
+        </button>
+
+
+        <button data-page="budget">
+            📊 Budget
+        </button>
+
+
+        <button data-page="accounts">
+            🏦 Accounts
+        </button>
+
+
+        <button data-page="transactions">
+            📋 Transactions
+        </button>
+
+
+        <button data-page="reports">
+            📑 Reports
+        </button>
+
+
+        <button data-page="lending">
+            🤝 उधारी
+        </button>
+
+
+        <button data-page="workplan">
+            📝 Work Plan
+        </button>
+
+
+        <button data-page="settings">
+            ⚙️ Settings
+        </button>
+
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main-content budget-page">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="budget-header">
+
+
+            <div>
+
+                <h2>
+                    📊 Monthly Budget
+                </h2>
+
+
+                <p>
+                    प्रत्येक expense category साठी महिन्याचा budget ठरवा आणि actual खर्च track करा.
+                </p>
+
+            </div>
+
+
+            <button
+                id="addBudgetBtn"
+                class="budget-btn"
+                type="button">
+
+                + नवीन Budget
+
+            </button>
+
+
+        </div>
+
+
+        <!-- =================================================
+             MONTH
+        ================================================== -->
+
+        <section class="budget-month-box">
+
+
+            <label for="budgetMonth">
+
+                Budget Month
+
+            </label>
+
+
+            <input
+                type="month"
+                id="budgetMonth"
+            >
+
+
+        </section>
+
+
+        <!-- =================================================
+             SUMMARY
+        ================================================== -->
+
+        <section class="budget-summary">
+
+
+            <div class="budget-summary-card">
+
+                <h4>
+                    Total Budget
+                </h4>
+
+
+                <div
+                    id="totalBudget"
+                    class="budget-summary-value budget-value">
+
+                    ₹0
+
+                </div>
+
+            </div>
+
+
+            <div class="budget-summary-card">
+
+                <h4>
+                    Actual Expense
+                </h4>
+
+
+                <div
+                    id="totalActual"
+                    class="budget-summary-value budget-actual">
+
+                    ₹0
+
+                </div>
+
+            </div>
+
+
+            <div class="budget-summary-card">
+
+                <h4>
+                    Remaining
+                </h4>
+
+
+                <div
+                    id="totalRemaining"
+                    class="budget-summary-value budget-remaining">
+
+                    ₹0
+
+                </div>
+
+            </div>
+
+
+            <div class="budget-summary-card">
+
+                <h4>
+                    Used
+                </h4>
+
+
+                <div
+                    id="totalUsedPercent"
+                    class="budget-summary-value budget-percent">
+
+                    0%
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             OVERALL PROGRESS
+        ================================================== -->
+
+        <section class="budget-overview">
+
+
+            <div class="budget-overview-title">
+
+
+                <h3>
+                    Overall Budget Usage
+                </h3>
+
+
+                <strong id="budgetUsageLabel">
+                    0%
+                </strong>
+
+
+            </div>
+
+
+            <div class="budget-progress">
+
+
+                <div
+                    id="budgetProgressBar"
+                    class="budget-progress-bar">
+                </div>
+
+
+            </div>
+
+
+            <div
+                id="budgetProgressText"
+                class="budget-progress-text">
+
+                ₹0 खर्च / ₹0 budget
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             CATEGORY LIST
+        ================================================== -->
+
+        <section class="budget-category-box">
+
+
+            <div class="budget-category-header">
+
+
+                <h3>
+                    Category-wise Budget
+                </h3>
+
+
+                <span id="budgetCategoryCount">
+                    0 Categories
+                </span>
+
+
+            </div>
+
+
+            <div
+                id="budgetCategoryList"
+                class="budget-category-list">
+            </div>
+
+
+            <div
+                id="budgetEmpty"
+                class="budget-empty"
+                style="display:none;">
+
+
+                <div style="font-size:38px;">
+                    📊
+                </div>
+
+
+                <p>
+                    या महिन्यासाठी अजून Budget तयार केलेले नाही.
+                </p>
+
+
+                <button
+                    class="budget-btn"
+                    type="button"
+                    onclick="openBudgetModal()">
+
+                    + पहिला Budget जोडा
+
+                </button>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         ADD / EDIT BUDGET MODAL
+    ====================================================== -->
+
+    <div
+        id="budgetModal"
+        class="budget-modal">
+
+
+        <div class="budget-modal-content">
+
+
+            <div class="budget-modal-header">
+
+
+                <h3 id="budgetModalTitle">
+                    नवीन Budget
+                </h3>
+
+
+                <button
+                    id="budgetCloseBtn"
+                    class="budget-close"
+                    type="button">
+
+                    ×
+
+                </button>
+
+
+            </div>
+
+
+            <form
+                id="budgetForm"
+                class="budget-form">
+
+
+                <input
+                    type="hidden"
+                    id="budgetId"
+                >
+
+
+                <!-- MONTH -->
+
+                <div class="budget-form-field">
+
+
+                    <label for="budgetFormMonth">
+
+                        महिना *
+
+                    </label>
+
+
+                    <input
+                        type="month"
+                        id="budgetFormMonth"
+                        required
+                    >
+
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="budget-form-field">
+
+
+                    <label for="budgetCategory">
+
+                        Expense Category *
+
+                    </label>
+
+
+                    <select
+                        id="budgetCategory"
+                        required>
+
+                        <option value="">
+                            Category निवडा
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+                <!-- AMOUNT -->
+
+                <div class="budget-form-field">
+
+
+                    <label for="budgetAmount">
+
+                        Budget Amount *
+
+                    </label>
+
+
+                    <input
+                        type="number"
+                        id="budgetAmount"
+                        min="0"
+                        step="0.01"
+                        placeholder="उदा. 5000"
+                        required
+                    >
+
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="budget-form-actions">
+
+
+                    <button
+                        type="button"
+                        id="budgetCancelBtn"
+                        class="budget-cancel-btn">
+
+                        Cancel
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="budget-save-btn">
+
+                        Save Budget
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DELETE MODAL
+    ====================================================== -->
+
+    <div
+        id="budgetDeleteModal"
+        class="budget-modal">
+
+
+        <div class="budget-modal-content">
+
+
+            <div class="budget-modal-header">
+
+
+                <h3>
+                    Budget Delete करा?
+                </h3>
+
+
+                <button
+                    id="budgetDeleteCloseBtn"
+                    class="budget-close"
+                    type="button">
+
+                    ×
+
+                </button>
+
+
+            </div>
+
+
+            <p class="budget-confirm-text">
+
+                हा budget कायमचा delete केला जाईल.
+                Actual expense transactions मात्र delete होणार नाहीत.
+
+            </p>
+
+
+            <div class="budget-confirm-actions">
+
+
+                <button
+                    id="budgetDeleteCancelBtn"
+                    class="budget-cancel-btn"
+                    type="button">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    id="budgetConfirmDeleteBtn"
+                    class="budget-confirm-delete"
+                    type="button">
+
+                    Delete
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
+
+    <div
+        id="budgetToast"
+        class="budget-toast">
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="app.js"></script>
+
+    <script src="transactions.js"></script>
+
+    <script src="budget.js"></script>
+
+
+    <script>
+
+        /* =====================================================
+           BUDGET PAGE LOGIC
+        ===================================================== */
+
+        let budgetDeleteId = null;
+
+
+        /* =====================================================
+           CURRENT MONTH
+        ===================================================== */
+
+        function getBudgetPageMonth() {
+
+            if (
+                typeof getMonthString ===
+                "function"
+            ) {
+
+                return getMonthString();
+
+            }
+
+
+            const d = new Date();
+
+
+            return d.getFullYear() +
+                "-" +
+                String(
+                    d.getMonth() + 1
+                ).padStart(2, "0");
+
+        }
+
+
+        /* =====================================================
+           CURRENCY
+        ===================================================== */
+
+        function budgetPageCurrency(amount) {
+
+            if (
+                typeof formatCurrency ===
+                "function"
+            ) {
+
+                return formatCurrency(amount);
+
+            }
+
+
+            return "₹" +
+                Number(amount || 0)
+                    .toLocaleString(
+                        "en-IN",
+                        {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }
+                    );
+
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        function showBudgetToast(message) {
+
+            const toast =
+                document.getElementById(
+                    "budgetToast"
+                );
+
+
+            toast.textContent =
+                message;
+
+
+            toast.classList.add(
+                "show"
+            );
+
+
+            setTimeout(
+                function () {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                2200
+            );
+
+        }
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ===================================================== */
+
+        function budgetEscape(value) {
+
+            if (
+                typeof escapeHtml ===
+                "function"
+            ) {
+
+                return escapeHtml(value);
+
+            }
+
+
+            return String(value ?? "")
+                .replace(
+                    /&/g,
+                    "&amp;"
+                )
+                .replace(
+                    /</g,
+                    "&lt;"
+                )
+                .replace(
+                    />/g,
+                    "&gt;"
+                )
+                .replace(
+                    /"/g,
+                    "&quot;"
+                )
+                .replace(
+                    /'/g,
+                    "&#039;"
+                );
+
+        }
+
+
+        /* =====================================================
+           LOAD CATEGORIES
+        ===================================================== */
+
+        function loadBudgetCategories() {
+
+            const select =
+                document.getElementById(
+                    "budgetCategory"
+                );
+
+
+            select.innerHTML =
+                '<option value="">Category निवडा</option>';
+
+
+            if (
+                typeof EXPENSE_CATEGORIES ===
+                "undefined" ||
+                !Array.isArray(
+                    EXPENSE_CATEGORIES
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            EXPENSE_CATEGORIES.forEach(
+                function (category) {
+
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+
+                    option.value =
+                        category.id;
+
+
+                    option.textContent =
+                        category.name;
+
+
+                    select.appendChild(
+                        option
+                    );
+
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           UPDATE SUMMARY
+        ===================================================== */
+
+        function updateBudgetSummary() {
+
+            const month =
+                document.getElementById(
+                    "budgetMonth"
+                ).value ||
+                getBudgetPageMonth();
+
+
+            const summary =
+                getBudgetMonthSummary(
+                    month
+                );
+
+
+            document.getElementById(
+                "totalBudget"
+            ).textContent =
+                budgetPageCurrency(
+                    summary.totalBudget
+                );
+
+
+            document.getElementById(
+                "totalActual"
+            ).textContent =
+                budgetPageCurrency(
+                    summary.totalActual
+                );
+
+
+            document.getElementById(
+                "totalRemaining"
+            ).textContent =
+                budgetPageCurrency(
+                    summary.remaining
+                );
+
+
+            document.getElementById(
+                "totalUsedPercent"
+            ).textContent =
+                Math.round(
+                    summary.usedPercent
+                ) + "%";
+
+
+            const progress =
+                Math.min(
+                    Math.max(
+                        summary.usedPercent,
+                        0
+                    ),
+                    100
+                );
+
+
+            const bar =
+                document.getElementById(
+                    "budgetProgressBar"
+                );
+
+
+            bar.style.width =
+                progress + "%";
+
+
+            bar.classList.remove(
+                "warning",
+                "over"
+            );
+
+
+            if (
+                summary.usedPercent >= 100
+            ) {
+
+                bar.classList.add(
+                    "over"
+                );
+
+            } else if (
+                summary.usedPercent >= 80
+            ) {
+
+                bar.classList.add(
+                    "warning"
+                );
+
+            }
+
+
+            document.getElementById(
+                "budgetUsageLabel"
+            ).textContent =
+                Math.round(
+                    summary.usedPercent
+                ) + "%";
+
+
+            document.getElementById(
+                "budgetProgressText"
+            ).textContent =
+
+                budgetPageCurrency(
+                    summary.totalActual
+                ) +
+
+                " खर्च / " +
+
+                budgetPageCurrency(
+                    summary.totalBudget
+                ) +
+
+                " budget";
+
+        }
+
+
+        /* =====================================================
+           OPEN MODAL
+        ===================================================== */
+
+        function openBudgetModal(id = "") {
+
+            const modal =
+                document.getElementById(
+                    "budgetModal"
+                );
+
+
+            const form =
+                document.getElementById(
+                    "budgetForm"
+                );
+
+
+            form.reset();
+
+
+            document.getElementById(
+                "budgetId"
+            ).value = "";
+
+
+            document.getElementById(
+                "budgetFormMonth"
+            ).value =
+                document.getElementById(
+                    "budgetMonth"
+                ).value ||
+                getBudgetPageMonth();
+
+
+            document.getElementById(
+                "budgetModalTitle"
+            ).textContent =
+                "नवीन Budget";
+
+
+            loadBudgetCategories();
+
+
+            if (id) {
+
+
+                const budget =
+                    getBudgetById(id);
+
+
+                if (!budget) {
+
+                    showBudgetToast(
+                        "Budget सापडला नाही."
+                    );
+
+                    return;
+
+                }
+
+
+                document.getElementById(
+                    "budgetId"
+                ).value =
+                    budget.id;
+
+
+                document.getElementById(
+                    "budgetFormMonth"
+                ).value =
+                    budget.month;
+
+
+                document.getElementById(
+                    "budgetCategory"
+                ).value =
+                    budget.categoryId;
+
+
+                document.getElementById(
+                    "budgetAmount"
+                ).value =
+                    budget.amount;
+
+
+                document.getElementById(
+                    "budgetModalTitle"
+                ).textContent =
+                    "Budget Edit करा";
+
+            }
+
+
+            modal.classList.add(
+                "show"
+            );
+
+        }
+
+
+        /* =====================================================
+           CLOSE MODAL
+        ===================================================== */
+
+        function closeBudgetModal() {
+
+            document.getElementById(
+                "budgetModal"
+            ).classList.remove(
+                "show"
+            );
+
+        }
+
+
+        /* =====================================================
+           SAVE BUDGET
+        ===================================================== */
+
+        function saveBudgetForm(event) {
+
+            event.preventDefault();
+
+
+            const id =
+                document.getElementById(
+                    "budgetId"
+                ).value.trim();
+
+
+            const data = {
+
+                month:
+                    document.getElementById(
+                        "budgetFormMonth"
+                    ).value,
+
+                categoryId:
+                    document.getElementById(
+                        "budgetCategory"
+                    ).value,
+
+                amount:
+                    Number(
+                        document.getElementById(
+                            "budgetAmount"
+                        ).value
+                    )
+
+            };
+
+
+            let result;
+
+
+            if (id) {
+
+                result =
+                    updateBudget(
+                        id,
+                        data
+                    );
+
+            } else {
+
+                result =
+                    addBudget(
+                        data
+                    );
+
+            }
+
+
+            if (
+                !result ||
+                result.success === false
+            ) {
+
+                showBudgetToast(
+                    result &&
+                    result.message
+                        ? result.message
+                        : "Budget save करता आला नाही."
+                );
+
+                return;
+
+            }
+
+
+            closeBudgetModal();
+
+
+            document.getElementById(
+                "budgetMonth"
+            ).value =
+                data.month;
+
+
+            updateBudgetSummary();
+
+            renderBudgetCategories();
+
+
+            showBudgetToast(
+                id
+                    ? "Budget update झाला."
+                    : "Budget save झाला."
+            );
+
+
+            if (
+                typeof updateDashboard ===
+                "function"
+            ) {
+
+                updateDashboard();
+
+            }
+
+        }
+
+
+        /* =====================================================
+           RENDER CATEGORY LIST
+        ===================================================== */
+
+        function renderBudgetCategories() {
+
+            const month =
+                document.getElementById(
+                    "budgetMonth"
+                ).value ||
+                getBudgetPageMonth();
+
+
+            const list =
+                document.getElementById(
+                    "budgetCategoryList"
+                );
+
+
+            const empty =
+                document.getElementById(
+                    "budgetEmpty"
+                );
+
+
+            const count =
+                document.getElementById(
+                    "budgetCategoryCount"
+                );
+
+
+            const budgets =
+                getBudgetsByMonth(
+                    month
+                );
+
+
+            count.textContent =
+                budgets.length +
+                " Categories";
+
+
+            list.innerHTML = "";
+
+
+            if (budgets.length === 0) {
+
+                empty.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            empty.style.display =
+                "none";
+
+
+            const report =
+                getCategoryBudgetReport(
+                    month
+                );
+
+
+            const budgetMap = {};
+
+
+            budgets.forEach(
+                function (budget) {
+
+                    budgetMap[
+                        budget.categoryId
+                    ] = budget;
+
+                }
+            );
+
+
+            report
+                .filter(function (item) {
+
+                    return !!budgetMap[
+                        item.categoryId
+                    ];
+
+                })
+                .forEach(
+                    function (item) {
+
+
+                        const budget =
+                            budgetMap[
+                                item.categoryId
+                            ];
+
+
+                        const used =
+                            item.usedPercent;
+
+
+                        const progress =
+                            Math.min(
+                                Math.max(
+                                    used,
+                                    0
+                                ),
+                                100
+                            );
+
+
+                        let statusClass =
+                            "";
+
+
+                        if (
+                            item.status ===
+                            "warning"
+                        ) {
+
+                            statusClass =
+                                "warning";
+
+                        }
+
+
+                        if (
+                            item.status ===
+                            "over"
+                        ) {
+
+                            statusClass =
+                                "over";
+
+                        }
+
+
+                        const remainingText =
+                            item.remaining >= 0
+
+                                ? budgetPageCurrency(
+                                    item.remaining
+                                  )
+
+                                : "-" +
+                                  budgetPageCurrency(
+                                    Math.abs(
+                                        item.remaining
+                                    )
+                                  );
+
+
+                        const remainingClass =
+                            item.remaining < 0
+                                ? "budget-over"
+                                : "";
+
+
+                        const div =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        div.className =
+                            "budget-category-card";
+
+
+                        div.innerHTML = `
+
+                            <div class="budget-category-top">
+
+                                <div>
+
+                                    <div class="budget-category-name">
+
+                                        ${budgetEscape(
+                                            item.categoryName
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="budget-category-amount">
+
+                                    ${budgetPageCurrency(
+                                        item.budget
+                                    )}
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="budget-category-details">
+
+
+                                <div class="budget-detail-item">
+
+                                    Budget
+
+                                    <strong>
+
+                                        ${budgetPageCurrency(
+                                            item.budget
+                                        )}
+
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="budget-detail-item">
+
+                                    Actual Expense
+
+                                    <strong>
+
+                                        ${budgetPageCurrency(
+                                            item.actual
+                                        )}
+
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="budget-detail-item">
+
+                                    Remaining
+
+                                    <strong class="${remainingClass}">
+
+                                        ${remainingText}
+
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="budget-category-progress">
+
+                                <div
+                                    class="budget-category-progress-bar ${statusClass}"
+                                    style="width:${progress}%;">
+                                </div>
+
+                            </div>
+
+
+                            <div class="budget-category-details"
+                                 style="grid-template-columns:1fr; margin-bottom:8px;">
+
+                                <div class="budget-detail-item">
+
+                                    Used
+
+                                    <strong>
+
+                                        ${Math.round(
+                                            used
+                                        )}%
+
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="budget-category-actions">
+
+
+                                <button
+                                    type="button"
+                                    class="budget-action-btn budget-edit-btn"
+                                    onclick="openBudgetModal('${budgetEscape(budget.id)}')">
+
+                                    Edit
+
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="budget-action-btn budget-delete-btn"
+                                    onclick="openBudgetDelete('${budgetEscape(budget.id)}')">
+
+                                    Delete
+
+                                </button>
+
+
+                            </div>
+
+                        `;
+
+
+                        list.appendChild(
+                            div
+                        );
+
+
+                    }
+                );
+
+
+        }
+
+
+        /* =====================================================
+           DELETE
+        ===================================================== */
+
+        function openBudgetDelete(id) {
+
+            budgetDeleteId =
+                id;
+
+
+            document.getElementById(
+                "budgetDeleteModal"
+            ).classList.add(
+                "show"
+            );
+
+        }
+
+
+        function closeBudgetDelete() {
+
+            budgetDeleteId =
+                null;
+
+
+            document.getElementById(
+                "budgetDeleteModal"
+            ).classList.remove(
+                "show"
+            );
+
+        }
+
+
+        /* =====================================================
+           CONFIRM DELETE
+        ===================================================== */
+
+        function confirmBudgetDelete() {
+
+            if (!budgetDeleteId) {
+
+                return;
+
+            }
+
+
+            const result =
+                deleteBudget(
+                    budgetDeleteId
+                );
+
+
+            if (
+                !result ||
+                result.success === false
+            ) {
+
+                showBudgetToast(
+                    result &&
+                    result.message
+                        ? result.message
+                        : "Delete करता आला नाही."
+                );
+
+                return;
+
+            }
+
+
+            closeBudgetDelete();
+
+
+            updateBudgetSummary();
+
+            renderBudgetCategories();
+
+
+            showBudgetToast(
+                "Budget delete केला."
+            );
+
+
+            if (
+                typeof updateDashboard ===
+                "function"
+            ) {
+
+                updateDashboard();
+
+            }
+
+        }
+
+
+        /* =====================================================
+           INITIALIZATION
+        ===================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                document.getElementById(
+                    "budgetMonth"
+                ).value =
+                    getBudgetPageMonth();
+
+
+                loadBudgetCategories();
+
+
+                updateBudgetSummary();
+
+
+                renderBudgetCategories();
+
+
+                /* ADD */
+
+                document.getElementById(
+                    "addBudgetBtn"
+                ).addEventListener(
+                    "click",
+                    function () {
+
+                        openBudgetModal();
+
+                    }
+                );
+
+
+                /* MONTH */
+
+                document.getElementById(
+                    "budgetMonth"
+                ).addEventListener(
+                    "change",
+                    function () {
+
+                        updateBudgetSummary();
+
+                        renderBudgetCategories();
+
+                    }
+                );
+
+
+                /* CLOSE */
+
+                document.getElementById(
+                    "budgetCloseBtn"
+                ).addEventListener(
+                    "click",
+                    closeBudgetModal
+                );
+
+
+                document.getElementById(
+                    "budgetCancelBtn"
+                ).addEventListener(
+                    "click",
+                    closeBudgetModal
+                );
+
+
+                /* FORM */
+
+                document.getElementById(
+                    "budgetForm"
+                ).addEventListener(
+                    "submit",
+                    saveBudgetForm
+                );
+
+
+                /* DELETE */
+
+                document.getElementById(
+                    "budgetDeleteCloseBtn"
+                ).addEventListener(
+                    "click",
+                    closeBudgetDelete
+                );
+
+
+                document.getElementById(
+                    "budgetDeleteCancelBtn"
+                ).addEventListener(
+                    "click",
+                    closeBudgetDelete
+                );
+
+
+                document.getElementById(
+                    "budgetConfirmDeleteBtn"
+                ).addEventListener(
+                    "click",
+                    confirmBudgetDelete
+                );
+
+
+                /* BUDGET CHANGES */
+
+                document.addEventListener(
+                    "budgetsChanged",
+                    function () {
+
+                        updateBudgetSummary();
+
+                        renderBudgetCategories();
+
+                    }
+                );
+
+
+                /* TRANSACTION CHANGES */
+
+                window.addEventListener(
+                    "transactionsChanged",
+                    function () {
+
+                        updateBudgetSummary();
+
+                        renderBudgetCategories();
+
+                    }
+                );
+
+
+            }
+        );
+
+
+        /* =====================================================
+           BACKDROP CLOSE
+        ===================================================== */
+
+        document.getElementById(
+            "budgetModal"
+        ).addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === this
+                ) {
+
+                    closeBudgetModal();
+
+                }
+
+            }
+        );
+
+
+        document.getElementById(
+            "budgetDeleteModal"
+        ).addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === this
+                ) {
+
+                    closeBudgetDelete();
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>
