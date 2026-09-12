@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#5b0b18">
+
+    <meta name="description"
+          content="रोजचा जमा खर्च अहवाल - जमा व्यवस्थापन">
+
+    <title>जमा - रोजचा जमा खर्च अहवाल</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        /* =====================================================
+           INCOME PAGE
+        ===================================================== */
+
+        .income-page {
+            padding-bottom: 30px;
+        }
+
+        .income-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .income-header h2 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .income-header p {
+            margin: 4px 0 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .income-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .income-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* SUMMARY */
+
+        .income-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .income-summary-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--income);
+        }
+
+        .income-summary-card h4 {
+            margin: 0 0 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .income-summary-card .value {
+            font-size: 23px;
+            font-weight: 700;
+            color: var(--income);
+        }
+
+        /* FILTER */
+
+        .income-filter-box {
+            background: #fff;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .income-filter-box h3 {
+            margin: 0 0 15px;
+            font-size: 17px;
+        }
+
+        .income-filters {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .income-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .income-field label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .income-field input,
+        .income-field select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        .income-clear-btn {
+            margin-top: 15px;
+            padding: 9px 15px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        /* LIST */
+
+        .income-list-box {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .income-list-header {
+            padding: 18px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .income-list-header h3 {
+            margin: 0;
+        }
+
+        .income-count {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .income-list {
+            padding: 0;
+        }
+
+        .income-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 16px 18px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .income-item:last-child {
+            border-bottom: none;
+        }
+
+        .income-info {
+            min-width: 0;
+        }
+
+        .income-description {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .income-meta {
+            color: #777;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .income-right {
+            text-align: right;
+            min-width: 130px;
+        }
+
+        .income-amount {
+            color: var(--income);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .income-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 7px;
+        }
+
+        .income-action-btn {
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .income-edit-btn {
+            background: #eee;
+            color: #333;
+        }
+
+        .income-delete-btn {
+            background: #fdeaea;
+            color: #c62828;
+        }
+
+        .income-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #777;
+        }
+
+        /* MODAL */
+
+        .income-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .income-modal.show {
+            display: flex;
+        }
+
+        .income-modal-content {
+            background: #fff;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 14px;
+            padding: 22px;
+            box-sizing: border-box;
+        }
+
+        .income-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .income-modal-header h3 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+        .income-close {
+            border: none;
+            background: transparent;
+            font-size: 26px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .income-form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .income-form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .income-form-field label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .income-form-field input,
+        .income-form-field select,
+        .income-form-field textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .income-form-field textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .income-form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+
+        .income-save-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .income-cancel-btn {
+            background: #eee;
+            color: #333;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        /* DELETE MODAL */
+
+        .income-confirm-text {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .income-confirm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .income-confirm-delete {
+            background: #c62828;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        /* TOAST */
+
+        .income-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 11px 18px;
+            border-radius: 8px;
+            display: none;
+            z-index: 10000;
+            font-size: 14px;
+        }
+
+        .income-toast.show {
+            display: block;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .income-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .income-filters {
+                grid-template-columns: 1fr;
+            }
+
+            .income-item {
+                flex-direction: column;
+            }
+
+            .income-right {
+                text-align: left;
+            }
+
+            .income-actions {
+                justify-content: flex-start;
+            }
+
+            .income-header {
+                align-items: stretch;
+            }
+
+            .income-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="app-header">
+
+        <button id="menuBtn"
+                class="menu-btn"
+                type="button">
+            ☰
+        </button>
+
+        <h1>रोजचा जमा खर्च अहवाल</h1>
+
+    </header>
+
+
+    <!-- =====================================================
+         SIDE MENU
+    ====================================================== -->
+
+    <aside id="sideMenu"
+           class="side-menu">
+
+        <button data-page="dashboard">🏠 Dashboard</button>
+
+        <button data-page="income">💰 जमा</button>
+
+        <button data-page="expense">💸 खर्च</button>
+
+        <button data-page="budget">📊 Budget</button>
+
+        <button data-page="accounts">🏦 Accounts</button>
+
+        <button data-page="transactions">📋 Transactions</button>
+
+        <button data-page="reports">📑 Reports</button>
+
+        <button data-page="lending">🤝 उधारी</button>
+
+        <button data-page="workplan">📝 Work Plan</button>
+
+        <button data-page="settings">⚙️ Settings</button>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main-content income-page">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="income-header">
+
+            <div>
+
+                <h2>💰 जमा</h2>
+
+                <p>
+                    सर्व जमा व्यवहार Central Transaction System मध्ये सेव्ह होतील.
+                </p>
+
+            </div>
+
+            <button id="addIncomeBtn"
+                    class="income-btn"
+                    type="button">
+                + नवीन जमा
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             SUMMARY
+        ================================================== -->
+
+        <section class="income-summary">
+
+            <div class="income-summary-card">
+
+                <h4>आजचा जमा</h4>
+
+                <div id="todayIncomeTotal"
+                     class="value">
+                    ₹0
+                </div>
+
+            </div>
+
+
+            <div class="income-summary-card">
+
+                <h4>या महिन्याचा जमा</h4>
+
+                <div id="monthIncomeTotal"
+                     class="value">
+                    ₹0
+                </div>
+
+            </div>
+
+
+            <div class="income-summary-card">
+
+                <h4>एकूण जमा व्यवहार</h4>
+
+                <div id="totalIncomeCount"
+                     class="value">
+                    0
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FILTERS
+        ================================================== -->
+
+        <section class="income-filter-box">
+
+            <h3>🔎 जमा शोधा / Filter</h3>
+
+            <div class="income-filters">
+
+
+                <div class="income-field">
+
+                    <label for="incomeSearch">
+                        Search
+                    </label>
+
+                    <input
+                        type="text"
+                        id="incomeSearch"
+                        placeholder="Description / Note शोधा..."
+                    >
+
+                </div>
+
+
+                <div class="income-field">
+
+                    <label for="incomeDateFilter">
+                        तारीख
+                    </label>
+
+                    <input
+                        type="date"
+                        id="incomeDateFilter"
+                    >
+
+                </div>
+
+
+                <div class="income-field">
+
+                    <label for="incomeMonthFilter">
+                        महिना
+                    </label>
+
+                    <input
+                        type="month"
+                        id="incomeMonthFilter"
+                    >
+
+                </div>
+
+
+                <div class="income-field">
+
+                    <label for="incomeAccountFilter">
+                        Account
+                    </label>
+
+                    <select id="incomeAccountFilter">
+
+                        <option value="">
+                            सर्व Accounts
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <button id="clearIncomeFilters"
+                    class="income-clear-btn"
+                    type="button">
+
+                Clear Filters
+
+            </button>
+
+        </section>
+
+
+        <!-- =================================================
+             INCOME LIST
+        ================================================== -->
+
+        <section class="income-list-box">
+
+            <div class="income-list-header">
+
+                <h3>जमा व्यवहार</h3>
+
+                <span id="incomeCount"
+                      class="income-count">
+                    0 व्यवहार
+                </span>
+
+            </div>
+
+
+            <div id="incomeList"
+                 class="income-list">
+
+            </div>
+
+
+            <div id="incomeEmpty"
+                 class="income-empty"
+                 style="display:none;">
+
+                <div style="font-size:35px;">
+                    💰
+                </div>
+
+                <p>
+                    अजून कोणताही जमा व्यवहार नाही.
+                </p>
+
+                <button class="income-btn"
+                        type="button"
+                        onclick="openIncomeModal()">
+
+                    + पहिला जमा व्यवहार जोडा
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         ADD / EDIT INCOME MODAL
+    ====================================================== -->
+
+    <div id="incomeModal"
+         class="income-modal">
+
+        <div class="income-modal-content">
+
+
+            <div class="income-modal-header">
+
+                <h3 id="incomeModalTitle">
+                    नवीन जमा
+                </h3>
+
+                <button id="incomeCloseBtn"
+                        class="income-close"
+                        type="button">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <form id="incomeForm"
+                  class="income-form">
+
+
+                <input
+                    type="hidden"
+                    id="incomeId"
+                >
+
+
+                <!-- DATE -->
+
+                <div class="income-form-field">
+
+                    <label for="incomeDate">
+                        तारीख *
+                    </label>
+
+                    <input
+                        type="date"
+                        id="incomeDate"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- AMOUNT -->
+
+                <div class="income-form-field">
+
+                    <label for="incomeAmount">
+                        रक्कम *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="incomeAmount"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="उदा. 5000"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ACCOUNT -->
+
+                <div class="income-form-field">
+
+                    <label for="incomeAccount">
+                        Account *
+                    </label>
+
+                    <select id="incomeAccount"
+                            required>
+
+                        <option value="">
+                            Account निवडा
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="income-form-field">
+
+                    <label for="incomeDescription">
+                        Description *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="incomeDescription"
+                        placeholder="उदा. Salary, Business, Interest"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- NOTE -->
+
+                <div class="income-form-field">
+
+                    <label for="incomeNote">
+                        Note
+                    </label>
+
+                    <textarea
+                        id="incomeNote"
+                        placeholder="अतिरिक्त माहिती असल्यास लिहा..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="income-form-actions">
+
+                    <button
+                        type="button"
+                        id="incomeCancelBtn"
+                        class="income-cancel-btn">
+
+                        Cancel
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="income-save-btn">
+
+                        Save Income
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DELETE CONFIRMATION MODAL
+    ====================================================== -->
+
+    <div id="incomeDeleteModal"
+         class="income-modal">
+
+        <div class="income-modal-content">
+
+            <div class="income-modal-header">
+
+                <h3>
+                    जमा Delete करा?
+                </h3>
+
+                <button
+                    id="incomeDeleteCloseBtn"
+                    class="income-close"
+                    type="button">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <p class="income-confirm-text">
+
+                हा जमा व्यवहार कायमचा delete केला जाईल.
+                Delete केल्यानंतर account balance आणि reports
+                मधूनही हा व्यवहार वजा केला जाईल.
+
+            </p>
+
+
+            <div class="income-confirm-actions">
+
+                <button
+                    id="incomeDeleteCancelBtn"
+                    class="income-cancel-btn"
+                    type="button">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    id="incomeConfirmDeleteBtn"
+                    class="income-confirm-delete"
+                    type="button">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
+
+    <div id="incomeToast"
+         class="income-toast">
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="app.js"></script>
+
+    <script src="transactions.js"></script>
+
+    <script src="income.js"></script>
+
+
+    <script>
+
+        /* =====================================================
+           INCOME PAGE LOGIC
+        ===================================================== */
+
+        let incomeDeleteId = null;
+
+
+        function incomeCurrency(amount) {
+
+            if (typeof formatCurrency === "function") {
+                return formatCurrency(amount);
+            }
+
+            return "₹" +
+                Number(amount || 0)
+                    .toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+
+        }
+
+
+        function incomeTodayDate() {
+
+            if (typeof getDateString === "function") {
+                return getDateString();
+            }
+
+            const d = new Date();
+
+            const y = d.getFullYear();
+
+            const m = String(d.getMonth() + 1).padStart(2, "0");
+
+            const day = String(d.getDate()).padStart(2, "0");
+
+            return `${y}-${m}-${day}`;
+
+        }
+
+
+        function incomeCurrentMonth() {
+
+            if (typeof getMonthString === "function") {
+                return getMonthString();
+            }
+
+            const d = new Date();
+
+            return d.getFullYear() +
+                "-" +
+                String(d.getMonth() + 1).padStart(2, "0");
+
+        }
+
+
+        function showIncomeToast(message) {
+
+            const toast =
+                document.getElementById("incomeToast");
+
+            toast.textContent = message;
+
+            toast.classList.add("show");
+
+            setTimeout(function () {
+
+                toast.classList.remove("show");
+
+            }, 2200);
+
+        }
+
+
+        /* =====================================================
+           ACCOUNTS
+        ===================================================== */
+
+        function loadIncomeAccounts() {
+
+            const accountSelect =
+                document.getElementById("incomeAccount");
+
+            const filterSelect =
+                document.getElementById("incomeAccountFilter");
+
+            if (!accountSelect || !filterSelect) {
+                return;
+            }
+
+            accountSelect.innerHTML =
+                '<option value="">Account निवडा</option>';
+
+            filterSelect.innerHTML =
+                '<option value="">सर्व Accounts</option>';
+
+
+            let accounts = [];
+
+            if (typeof AppData !== "undefined" &&
+                typeof AppData.getAccounts === "function") {
+
+                accounts = AppData.getAccounts() || [];
+
+            }
+
+
+            accounts.forEach(function (account) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = account.id;
+
+                option.textContent = account.name;
+
+                accountSelect.appendChild(option);
+
+
+                const filterOption =
+                    document.createElement("option");
+
+                filterOption.value = account.id;
+
+                filterOption.textContent = account.name;
+
+                filterSelect.appendChild(filterOption);
+
+            });
+
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        function updateIncomeSummary() {
+
+            const incomes =
+                typeof getAllIncome === "function"
+                    ? getAllIncome()
+                    : [];
+
+            const today =
+                incomeTodayDate();
+
+            const month =
+                incomeCurrentMonth();
+
+
+            let todayTotal = 0;
+
+            let monthTotal = 0;
+
+
+            incomes.forEach(function (item) {
+
+                if (item.date === today) {
+
+                    todayTotal += Number(item.amount || 0);
+
+                }
+
+                if (String(item.date || "").slice(0, 7) === month) {
+
+                    monthTotal += Number(item.amount || 0);
+
+                }
+
+            });
+
+
+            document.getElementById("todayIncomeTotal")
+                .textContent =
+                incomeCurrency(todayTotal);
+
+
+            document.getElementById("monthIncomeTotal")
+                .textContent =
+                incomeCurrency(monthTotal);
+
+
+            document.getElementById("totalIncomeCount")
+                .textContent =
+                incomes.length;
+
+        }
+
+
+        /* =====================================================
+           OPEN MODAL
+        ===================================================== */
+
+        function openIncomeModal(id = "") {
+
+            const modal =
+                document.getElementById("incomeModal");
+
+            const form =
+                document.getElementById("incomeForm");
+
+            form.reset();
+
+            document.getElementById("incomeId")
+                .value = "";
+
+            document.getElementById("incomeDate")
+                .value = incomeTodayDate();
+
+            document.getElementById("incomeModalTitle")
+                .textContent = "नवीन जमा";
+
+
+            loadIncomeAccounts();
+
+
+            if (id) {
+
+                const income =
+                    typeof getIncomeById === "function"
+                        ? getIncomeById(id)
+                        : null;
+
+                if (!income) {
+                    return;
+                }
+
+                document.getElementById("incomeId")
+                    .value = income.id;
+
+                document.getElementById("incomeDate")
+                    .value = income.date || "";
+
+                document.getElementById("incomeAmount")
+                    .value = income.amount || "";
+
+                document.getElementById("incomeAccount")
+                    .value = income.accountId || "";
+
+                document.getElementById("incomeDescription")
+                    .value = income.description || "";
+
+                document.getElementById("incomeNote")
+                    .value = income.note || "";
+
+                document.getElementById("incomeModalTitle")
+                    .textContent = "जमा Edit करा";
+
+            }
+
+
+            modal.classList.add("show");
+
+        }
+
+
+        function closeIncomeModal() {
+
+            document.getElementById("incomeModal")
+                .classList.remove("show");
+
+        }
+
+
+        /* =====================================================
+           SAVE
+        ===================================================== */
+
+        function saveIncome(event) {
+
+            event.preventDefault();
+
+
+            const id =
+                document.getElementById("incomeId")
+                    .value.trim();
+
+            const data = {
+
+                date:
+                    document.getElementById("incomeDate")
+                        .value,
+
+                amount:
+                    Number(
+                        document.getElementById("incomeAmount")
+                            .value
+                    ),
+
+                accountId:
+                    document.getElementById("incomeAccount")
+                        .value,
+
+                description:
+                    document.getElementById("incomeDescription")
+                        .value.trim(),
+
+                note:
+                    document.getElementById("incomeNote")
+                        .value.trim()
+
+            };
+
+
+            let result;
+
+
+            if (id) {
+
+                result =
+                    typeof updateIncome === "function"
+                        ? updateIncome(id, data)
+                        : {
+                            success: false,
+                            message: "Income system उपलब्ध नाही."
+                        };
+
+            } else {
+
+                result =
+                    typeof addIncome === "function"
+                        ? addIncome(data)
+                        : {
+                            success: false,
+                            message: "Income system उपलब्ध नाही."
+                        };
+
+            }
+
+
+            if (!result ||
+                result.success === false) {
+
+                showIncomeToast(
+                    result && result.message
+                        ? result.message
+                        : "जमा save करता आला नाही."
+                );
+
+                return;
+
+            }
+
+
+            closeIncomeModal();
+
+            renderIncomeList();
+
+            updateIncomeSummary();
+
+            showIncomeToast(
+                id
+                    ? "जमा यशस्वीपणे update झाला."
+                    : "जमा यशस्वीपणे save झाला."
+            );
+
+
+            if (typeof updateDashboard === "function") {
+                updateDashboard();
+            }
+
+            if (typeof renderAccounts === "function") {
+                renderAccounts();
+            }
+
+        }
+
+
+        /* =====================================================
+           FILTER
+        ===================================================== */
+
+        function getFilteredIncome() {
+
+            let incomes =
+                typeof getAllIncome === "function"
+                    ? getAllIncome()
+                    : [];
+
+
+            const search =
+                document.getElementById("incomeSearch")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+
+            const date =
+                document.getElementById("incomeDateFilter")
+                    .value;
+
+
+            const month =
+                document.getElementById("incomeMonthFilter")
+                    .value;
+
+
+            const accountId =
+                document.getElementById("incomeAccountFilter")
+                    .value;
+
+
+            if (search) {
+
+                incomes = incomes.filter(function (item) {
+
+                    const text =
+                        (
+                            (item.description || "") +
+                            " " +
+                            (item.note || "")
+                        ).toLowerCase();
+
+                    return text.includes(search);
+
+                });
+
+            }
+
+
+            if (date) {
+
+                incomes = incomes.filter(function (item) {
+
+                    return item.date === date;
+
+                });
+
+            }
+
+
+            if (month) {
+
+                incomes = incomes.filter(function (item) {
+
+                    return String(item.date || "")
+                        .slice(0, 7) === month;
+
+                });
+
+            }
+
+
+            if (accountId) {
+
+                incomes = incomes.filter(function (item) {
+
+                    return item.accountId === accountId;
+
+                });
+
+            }
+
+
+            incomes.sort(function (a, b) {
+
+                return String(b.date || "")
+                    .localeCompare(String(a.date || ""));
+
+            });
+
+
+            return incomes;
+
+        }
+
+
+        /* =====================================================
+           ACCOUNT NAME
+        ===================================================== */
+
+        function getIncomeAccountName(accountId) {
+
+            if (typeof AppData === "undefined" ||
+                typeof AppData.getAccounts !== "function") {
+
+                return "Account";
+
+            }
+
+
+            const accounts =
+                AppData.getAccounts() || [];
+
+
+            const account =
+                accounts.find(function (item) {
+
+                    return item.id === accountId;
+
+                });
+
+
+            return account
+                ? account.name
+                : "Unknown Account";
+
+        }
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ===================================================== */
+
+        function incomeEscape(value) {
+
+            if (typeof escapeHtml === "function") {
+                return escapeHtml(value);
+            }
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =====================================================
+           RENDER LIST
+        ===================================================== */
+
+        function renderIncomeList() {
+
+            const list =
+                document.getElementById("incomeList");
+
+            const empty =
+                document.getElementById("incomeEmpty");
+
+            const count =
+                document.getElementById("incomeCount");
+
+
+            const incomes =
+                getFilteredIncome();
+
+
+            count.textContent =
+                incomes.length + " व्यवहार";
+
+
+            list.innerHTML = "";
+
+
+            if (incomes.length === 0) {
+
+                empty.style.display = "block";
+
+                return;
+
+            }
+
+
+            empty.style.display = "none";
+
+
+            incomes.forEach(function (item) {
+
+                const div =
+                    document.createElement("div");
+
+                div.className = "income-item";
+
+
+                const description =
+                    item.description ||
+                    "जमा व्यवहार";
+
+
+                const note =
+                    item.note
+                        ? " • " + item.note
+                        : "";
+
+
+                div.innerHTML = `
+
+                    <div class="income-info">
+
+                        <div class="income-description">
+
+                            ${incomeEscape(description)}
+
+                        </div>
+
+                        <div class="income-meta">
+
+                            📅 ${incomeEscape(item.date || "")}
+
+                            <br>
+
+                            🏦 ${incomeEscape(
+                                getIncomeAccountName(item.accountId)
+                            )}
+
+                            ${incomeEscape(note)}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="income-right">
+
+                        <div class="income-amount">
+
+                            +${incomeCurrency(item.amount)}
+
+                        </div>
+
+
+                        <div class="income-actions">
+
+                            <button
+                                type="button"
+                                class="income-action-btn income-edit-btn"
+                                onclick="openIncomeModal('${incomeEscape(item.id)}')">
+
+                                Edit
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="income-action-btn income-delete-btn"
+                                onclick="openIncomeDelete('${incomeEscape(item.id)}')">
+
+                                Delete
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                list.appendChild(div);
+
+            });
+
+        }
+
+
+        /* =====================================================
+           DELETE
+        ===================================================== */
+
+        function openIncomeDelete(id) {
+
+            incomeDeleteId = id;
+
+            document.getElementById("incomeDeleteModal")
+                .classList.add("show");
+
+        }
+
+
+        function closeIncomeDelete() {
+
+            incomeDeleteId = null;
+
+            document.getElementById("incomeDeleteModal")
+                .classList.remove("show");
+
+        }
+
+
+        function confirmIncomeDelete() {
+
+            if (!incomeDeleteId) {
+                return;
+            }
+
+
+            const result =
+                typeof deleteIncome === "function"
+                    ? deleteIncome(incomeDeleteId)
+                    : {
+                        success: false,
+                        message: "Delete system उपलब्ध नाही."
+                    };
+
+
+            if (!result ||
+                result.success === false) {
+
+                showIncomeToast(
+                    result && result.message
+                        ? result.message
+                        : "Delete करता आला नाही."
+                );
+
+                return;
+
+            }
+
+
+            closeIncomeDelete();
+
+            renderIncomeList();
+
+            updateIncomeSummary();
+
+
+            if (typeof updateDashboard === "function") {
+                updateDashboard();
+            }
+
+            if (typeof renderAccounts === "function") {
+                renderAccounts();
+            }
+
+
+            showIncomeToast(
+                "जमा व्यवहार delete केला."
+            );
+
+        }
+
+
+        /* =====================================================
+           CLEAR FILTERS
+        ===================================================== */
+
+        function clearIncomeFilters() {
+
+            document.getElementById("incomeSearch")
+                .value = "";
+
+            document.getElementById("incomeDateFilter")
+                .value = "";
+
+            document.getElementById("incomeMonthFilter")
+                .value = "";
+
+            document.getElementById("incomeAccountFilter")
+                .value = "";
+
+
+            renderIncomeList();
+
+        }
+
+
+        /* =====================================================
+           EVENTS
+        ===================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                loadIncomeAccounts();
+
+                updateIncomeSummary();
+
+                renderIncomeList();
+
+
+                document.getElementById("addIncomeBtn")
+                    .addEventListener(
+                        "click",
+                        function () {
+
+                            openIncomeModal();
+
+                        }
+                    );
+
+
+                document.getElementById("incomeCloseBtn")
+                    .addEventListener(
+                        "click",
+                        closeIncomeModal
+                    );
+
+
+                document.getElementById("incomeCancelBtn")
+                    .addEventListener(
+                        "click",
+                        closeIncomeModal
+                    );
+
+
+                document.getElementById("incomeForm")
+                    .addEventListener(
+                        "submit",
+                        saveIncome
+                    );
+
+
+                document.getElementById("incomeDeleteCloseBtn")
+                    .addEventListener(
+                        "click",
+                        closeIncomeDelete
+                    );
+
+
+                document.getElementById("incomeDeleteCancelBtn")
+                    .addEventListener(
+                        "click",
+                        closeIncomeDelete
+                    );
+
+
+                document.getElementById("incomeConfirmDeleteBtn")
+                    .addEventListener(
+                        "click",
+                        confirmIncomeDelete
+                    );
+
+
+                document.getElementById("clearIncomeFilters")
+                    .addEventListener(
+                        "click",
+                        clearIncomeFilters
+                    );
+
+
+                document.getElementById("incomeSearch")
+                    .addEventListener(
+                        "input",
+                        renderIncomeList
+                    );
+
+
+                document.getElementById("incomeDateFilter")
+                    .addEventListener(
+                        "change",
+                        renderIncomeList
+                    );
+
+
+                document.getElementById("incomeMonthFilter")
+                    .addEventListener(
+                        "change",
+                        renderIncomeList
+                    );
+
+
+                document.getElementById("incomeAccountFilter")
+                    .addEventListener(
+                        "change",
+                        renderIncomeList
+                    );
+
+
+                /* CENTRAL TRANSACTION UPDATE */
+
+                window.addEventListener(
+                    "transactionsChanged",
+                    function () {
+
+                        loadIncomeAccounts();
+
+                        updateIncomeSummary();
+
+                        renderIncomeList();
+
+                    }
+                );
+
+
+                /* INCOME SYSTEM UPDATE */
+
+                window.addEventListener(
+                    "incomeSystemReady",
+                    function () {
+
+                        loadIncomeAccounts();
+
+                        updateIncomeSummary();
+
+                        renderIncomeList();
+
+                    }
+                );
+
+
+            }
+        );
+
+
+        /* =====================================================
+           CLOSE MODAL ON BACKDROP
+        ===================================================== */
+
+        document.getElementById("incomeModal")
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (event.target === this) {
+
+                        closeIncomeModal();
+
+                    }
+
+                }
+            );
+
+
+        document.getElementById("incomeDeleteModal")
+            .addEventListener(
+                "click",
+                function (event) {
+
+                    if (event.target === this) {
+
+                        closeIncomeDelete();
+
+                    }
+
+                }
+            );
+
+
+    </script>
+
+</body>
+
+</html>
