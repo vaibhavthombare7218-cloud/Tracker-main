@@ -1,0 +1,2446 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#5b0b18">
+
+    <meta name="description"
+          content="रोजचा जमा खर्च अहवाल - खर्च व्यवस्थापन">
+
+    <title>खर्च - रोजचा जमा खर्च अहवाल</title>
+
+    <link rel="stylesheet" href="style.css">
+
+
+    <style>
+
+        /* =====================================================
+           EXPENSE PAGE
+        ===================================================== */
+
+        .expense-page {
+            padding-bottom: 30px;
+        }
+
+
+        .expense-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+
+        .expense-header h2 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+
+        .expense-header p {
+            margin: 4px 0 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+
+        .expense-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+
+        .expense-btn:hover {
+            background: var(--primary-dark);
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .expense-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+
+        .expense-summary-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--expense);
+        }
+
+
+        .expense-summary-card h4 {
+            margin: 0 0 8px;
+            font-size: 14px;
+            color: #666;
+        }
+
+
+        .expense-summary-card .value {
+            font-size: 23px;
+            font-weight: 700;
+            color: var(--expense);
+        }
+
+
+        /* =====================================================
+           FILTER
+        ===================================================== */
+
+        .expense-filter-box {
+            background: #fff;
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+
+        .expense-filter-box h3 {
+            margin: 0 0 15px;
+            font-size: 17px;
+        }
+
+
+        .expense-filters {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+
+        .expense-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+
+        .expense-field label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+        }
+
+
+        .expense-field input,
+        .expense-field select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 14px;
+            background: #fff;
+        }
+
+
+        .expense-clear-btn {
+            margin-top: 15px;
+            padding: 9px 15px;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           LIST
+        ===================================================== */
+
+        .expense-list-box {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+
+        .expense-list-header {
+            padding: 18px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .expense-list-header h3 {
+            margin: 0;
+        }
+
+
+        .expense-count {
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        .expense-list {
+            padding: 0;
+        }
+
+
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 16px 18px;
+            border-bottom: 1px solid #eee;
+        }
+
+
+        .expense-item:last-child {
+            border-bottom: none;
+        }
+
+
+        .expense-info {
+            min-width: 0;
+        }
+
+
+        .expense-description {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+
+        .expense-meta {
+            color: #777;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+
+        .expense-category {
+            display: inline-block;
+            background: #f4e9eb;
+            color: var(--primary);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+
+        .expense-right {
+            text-align: right;
+            min-width: 135px;
+        }
+
+
+        .expense-amount {
+            color: var(--expense);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+
+        .expense-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 7px;
+        }
+
+
+        .expense-action-btn {
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+
+        .expense-edit-btn {
+            background: #eee;
+            color: #333;
+        }
+
+
+        .expense-delete-btn {
+            background: #fdeaea;
+            color: #c62828;
+        }
+
+
+        .expense-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #777;
+        }
+
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .expense-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+
+        .expense-modal.show {
+            display: flex;
+        }
+
+
+        .expense-modal-content {
+            background: #fff;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 14px;
+            padding: 22px;
+            box-sizing: border-box;
+        }
+
+
+        .expense-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+
+        .expense-modal-header h3 {
+            margin: 0;
+            color: var(--primary);
+        }
+
+
+        .expense-close {
+            border: none;
+            background: transparent;
+            font-size: 26px;
+            cursor: pointer;
+            color: #666;
+        }
+
+
+        .expense-form {
+            display: grid;
+            gap: 14px;
+        }
+
+
+        .expense-form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+
+        .expense-form-field label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+        }
+
+
+        .expense-form-field input,
+        .expense-form-field select,
+        .expense-form-field textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+
+        .expense-form-field textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+
+        .expense-form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+
+
+        .expense-save-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+
+        .expense-cancel-btn {
+            background: #eee;
+            color: #333;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           DELETE MODAL
+        ===================================================== */
+
+        .expense-confirm-text {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+
+        .expense-confirm-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+
+        .expense-confirm-delete {
+            background: #c62828;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .expense-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 11px 18px;
+            border-radius: 8px;
+            display: none;
+            z-index: 10000;
+            font-size: 14px;
+        }
+
+
+        .expense-toast.show {
+            display: block;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .expense-filters {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .expense-summary {
+                grid-template-columns: 1fr;
+            }
+
+
+            .expense-filters {
+                grid-template-columns: 1fr;
+            }
+
+
+            .expense-item {
+                flex-direction: column;
+            }
+
+
+            .expense-right {
+                text-align: left;
+            }
+
+
+            .expense-actions {
+                justify-content: flex-start;
+            }
+
+
+            .expense-header {
+                align-items: stretch;
+            }
+
+
+            .expense-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="app-header">
+
+        <button id="menuBtn"
+                class="menu-btn"
+                type="button">
+            ☰
+        </button>
+
+        <h1>रोजचा जमा खर्च अहवाल</h1>
+
+    </header>
+
+
+    <!-- =====================================================
+         SIDE MENU
+    ====================================================== -->
+
+    <aside id="sideMenu"
+           class="side-menu">
+
+        <button data-page="dashboard">
+            🏠 Dashboard
+        </button>
+
+        <button data-page="income">
+            💰 जमा
+        </button>
+
+        <button data-page="expense">
+            💸 खर्च
+        </button>
+
+        <button data-page="budget">
+            📊 Budget
+        </button>
+
+        <button data-page="accounts">
+            🏦 Accounts
+        </button>
+
+        <button data-page="transactions">
+            📋 Transactions
+        </button>
+
+        <button data-page="reports">
+            📑 Reports
+        </button>
+
+        <button data-page="lending">
+            🤝 उधारी
+        </button>
+
+        <button data-page="workplan">
+            📝 Work Plan
+        </button>
+
+        <button data-page="settings">
+            ⚙️ Settings
+        </button>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main-content expense-page">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="expense-header">
+
+            <div>
+
+                <h2>💸 खर्च</h2>
+
+                <p>
+                    सर्व खर्च व्यवहार Central Transaction System मध्ये सेव्ह होतील.
+                </p>
+
+            </div>
+
+
+            <button id="addExpenseBtn"
+                    class="expense-btn"
+                    type="button">
+
+                + नवीन खर्च
+
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             SUMMARY
+        ================================================== -->
+
+        <section class="expense-summary">
+
+
+            <div class="expense-summary-card">
+
+                <h4>
+                    आजचा खर्च
+                </h4>
+
+                <div id="todayExpenseTotal"
+                     class="value">
+
+                    ₹0
+
+                </div>
+
+            </div>
+
+
+            <div class="expense-summary-card">
+
+                <h4>
+                    या महिन्याचा खर्च
+                </h4>
+
+                <div id="monthExpenseTotal"
+                     class="value">
+
+                    ₹0
+
+                </div>
+
+            </div>
+
+
+            <div class="expense-summary-card">
+
+                <h4>
+                    एकूण खर्च व्यवहार
+                </h4>
+
+                <div id="totalExpenseCount"
+                     class="value">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             FILTERS
+        ================================================== -->
+
+        <section class="expense-filter-box">
+
+
+            <h3>
+                🔎 खर्च शोधा / Filter
+            </h3>
+
+
+            <div class="expense-filters">
+
+
+                <!-- SEARCH -->
+
+                <div class="expense-field">
+
+                    <label for="expenseSearch">
+                        Search
+                    </label>
+
+                    <input
+                        type="text"
+                        id="expenseSearch"
+                        placeholder="Description / Note शोधा..."
+                    >
+
+                </div>
+
+
+                <!-- DATE -->
+
+                <div class="expense-field">
+
+                    <label for="expenseDateFilter">
+                        तारीख
+                    </label>
+
+                    <input
+                        type="date"
+                        id="expenseDateFilter"
+                    >
+
+                </div>
+
+
+                <!-- MONTH -->
+
+                <div class="expense-field">
+
+                    <label for="expenseMonthFilter">
+                        महिना
+                    </label>
+
+                    <input
+                        type="month"
+                        id="expenseMonthFilter"
+                    >
+
+                </div>
+
+
+                <!-- ACCOUNT -->
+
+                <div class="expense-field">
+
+                    <label for="expenseAccountFilter">
+                        Account
+                    </label>
+
+                    <select id="expenseAccountFilter">
+
+                        <option value="">
+                            सर्व Accounts
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="expense-field">
+
+                    <label for="expenseCategoryFilter">
+                        Category
+                    </label>
+
+                    <select id="expenseCategoryFilter">
+
+                        <option value="">
+                            सर्व Categories
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+            <button id="clearExpenseFilters"
+                    class="expense-clear-btn"
+                    type="button">
+
+                Clear Filters
+
+            </button>
+
+
+        </section>
+
+
+        <!-- =================================================
+             EXPENSE LIST
+        ================================================== -->
+
+        <section class="expense-list-box">
+
+
+            <div class="expense-list-header">
+
+                <h3>
+                    खर्च व्यवहार
+                </h3>
+
+
+                <span id="expenseCount"
+                      class="expense-count">
+
+                    0 व्यवहार
+
+                </span>
+
+            </div>
+
+
+            <div id="expenseList"
+                 class="expense-list">
+            </div>
+
+
+            <div id="expenseEmpty"
+                 class="expense-empty"
+                 style="display:none;">
+
+                <div style="font-size:35px;">
+                    💸
+                </div>
+
+                <p>
+                    अजून कोणताही खर्च व्यवहार नाही.
+                </p>
+
+
+                <button
+                    class="expense-btn"
+                    type="button"
+                    onclick="openExpenseModal()">
+
+                    + पहिला खर्च जोडा
+
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         ADD / EDIT EXPENSE MODAL
+    ====================================================== -->
+
+    <div id="expenseModal"
+         class="expense-modal">
+
+
+        <div class="expense-modal-content">
+
+
+            <div class="expense-modal-header">
+
+                <h3 id="expenseModalTitle">
+                    नवीन खर्च
+                </h3>
+
+
+                <button id="expenseCloseBtn"
+                        class="expense-close"
+                        type="button">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <form id="expenseForm"
+                  class="expense-form">
+
+
+                <input
+                    type="hidden"
+                    id="expenseId"
+                >
+
+
+                <!-- DATE -->
+
+                <div class="expense-form-field">
+
+                    <label for="expenseDate">
+                        तारीख *
+                    </label>
+
+                    <input
+                        type="date"
+                        id="expenseDate"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- AMOUNT -->
+
+                <div class="expense-form-field">
+
+                    <label for="expenseAmount">
+                        रक्कम *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="expenseAmount"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="उदा. 500"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="expense-form-field">
+
+                    <label for="expenseCategory">
+                        खर्च Category *
+                    </label>
+
+                    <select
+                        id="expenseCategory"
+                        required>
+
+                        <option value="">
+                            Category निवडा
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ACCOUNT -->
+
+                <div class="expense-form-field">
+
+                    <label for="expenseAccount">
+                        Account *
+                    </label>
+
+                    <select
+                        id="expenseAccount"
+                        required>
+
+                        <option value="">
+                            Account निवडा
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="expense-form-field">
+
+                    <label for="expenseDescription">
+                        Description *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="expenseDescription"
+                        placeholder="उदा. भाजी, पेट्रोल, बिल..."
+                        required
+                    >
+
+                </div>
+
+
+                <!-- NOTE -->
+
+                <div class="expense-form-field">
+
+                    <label for="expenseNote">
+                        Note
+                    </label>
+
+                    <textarea
+                        id="expenseNote"
+                        placeholder="अतिरिक्त माहिती असल्यास लिहा..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="expense-form-actions">
+
+
+                    <button
+                        type="button"
+                        id="expenseCancelBtn"
+                        class="expense-cancel-btn">
+
+                        Cancel
+
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="expense-save-btn">
+
+                        Save Expense
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DELETE MODAL
+    ====================================================== -->
+
+    <div id="expenseDeleteModal"
+         class="expense-modal">
+
+
+        <div class="expense-modal-content">
+
+
+            <div class="expense-modal-header">
+
+                <h3>
+                    खर्च Delete करा?
+                </h3>
+
+
+                <button
+                    id="expenseDeleteCloseBtn"
+                    class="expense-close"
+                    type="button">
+
+                    ×
+
+                </button>
+
+            </div>
+
+
+            <p class="expense-confirm-text">
+
+                हा खर्च व्यवहार कायमचा delete केला जाईल.
+                Delete केल्यानंतर account balance,
+                dashboard आणि reports मधूनही
+                हा खर्च काढला जाईल.
+
+            </p>
+
+
+            <div class="expense-confirm-actions">
+
+
+                <button
+                    id="expenseDeleteCancelBtn"
+                    class="expense-cancel-btn"
+                    type="button">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    id="expenseConfirmDeleteBtn"
+                    class="expense-confirm-delete"
+                    type="button">
+
+                    Delete
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
+
+    <div id="expenseToast"
+         class="expense-toast">
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT LOAD ORDER
+    ====================================================== -->
+
+    <script src="app.js"></script>
+
+    <script src="transactions.js"></script>
+
+    <script src="expense.js"></script>
+
+
+    <!-- =====================================================
+         PAGE LOGIC
+    ====================================================== -->
+
+    <script>
+
+        let expenseDeleteId = null;
+
+
+        /* =====================================================
+           CURRENCY
+        ===================================================== */
+
+        function expensePageCurrency(amount) {
+
+            if (typeof formatCurrency === "function") {
+
+                return formatCurrency(amount);
+
+            }
+
+
+            return "₹" +
+                Number(amount || 0)
+                    .toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+
+        }
+
+
+        /* =====================================================
+           TODAY
+        ===================================================== */
+
+        function expensePageToday() {
+
+            if (typeof getDateString === "function") {
+
+                return getDateString();
+
+            }
+
+
+            const d = new Date();
+
+
+            return d.getFullYear() +
+                "-" +
+                String(d.getMonth() + 1).padStart(2, "0") +
+                "-" +
+                String(d.getDate()).padStart(2, "0");
+
+        }
+
+
+        /* =====================================================
+           CURRENT MONTH
+        ===================================================== */
+
+        function expensePageMonth() {
+
+            if (typeof getMonthString === "function") {
+
+                return getMonthString();
+
+            }
+
+
+            const d = new Date();
+
+
+            return d.getFullYear() +
+                "-" +
+                String(d.getMonth() + 1).padStart(2, "0");
+
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        function showExpenseToast(message) {
+
+            const toast =
+                document.getElementById("expenseToast");
+
+
+            toast.textContent = message;
+
+            toast.classList.add("show");
+
+
+            setTimeout(function () {
+
+                toast.classList.remove("show");
+
+            }, 2200);
+
+        }
+
+
+        /* =====================================================
+           LOAD CATEGORIES
+        ===================================================== */
+
+        function loadExpenseCategories() {
+
+            const select =
+                document.getElementById("expenseCategory");
+
+            const filter =
+                document.getElementById(
+                    "expenseCategoryFilter"
+                );
+
+
+            select.innerHTML =
+                '<option value="">Category निवडा</option>';
+
+
+            filter.innerHTML =
+                '<option value="">सर्व Categories</option>';
+
+
+            if (
+                typeof EXPENSE_CATEGORIES === "undefined" ||
+                !Array.isArray(EXPENSE_CATEGORIES)
+            ) {
+
+                return;
+
+            }
+
+
+            EXPENSE_CATEGORIES.forEach(function (category) {
+
+
+                const option =
+                    document.createElement("option");
+
+
+                option.value =
+                    category.id;
+
+
+                option.textContent =
+                    category.name;
+
+
+                select.appendChild(option);
+
+
+                const filterOption =
+                    document.createElement("option");
+
+
+                filterOption.value =
+                    category.id;
+
+
+                filterOption.textContent =
+                    category.name;
+
+
+                filter.appendChild(filterOption);
+
+
+            });
+
+        }
+
+
+        /* =====================================================
+           LOAD ACCOUNTS
+        ===================================================== */
+
+        function loadExpenseAccounts() {
+
+            const select =
+                document.getElementById("expenseAccount");
+
+            const filter =
+                document.getElementById(
+                    "expenseAccountFilter"
+                );
+
+
+            select.innerHTML =
+                '<option value="">Account निवडा</option>';
+
+
+            filter.innerHTML =
+                '<option value="">सर्व Accounts</option>';
+
+
+            let accounts = [];
+
+
+            if (
+                typeof AppData !== "undefined" &&
+                typeof AppData.getAccounts === "function"
+            ) {
+
+                accounts =
+                    AppData.getAccounts() || [];
+
+            }
+
+
+            accounts.forEach(function (account) {
+
+
+                const option =
+                    document.createElement("option");
+
+
+                option.value =
+                    account.id;
+
+
+                option.textContent =
+                    account.name;
+
+
+                select.appendChild(option);
+
+
+                const filterOption =
+                    document.createElement("option");
+
+
+                filterOption.value =
+                    account.id;
+
+
+                filterOption.textContent =
+                    account.name;
+
+
+                filter.appendChild(filterOption);
+
+
+            });
+
+        }
+
+
+        /* =====================================================
+           UPDATE SUMMARY
+        ===================================================== */
+
+        function updateExpenseSummary() {
+
+            const expenses =
+                getAllExpense();
+
+
+            const today =
+                expensePageToday();
+
+
+            const month =
+                expensePageMonth();
+
+
+            let todayTotal = 0;
+
+            let monthTotal = 0;
+
+
+            expenses.forEach(function (item) {
+
+
+                if (item.date === today) {
+
+                    todayTotal +=
+                        Number(item.amount || 0);
+
+                }
+
+
+                if (
+                    String(item.date || "")
+                        .slice(0, 7) === month
+                ) {
+
+                    monthTotal +=
+                        Number(item.amount || 0);
+
+                }
+
+
+            });
+
+
+            document.getElementById(
+                "todayExpenseTotal"
+            ).textContent =
+                expensePageCurrency(todayTotal);
+
+
+            document.getElementById(
+                "monthExpenseTotal"
+            ).textContent =
+                expensePageCurrency(monthTotal);
+
+
+            document.getElementById(
+                "totalExpenseCount"
+            ).textContent =
+                expenses.length;
+
+        }
+
+
+        /* =====================================================
+           OPEN MODAL
+        ===================================================== */
+
+        function openExpenseModal(id = "") {
+
+            const modal =
+                document.getElementById(
+                    "expenseModal"
+                );
+
+
+            const form =
+                document.getElementById(
+                    "expenseForm"
+                );
+
+
+            form.reset();
+
+
+            document.getElementById(
+                "expenseId"
+            ).value = "";
+
+
+            document.getElementById(
+                "expenseDate"
+            ).value =
+                expensePageToday();
+
+
+            document.getElementById(
+                "expenseModalTitle"
+            ).textContent =
+                "नवीन खर्च";
+
+
+            loadExpenseCategories();
+
+            loadExpenseAccounts();
+
+
+            if (id) {
+
+
+                const expense =
+                    getExpenseById(id);
+
+
+                if (!expense) {
+
+                    showExpenseToast(
+                        "Expense सापडला नाही."
+                    );
+
+                    return;
+
+                }
+
+
+                document.getElementById(
+                    "expenseId"
+                ).value =
+                    expense.id;
+
+
+                document.getElementById(
+                    "expenseDate"
+                ).value =
+                    expense.date || "";
+
+
+                document.getElementById(
+                    "expenseAmount"
+                ).value =
+                    expense.amount || "";
+
+
+                document.getElementById(
+                    "expenseCategory"
+                ).value =
+                    expense.categoryId || "";
+
+
+                document.getElementById(
+                    "expenseAccount"
+                ).value =
+                    expense.accountId || "";
+
+
+                document.getElementById(
+                    "expenseDescription"
+                ).value =
+                    expense.description || "";
+
+
+                document.getElementById(
+                    "expenseNote"
+                ).value =
+                    expense.note || "";
+
+
+                document.getElementById(
+                    "expenseModalTitle"
+                ).textContent =
+                    "खर्च Edit करा";
+
+            }
+
+
+            modal.classList.add("show");
+
+        }
+
+
+        /* =====================================================
+           CLOSE MODAL
+        ===================================================== */
+
+        function closeExpenseModal() {
+
+            document.getElementById(
+                "expenseModal"
+            ).classList.remove("show");
+
+        }
+
+
+        /* =====================================================
+           SAVE EXPENSE
+        ===================================================== */
+
+        function saveExpense(event) {
+
+            event.preventDefault();
+
+
+            const id =
+                document.getElementById(
+                    "expenseId"
+                ).value.trim();
+
+
+            const data = {
+
+
+                date:
+                    document.getElementById(
+                        "expenseDate"
+                    ).value,
+
+
+                amount:
+                    Number(
+                        document.getElementById(
+                            "expenseAmount"
+                        ).value
+                    ),
+
+
+                categoryId:
+                    document.getElementById(
+                        "expenseCategory"
+                    ).value,
+
+
+                accountId:
+                    document.getElementById(
+                        "expenseAccount"
+                    ).value,
+
+
+                description:
+                    document.getElementById(
+                        "expenseDescription"
+                    ).value.trim(),
+
+
+                note:
+                    document.getElementById(
+                        "expenseNote"
+                    ).value.trim()
+
+            };
+
+
+            let result;
+
+
+            if (id) {
+
+
+                result =
+                    updateExpense(id, data);
+
+
+            } else {
+
+
+                result =
+                    addExpense(data);
+
+            }
+
+
+            if (
+                !result ||
+                result.success === false
+            ) {
+
+
+                showExpenseToast(
+                    result && result.message
+                        ? result.message
+                        : "खर्च save करता आला नाही."
+                );
+
+
+                return;
+
+            }
+
+
+            closeExpenseModal();
+
+
+            renderExpenseList();
+
+            updateExpenseSummary();
+
+
+            showExpenseToast(
+                id
+                    ? "खर्च यशस्वीपणे update झाला."
+                    : "खर्च यशस्वीपणे save झाला."
+            );
+
+
+            if (
+                typeof updateDashboard === "function"
+            ) {
+
+                updateDashboard();
+
+            }
+
+
+            if (
+                typeof renderAccounts === "function"
+            ) {
+
+                renderAccounts();
+
+            }
+
+        }
+
+
+        /* =====================================================
+           FILTERED EXPENSES
+        ===================================================== */
+
+        function getFilteredExpense() {
+
+            let expenses =
+                getAllExpense();
+
+
+            const search =
+                document.getElementById(
+                    "expenseSearch"
+                ).value
+                    .trim()
+                    .toLowerCase();
+
+
+            const date =
+                document.getElementById(
+                    "expenseDateFilter"
+                ).value;
+
+
+            const month =
+                document.getElementById(
+                    "expenseMonthFilter"
+                ).value;
+
+
+            const accountId =
+                document.getElementById(
+                    "expenseAccountFilter"
+                ).value;
+
+
+            const categoryId =
+                document.getElementById(
+                    "expenseCategoryFilter"
+                ).value;
+
+
+            /* SEARCH */
+
+            if (search) {
+
+
+                expenses =
+                    expenses.filter(function (item) {
+
+
+                        const text = (
+
+                            (item.description || "") +
+                            " " +
+                            (item.note || "") +
+                            " " +
+                            (item.amount || "")
+
+                        ).toLowerCase();
+
+
+                        return text.includes(search);
+
+                    });
+
+            }
+
+
+            /* DATE */
+
+            if (date) {
+
+
+                expenses =
+                    expenses.filter(function (item) {
+
+                        return item.date === date;
+
+                    });
+
+            }
+
+
+            /* MONTH */
+
+            if (month) {
+
+
+                expenses =
+                    expenses.filter(function (item) {
+
+                        return String(
+                            item.date || ""
+                        ).slice(0, 7) === month;
+
+                    });
+
+            }
+
+
+            /* ACCOUNT */
+
+            if (accountId) {
+
+
+                expenses =
+                    expenses.filter(function (item) {
+
+                        return item.accountId === accountId;
+
+                    });
+
+            }
+
+
+            /* CATEGORY */
+
+            if (categoryId) {
+
+
+                expenses =
+                    expenses.filter(function (item) {
+
+                        return item.categoryId === categoryId;
+
+                    });
+
+            }
+
+
+            /* SORT */
+
+            expenses.sort(function (a, b) {
+
+
+                const dateCompare =
+                    String(b.date || "")
+                        .localeCompare(
+                            String(a.date || "")
+                        );
+
+
+                if (dateCompare !== 0) {
+
+                    return dateCompare;
+
+                }
+
+
+                return String(
+                    b.createdAt || ""
+                ).localeCompare(
+                    String(a.createdAt || "")
+                );
+
+            });
+
+
+            return expenses;
+
+        }
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ===================================================== */
+
+        function expenseEscape(value) {
+
+            if (
+                typeof escapeHtml === "function"
+            ) {
+
+                return escapeHtml(value);
+
+            }
+
+
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* =====================================================
+           RENDER LIST
+        ===================================================== */
+
+        function renderExpenseList() {
+
+            const list =
+                document.getElementById(
+                    "expenseList"
+                );
+
+
+            const empty =
+                document.getElementById(
+                    "expenseEmpty"
+                );
+
+
+            const count =
+                document.getElementById(
+                    "expenseCount"
+                );
+
+
+            const expenses =
+                getFilteredExpense();
+
+
+            count.textContent =
+                expenses.length +
+                " व्यवहार";
+
+
+            list.innerHTML = "";
+
+
+            if (expenses.length === 0) {
+
+                empty.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            empty.style.display =
+                "none";
+
+
+            expenses.forEach(function (item) {
+
+
+                const div =
+                    document.createElement("div");
+
+
+                div.className =
+                    "expense-item";
+
+
+                const categoryName =
+                    getExpenseCategoryName(
+                        item.categoryId
+                    );
+
+
+                const accountName =
+                    getExpenseAccountName(
+                        item.accountId
+                    );
+
+
+                const note =
+                    item.note
+                        ? " • " + item.note
+                        : "";
+
+
+                div.innerHTML = `
+
+                    <div class="expense-info">
+
+                        <div class="expense-description">
+
+                            ${expenseEscape(
+                                item.description ||
+                                "खर्च व्यवहार"
+                            )}
+
+                        </div>
+
+
+                        <div class="expense-meta">
+
+                            📅
+                            ${expenseEscape(
+                                item.date || ""
+                            )}
+
+                            <br>
+
+                            🏦
+                            ${expenseEscape(
+                                accountName
+                            )}
+
+                            ${expenseEscape(note)}
+
+                            <br>
+
+                            <span class="expense-category">
+
+                                ${expenseEscape(
+                                    categoryName
+                                )}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="expense-right">
+
+                        <div class="expense-amount">
+
+                            -${expensePageCurrency(
+                                item.amount
+                            )}
+
+                        </div>
+
+
+                        <div class="expense-actions">
+
+
+                            <button
+                                type="button"
+                                class="expense-action-btn expense-edit-btn"
+                                onclick="openExpenseModal('${expenseEscape(item.id)}')">
+
+                                Edit
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="expense-action-btn expense-delete-btn"
+                                onclick="openExpenseDelete('${expenseEscape(item.id)}')">
+
+                                Delete
+
+                            </button>
+
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                list.appendChild(div);
+
+            });
+
+        }
+
+
+        /* =====================================================
+           DELETE MODAL
+        ===================================================== */
+
+        function openExpenseDelete(id) {
+
+            expenseDeleteId =
+                id;
+
+
+            document.getElementById(
+                "expenseDeleteModal"
+            ).classList.add("show");
+
+        }
+
+
+        function closeExpenseDelete() {
+
+            expenseDeleteId =
+                null;
+
+
+            document.getElementById(
+                "expenseDeleteModal"
+            ).classList.remove("show");
+
+        }
+
+
+        /* =====================================================
+           CONFIRM DELETE
+        ===================================================== */
+
+        function confirmExpenseDelete() {
+
+            if (!expenseDeleteId) {
+
+                return;
+
+            }
+
+
+            const result =
+                deleteExpense(
+                    expenseDeleteId
+                );
+
+
+            if (
+                !result ||
+                result.success === false
+            ) {
+
+
+                showExpenseToast(
+                    result && result.message
+                        ? result.message
+                        : "Delete करता आला नाही."
+                );
+
+
+                return;
+
+            }
+
+
+            closeExpenseDelete();
+
+
+            renderExpenseList();
+
+            updateExpenseSummary();
+
+
+            if (
+                typeof updateDashboard === "function"
+            ) {
+
+                updateDashboard();
+
+            }
+
+
+            if (
+                typeof renderAccounts === "function"
+            ) {
+
+                renderAccounts();
+
+            }
+
+
+            showExpenseToast(
+                "खर्च व्यवहार delete केला."
+            );
+
+        }
+
+
+        /* =====================================================
+           CLEAR FILTERS
+        ===================================================== */
+
+        function clearExpenseFilters() {
+
+            document.getElementById(
+                "expenseSearch"
+            ).value = "";
+
+
+            document.getElementById(
+                "expenseDateFilter"
+            ).value = "";
+
+
+            document.getElementById(
+                "expenseMonthFilter"
+            ).value = "";
+
+
+            document.getElementById(
+                "expenseAccountFilter"
+            ).value = "";
+
+
+            document.getElementById(
+                "expenseCategoryFilter"
+            ).value = "";
+
+
+            renderExpenseList();
+
+        }
+
+
+        /* =====================================================
+           INITIALIZATION
+        ===================================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                loadExpenseCategories();
+
+                loadExpenseAccounts();
+
+                updateExpenseSummary();
+
+                renderExpenseList();
+
+
+                /* ADD */
+
+                document.getElementById(
+                    "addExpenseBtn"
+                ).addEventListener(
+                    "click",
+                    function () {
+
+                        openExpenseModal();
+
+                    }
+                );
+
+
+                /* CLOSE */
+
+                document.getElementById(
+                    "expenseCloseBtn"
+                ).addEventListener(
+                    "click",
+                    closeExpenseModal
+                );
+
+
+                document.getElementById(
+                    "expenseCancelBtn"
+                ).addEventListener(
+                    "click",
+                    closeExpenseModal
+                );
+
+
+                /* FORM */
+
+                document.getElementById(
+                    "expenseForm"
+                ).addEventListener(
+                    "submit",
+                    saveExpense
+                );
+
+
+                /* DELETE */
+
+                document.getElementById(
+                    "expenseDeleteCloseBtn"
+                ).addEventListener(
+                    "click",
+                    closeExpenseDelete
+                );
+
+
+                document.getElementById(
+                    "expenseDeleteCancelBtn"
+                ).addEventListener(
+                    "click",
+                    closeExpenseDelete
+                );
+
+
+                document.getElementById(
+                    "expenseConfirmDeleteBtn"
+                ).addEventListener(
+                    "click",
+                    confirmExpenseDelete
+                );
+
+
+                /* CLEAR */
+
+                document.getElementById(
+                    "clearExpenseFilters"
+                ).addEventListener(
+                    "click",
+                    clearExpenseFilters
+                );
+
+
+                /* SEARCH */
+
+                document.getElementById(
+                    "expenseSearch"
+                ).addEventListener(
+                    "input",
+                    renderExpenseList
+                );
+
+
+                /* DATE */
+
+                document.getElementById(
+                    "expenseDateFilter"
+                ).addEventListener(
+                    "change",
+                    renderExpenseList
+                );
+
+
+                /* MONTH */
+
+                document.getElementById(
+                    "expenseMonthFilter"
+                ).addEventListener(
+                    "change",
+                    renderExpenseList
+                );
+
+
+                /* ACCOUNT */
+
+                document.getElementById(
+                    "expenseAccountFilter"
+                ).addEventListener(
+                    "change",
+                    renderExpenseList
+                );
+
+
+                /* CATEGORY */
+
+                document.getElementById(
+                    "expenseCategoryFilter"
+                ).addEventListener(
+                    "change",
+                    renderExpenseList
+                );
+
+
+                /* CENTRAL TRANSACTION UPDATE */
+
+                window.addEventListener(
+                    "transactionsChanged",
+                    function () {
+
+                        loadExpenseAccounts();
+
+                        updateExpenseSummary();
+
+                        renderExpenseList();
+
+                    }
+                );
+
+
+                /* EXPENSE SYSTEM READY */
+
+                window.addEventListener(
+                    "expenseSystemReady",
+                    function () {
+
+                        loadExpenseCategories();
+
+                        loadExpenseAccounts();
+
+                        updateExpenseSummary();
+
+                        renderExpenseList();
+
+                    }
+                );
+
+
+            }
+        );
+
+
+        /* =====================================================
+           BACKDROP CLOSE
+        ===================================================== */
+
+        document.getElementById(
+            "expenseModal"
+        ).addEventListener(
+            "click",
+            function (event) {
+
+                if (event.target === this) {
+
+                    closeExpenseModal();
+
+                }
+
+            }
+        );
+
+
+        document.getElementById(
+            "expenseDeleteModal"
+        ).addEventListener(
+            "click",
+            function (event) {
+
+                if (event.target === this) {
+
+                    closeExpenseDelete();
+
+                }
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>
