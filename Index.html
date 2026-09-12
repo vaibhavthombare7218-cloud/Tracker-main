@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#5b0b18">
+
+    <meta name="description"
+          content="रोजचा जमा खर्च अहवाल - Personal Finance Tracker">
+
+    <title>रोजचा जमा खर्च अहवाल</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =====================================================
+     APP HEADER
+===================================================== -->
+
+<header class="app-header">
+
+    <div class="header-left">
+
+        <button class="menu-btn"
+                id="menuBtn"
+                aria-label="Menu">
+            ☰
+        </button>
+
+        <div>
+            <div class="app-title">
+                रोजचा जमा खर्च अहवाल
+            </div>
+
+            <div class="app-subtitle">
+                Personal Finance Tracker
+            </div>
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     SIDE MENU
+===================================================== -->
+
+<div class="menu-overlay"
+     id="menuOverlay"></div>
+
+<aside class="side-menu"
+       id="sideMenu">
+
+    <div class="side-menu-header">
+
+        <div class="side-menu-title">
+            जमा खर्च
+        </div>
+
+        <button class="close-menu"
+                id="closeMenu">
+            ×
+        </button>
+
+    </div>
+
+
+    <nav class="side-nav">
+
+        <button class="nav-item active"
+                data-page="dashboard">
+            <span>🏠</span>
+            <span>Dashboard</span>
+        </button>
+
+        <button class="nav-item"
+                data-page="income">
+            <span>💰</span>
+            <span>जमा</span>
+        </button>
+
+        <button class="nav-item"
+                data-page="expense">
+            <span>💸</span>
+            <span>खर्च</span>
+        </button>
+
+        <button class="nav-item"
+                data-page="budget">
+            <span>📊</span>
+            <span>Budget</span>
+        </button>
+
+        <button class="nav-item"
+                data-page="accounts">
+            <span>🏦</span>
+            <span>Accounts</span>
+        </button>
+
+        <button class="nav-item"
+                data-page="transactions">
+            <span>🔄</span>
+            <span>Transactions</span>
+        </button>
+
+        <button class="nav-item"
+                data-page="reports">
+            <span>📈</span>
+            <span>Reports</span>
+        </button>
+
+        <button class="nav-item"
+                data-page="lending">
+            <span>🤝</span>
+            <span>उधारी</span>
+        </button>
+
+        <button class="nav-item"
+                data-page="workplan">
+            <span>📝</span>
+            <span>Work Plan</span>
+        </button>
+
+        <button class="nav-item"
+                data-page="settings">
+            <span>⚙️</span>
+            <span>Settings</span>
+        </button>
+
+    </nav>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main-container">
+
+
+    <!-- =================================================
+         DASHBOARD
+    ================================================== -->
+
+    <section id="dashboardPage"
+             class="page active-page">
+
+        <div class="page-heading">
+
+            <div>
+                <h1>Dashboard</h1>
+
+                <p id="currentDate">
+                    आजचा आर्थिक आढावा
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- TODAY -->
+
+        <div class="section-title">
+            आजचा आढावा
+        </div>
+
+        <div class="summary-grid">
+
+            <div class="summary-card income-card">
+
+                <div class="summary-icon">
+                    💰
+                </div>
+
+                <div class="summary-label">
+                    आजचा जमा
+                </div>
+
+                <div class="summary-value"
+                     id="todayIncome">
+                    ₹0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card expense-card">
+
+                <div class="summary-icon">
+                    💸
+                </div>
+
+                <div class="summary-label">
+                    आजचा खर्च
+                </div>
+
+                <div class="summary-value"
+                     id="todayExpense">
+                    ₹0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card balance-card">
+
+                <div class="summary-icon">
+                    💵
+                </div>
+
+                <div class="summary-label">
+                    आजची शिल्लक
+                </div>
+
+                <div class="summary-value"
+                     id="todayBalance">
+                    ₹0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MONTH -->
+
+        <div class="section-title">
+            या महिन्याचा आढावा
+        </div>
+
+        <div class="summary-grid">
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    महिन्याचा जमा
+                </div>
+
+                <div class="summary-value"
+                     id="monthIncome">
+                    ₹0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    महिन्याचा खर्च
+                </div>
+
+                <div class="summary-value"
+                     id="monthExpense">
+                    ₹0
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    महिन्याची शिल्लक
+                </div>
+
+                <div class="summary-value"
+                     id="monthBalance">
+                    ₹0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BUDGET -->
+
+        <div class="section-title">
+            Budget vs Expense
+        </div>
+
+        <div class="budget-overview-card">
+
+            <div class="budget-row">
+
+                <div>
+                    <span class="small-label">
+                        Monthly Budget
+                    </span>
+
+                    <strong id="totalBudget">
+                        ₹0
+                    </strong>
+                </div>
+
+                <div>
+                    <span class="small-label">
+                        Actual Expense
+                    </span>
+
+                    <strong id="totalBudgetExpense">
+                        ₹0
+                    </strong>
+                </div>
+
+                <div>
+                    <span class="small-label">
+                        Remaining
+                    </span>
+
+                    <strong id="totalBudgetRemaining">
+                        ₹0
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="progress-container">
+
+                <div class="progress-track">
+
+                    <div class="progress-bar"
+                         id="totalBudgetProgress"
+                         style="width:0%">
+                    </div>
+
+                </div>
+
+                <div class="progress-text"
+                     id="totalBudgetPercent">
+                    0% used
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="section-title">
+            Quick Actions
+        </div>
+
+        <div class="quick-actions">
+
+            <button class="quick-btn"
+                    data-page="income">
+
+                <span>➕</span>
+                <span>जमा नोंदवा</span>
+
+            </button>
+
+            <button class="quick-btn"
+                    data-page="expense">
+
+                <span>➖</span>
+                <span>खर्च नोंदवा</span>
+
+            </button>
+
+            <button class="quick-btn"
+                    data-page="budget">
+
+                <span>📊</span>
+                <span>Budget</span>
+
+            </button>
+
+            <button class="quick-btn"
+                    data-page="accounts">
+
+                <span>🏦</span>
+                <span>Accounts</span>
+
+            </button>
+
+        </div>
+
+
+        <!-- CATEGORY COMPARISON -->
+
+        <div class="section-title">
+            Category-wise Budget vs Expense
+        </div>
+
+        <div id="dashboardCategoryComparison"
+             class="comparison-list">
+
+            <div class="empty-state">
+                Budget आणि Expense data उपलब्ध नाही.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         PLACEHOLDER PAGES
+    ================================================== -->
+
+    <section id="incomePage"
+             class="page">
+
+        <div class="page-heading">
+            <h1>जमा</h1>
+            <p>जमा नोंद व्यवस्थापन</p>
+        </div>
+
+        <div class="coming-card">
+            <div class="coming-icon">💰</div>
+            <h2>जमा Module</h2>
+            <p>
+                या module मध्ये जमा entries,
+                amount, date आणि account व्यवस्थापन जोडले जाईल.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section id="expensePage"
+             class="page">
+
+        <div class="page-heading">
+            <h1>खर्च</h1>
+            <p>खर्च नोंद व्यवस्थापन</p>
+        </div>
+
+        <div class="coming-card">
+            <div class="coming-icon">💸</div>
+            <h2>खर्च Module</h2>
+            <p>
+                Category-wise खर्च आणि Budget comparison
+                येथे जोडले जाईल.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section id="budgetPage"
+             class="page">
+
+        <div class="page-heading">
+            <h1>Budget</h1>
+            <p>Monthly Budget Management</p>
+        </div>
+
+        <div class="coming-card">
+            <div class="coming-icon">📊</div>
+            <h2>Budget Module</h2>
+            <p>
+                प्रत्येक category साठी budget आणि
+                actual expense automatic compare केले जाईल.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section id="accountsPage"
+             class="page">
+
+        <div class="page-heading">
+            <h1>Accounts</h1>
+            <p>तुमचे आर्थिक Accounts</p>
+        </div>
+
+        <div id="accountsList"
+             class="accounts-list">
+        </div>
+
+        <button class="primary-btn"
+                id="addAccountBtn">
+            ＋ Add Account
+        </button>
+
+    </section>
+
+
+    <section id="transactionsPage"
+             class="page">
+
+        <div class="page-heading">
+            <h1>Transactions</h1>
+            <p>सर्व जमा आणि खर्च व्यवहार</p>
+        </div>
+
+        <div class="coming-card">
+            <div class="coming-icon">🔄</div>
+            <h2>Transactions Module</h2>
+            <p>
+                सर्व financial transactions साठी
+                Central transaction system वापरले जाईल.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section id="reportsPage"
+             class="page">
+
+        <div class="page-heading">
+            <h1>Reports</h1>
+            <p>आर्थिक अहवाल</p>
+        </div>
+
+        <div class="coming-card">
+            <div class="coming-icon">📈</div>
+            <h2>Reports Module</h2>
+            <p>
+                Daily, Monthly, Yearly आणि
+                Category-wise reports येथे असतील.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section id="lendingPage"
+             class="page">
+
+        <div class="page-heading">
+            <h1>उधारी</h1>
+            <p>Lending & Repayment</p>
+        </div>
+
+        <div class="coming-card">
+            <div class="coming-icon">🤝</div>
+            <h2>उधारी Module</h2>
+            <p>
+                दिलेली / घेतलेली रक्कम आणि
+                date-wise repayment tracking.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section id="workplanPage"
+             class="page">
+
+        <div class="page-heading">
+            <h1>Work Plan</h1>
+            <p>Daily Work Planning</p>
+        </div>
+
+        <div class="coming-card">
+            <div class="coming-icon">📝</div>
+            <h2>Work Plan</h2>
+            <p>
+                Date-wise tasks, priority, time आणि
+                completed checklist.
+            </p>
+        </div>
+
+    </section>
+
+
+    <section id="settingsPage"
+             class="page">
+
+        <div class="page-heading">
+            <h1>Settings</h1>
+            <p>App Settings</p>
+        </div>
+
+        <div class="coming-card">
+            <div class="coming-icon">⚙️</div>
+            <h2>Settings</h2>
+            <p>
+                पुढील modules मध्ये app settings
+                आणि data management जोडले जाईल.
+            </p>
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     ADD ACCOUNT MODAL
+===================================================== -->
+
+<div class="modal-overlay"
+     id="accountModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h2>Add Account</h2>
+
+            <button class="modal-close"
+                    id="closeAccountModal">
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="accountForm">
+
+            <div class="form-group">
+
+                <label for="accountName">
+                    Account Name
+                </label>
+
+                <input type="text"
+                       id="accountName"
+                       placeholder="उदा. SBI Bank"
+                       required>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="openingBalance">
+                    Opening Balance
+                </label>
+
+                <input type="number"
+                       id="openingBalance"
+                       min="0"
+                       step="0.01"
+                       value="0"
+                       required>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button type="button"
+                        class="secondary-btn"
+                        id="cancelAccount">
+                    Cancel
+                </button>
+
+                <button type="submit"
+                        class="primary-btn">
+                    Save Account
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     APP JS
+===================================================== -->
+
+<script src="app.js"></script>
+
+</body>
+</html>
