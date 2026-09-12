@@ -1,0 +1,2961 @@
+<!DOCTYPE html>
+<html lang="mr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#5b0b18">
+
+    <meta name="description"
+          content="रोजचा जमा खर्च अहवाल - Transactions">
+
+    <title>Transactions - रोजचा जमा खर्च अहवाल</title>
+
+    <link rel="stylesheet"
+          href="style.css">
+
+</head>
+
+
+<body>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="app-header">
+
+    <button class="menu-btn"
+            id="menuBtn"
+            type="button">
+        ☰
+    </button>
+
+    <div class="header-title">
+        <h1>Transactions</h1>
+        <p>सर्व जमा व खर्च व्यवहार</p>
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     SIDE MENU
+===================================================== -->
+
+<div class="side-overlay"
+     id="sideOverlay"></div>
+
+
+<aside class="side-menu"
+       id="sideMenu">
+
+    <div class="side-menu-header">
+
+        <h2>रोजचा जमा खर्च</h2>
+
+        <button id="closeMenuBtn"
+                type="button">
+            ×
+        </button>
+
+    </div>
+
+
+    <nav>
+
+        <button data-page="dashboard">
+            🏠 Dashboard
+        </button>
+
+        <button data-page="income">
+            💰 जमा
+        </button>
+
+        <button data-page="expense">
+            💸 खर्च
+        </button>
+
+        <button data-page="budget">
+            📊 Budget
+        </button>
+
+        <button data-page="accounts">
+            🏦 Accounts
+        </button>
+
+        <button data-page="transactions"
+                class="active">
+            📋 Transactions
+        </button>
+
+        <button data-page="reports">
+            📑 Reports
+        </button>
+
+        <button data-page="lending">
+            🤝 उधारी
+        </button>
+
+        <button data-page="workplan">
+            📝 Work Plan
+        </button>
+
+        <button data-page="settings">
+            ⚙️ Settings
+        </button>
+
+    </nav>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="page-container">
+
+
+    <!-- =================================================
+         PAGE TITLE
+    ================================================= -->
+
+    <section class="page-heading">
+
+        <div>
+
+            <h2>Transactions</h2>
+
+            <p id="currentDateText">
+                आजचे व्यवहार
+            </p>
+
+        </div>
+
+
+        <button class="primary-btn"
+                id="addTransactionBtn"
+                type="button">
+
+            ＋ Transaction
+
+        </button>
+
+    </section>
+
+
+    <!-- =================================================
+         SUMMARY CARDS
+    ================================================= -->
+
+    <section class="summary-grid">
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                एकूण व्यवहार
+            </div>
+
+            <div class="summary-value"
+                 id="totalTransactions">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card income-card">
+
+            <div class="summary-label">
+                एकूण जमा
+            </div>
+
+            <div class="summary-value"
+                 id="totalIncome">
+                ₹0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card expense-card">
+
+            <div class="summary-label">
+                एकूण खर्च
+            </div>
+
+            <div class="summary-value"
+                 id="totalExpense">
+                ₹0
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                निव्वळ शिल्लक
+            </div>
+
+            <div class="summary-value"
+                 id="netBalance">
+                ₹0
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         FILTER SECTION
+    ================================================= -->
+
+    <section class="filter-card">
+
+        <div class="section-title">
+
+            <h3>व्यवहार शोधा / Filter</h3>
+
+        </div>
+
+
+        <div class="filter-grid">
+
+
+            <!-- SEARCH -->
+
+            <div class="form-group">
+
+                <label for="transactionSearch">
+                    Search
+                </label>
+
+                <input
+                    type="search"
+                    id="transactionSearch"
+                    placeholder="Description, note, amount..."
+                    autocomplete="off">
+
+            </div>
+
+
+            <!-- TYPE -->
+
+            <div class="form-group">
+
+                <label for="transactionTypeFilter">
+                    प्रकार
+                </label>
+
+                <select id="transactionTypeFilter">
+
+                    <option value="all">
+                        सर्व
+                    </option>
+
+                    <option value="income">
+                        जमा
+                    </option>
+
+                    <option value="expense">
+                        खर्च
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- DATE -->
+
+            <div class="form-group">
+
+                <label for="transactionDateFilter">
+                    तारीख
+                </label>
+
+                <input
+                    type="date"
+                    id="transactionDateFilter">
+
+            </div>
+
+
+            <!-- MONTH -->
+
+            <div class="form-group">
+
+                <label for="transactionMonthFilter">
+                    महिना
+                </label>
+
+                <input
+                    type="month"
+                    id="transactionMonthFilter">
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="form-group">
+
+                <label for="transactionAccountFilter">
+                    Account
+                </label>
+
+                <select id="transactionAccountFilter">
+
+                    <option value="all">
+                        सर्व Accounts
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="form-group">
+
+                <label for="transactionCategoryFilter">
+                    खर्च Category
+                </label>
+
+                <select id="transactionCategoryFilter">
+
+                    <option value="all">
+                        सर्व Categories
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="filter-actions">
+
+            <button
+                class="secondary-btn"
+                id="clearFiltersBtn"
+                type="button">
+
+                Clear Filters
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         TRANSACTION LIST
+    ================================================= -->
+
+    <section class="transactions-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h3>व्यवहार यादी</h3>
+
+                <span id="transactionCountText">
+                    0 व्यवहार
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- EMPTY STATE -->
+
+        <div id="transactionEmptyState"
+             class="empty-state">
+
+            <div class="empty-icon">
+                📋
+            </div>
+
+            <h3>अजून कोणतेही व्यवहार नाहीत</h3>
+
+            <p>
+                जमा किंवा खर्चाचा पहिला व्यवहार जोडा.
+            </p>
+
+            <button
+                class="primary-btn"
+                id="emptyAddTransactionBtn"
+                type="button">
+
+                ＋ Transaction जोडा
+
+            </button>
+
+        </div>
+
+
+        <!-- TRANSACTIONS -->
+
+        <div id="transactionsList"
+             class="transactions-list">
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- =====================================================
+     ADD / EDIT TRANSACTION MODAL
+===================================================== -->
+
+<div class="modal"
+     id="transactionModal">
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="transactionModalTitle">
+                    Transaction जोडा
+                </h2>
+
+                <p>
+                    जमा किंवा खर्चाची नोंद करा
+                </p>
+
+            </div>
+
+
+            <button
+                class="modal-close"
+                id="closeTransactionModalBtn"
+                type="button">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             FORM
+        ================================================= -->
+
+        <form id="transactionForm">
+
+
+            <!-- HIDDEN ID -->
+
+            <input
+                type="hidden"
+                id="transactionId">
+
+
+            <!-- TYPE -->
+
+            <div class="form-group">
+
+                <label for="transactionType">
+                    व्यवहार प्रकार *
+                </label>
+
+                <select
+                    id="transactionType"
+                    required>
+
+                    <option value="expense">
+                        खर्च
+                    </option>
+
+                    <option value="income">
+                        जमा
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- DATE -->
+
+            <div class="form-group">
+
+                <label for="transactionDate">
+                    तारीख *
+                </label>
+
+                <input
+                    type="date"
+                    id="transactionDate"
+                    required>
+
+            </div>
+
+
+            <!-- AMOUNT -->
+
+            <div class="form-group">
+
+                <label for="transactionAmount">
+                    रक्कम *
+                </label>
+
+                <input
+                    type="number"
+                    id="transactionAmount"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="उदा. 500"
+                    required>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="form-group">
+
+                <label for="transactionAccount">
+                    Account *
+                </label>
+
+                <select
+                    id="transactionAccount"
+                    required>
+
+                    <option value="">
+                        Account निवडा
+                    </option>
+
+                </select>
+
+                <small>
+                    UPI / Cash / Bank किंवा तुमचे Add केलेले Account
+                </small>
+
+            </div>
+
+
+            <!-- EXPENSE CATEGORY -->
+
+            <div
+                class="form-group"
+                id="transactionCategoryGroup">
+
+                <label for="transactionCategory">
+                    खर्च Category *
+                </label>
+
+                <select
+                    id="transactionCategory">
+
+                    <option value="">
+                        Category निवडा
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+
+                <label for="transactionDescription">
+                    Description
+                </label>
+
+                <input
+                    type="text"
+                    id="transactionDescription"
+                    maxlength="200"
+                    placeholder="उदा. आजचा किराणा">
+
+            </div>
+
+
+            <!-- NOTE -->
+
+            <div class="form-group">
+
+                <label for="transactionNote">
+                    Note
+                </label>
+
+                <textarea
+                    id="transactionNote"
+                    rows="3"
+                    maxlength="500"
+                    placeholder="अतिरिक्त माहिती"></textarea>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div
+                id="transactionFormError"
+                class="form-error"
+                style="display:none;">
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-btn"
+                    id="cancelTransactionBtn">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+
+                    Save Transaction
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DELETE CONFIRMATION MODAL
+===================================================== -->
+
+<div class="modal"
+     id="deleteTransactionModal">
+
+    <div class="modal-content small-modal">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Transaction Delete
+                </h2>
+
+                <p>
+                    हा व्यवहार delete करायचा आहे का?
+                </p>
+
+            </div>
+
+
+            <button
+                class="modal-close"
+                id="closeDeleteModalBtn"
+                type="button">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <div class="delete-warning">
+
+            <div class="delete-warning-icon">
+                ⚠️
+            </div>
+
+            <p>
+                Delete केल्यानंतर हा व्यवहार
+                Account Balance, Dashboard, Budget आणि
+                Reports मधूनही आपोआप वजा होईल.
+            </p>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+            <button
+                type="button"
+                class="secondary-btn"
+                id="cancelDeleteBtn">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                type="button"
+                class="danger-btn"
+                id="confirmDeleteBtn">
+
+                Delete
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div id="transactionToast"
+     class="toast">
+</div>
+
+
+<!-- =====================================================
+     SCRIPTS
+     
+     IMPORTANT:
+     app.js FIRST
+     transactions.js SECOND
+===================================================== -->
+
+<script src="app.js"></script>
+
+<script src="transactions.js"></script>
+
+
+<!-- =====================================================
+     TRANSACTIONS PAGE LOGIC
+===================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        initializeTransactionsPage();
+
+    }
+);
+
+
+/* =====================================================
+   PAGE VARIABLES
+===================================================== */
+
+let editingTransactionId = null;
+
+let deletingTransactionId = null;
+
+
+/* =====================================================
+   INITIALIZE PAGE
+===================================================== */
+
+function initializeTransactionsPage() {
+
+    setTodayDefaults();
+
+    populateAccounts();
+
+    populateCategories();
+
+    bindTransactionEvents();
+
+    renderTransactionsPage();
+
+}
+
+
+/* =====================================================
+   TODAY DEFAULTS
+===================================================== */
+
+function setTodayDefaults() {
+
+    const today =
+        typeof getDateString === "function"
+            ? getDateString()
+            : new Date()
+                .toISOString()
+                .substring(0, 10);
+
+
+    const dateInput =
+        document.getElementById(
+            "transactionDate"
+        );
+
+
+    if (dateInput) {
+
+        dateInput.value =
+            today;
+
+    }
+
+
+    const dateFilter =
+        document.getElementById(
+            "transactionDateFilter"
+        );
+
+
+    if (dateFilter) {
+
+        dateFilter.value = "";
+
+    }
+
+
+    const currentDateText =
+        document.getElementById(
+            "currentDateText"
+        );
+
+
+    if (currentDateText) {
+
+        currentDateText.textContent =
+            "आजचे व्यवहार • " + today;
+
+    }
+}
+
+
+/* =====================================================
+   POPULATE ACCOUNTS
+===================================================== */
+
+function populateAccounts() {
+
+    let accounts = [];
+
+
+    if (
+        typeof AppData !== "undefined" &&
+        typeof AppData.getAccounts === "function"
+    ) {
+
+        accounts =
+            AppData.getAccounts();
+
+    }
+
+
+    const accountFilter =
+        document.getElementById(
+            "transactionAccountFilter"
+        );
+
+
+    const accountSelect =
+        document.getElementById(
+            "transactionAccount"
+        );
+
+
+    if (accountFilter) {
+
+        accountFilter.innerHTML =
+            `<option value="all">
+                सर्व Accounts
+             </option>`;
+
+
+        accounts.forEach(
+            account => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    account.id;
+
+                option.textContent =
+                    account.name;
+
+                accountFilter.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    if (accountSelect) {
+
+        accountSelect.innerHTML =
+            `<option value="">
+                Account निवडा
+             </option>`;
+
+
+        accounts.forEach(
+            account => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    account.id;
+
+                option.textContent =
+                    account.name;
+
+                accountSelect.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+}
+
+
+/* =====================================================
+   POPULATE EXPENSE CATEGORIES
+===================================================== */
+
+function populateCategories() {
+
+    const filter =
+        document.getElementById(
+            "transactionCategoryFilter"
+        );
+
+
+    const select =
+        document.getElementById(
+            "transactionCategory"
+        );
+
+
+    const categories =
+        typeof EXPENSE_CATEGORIES !== "undefined"
+            ? EXPENSE_CATEGORIES
+            : [];
+
+
+    if (filter) {
+
+        filter.innerHTML =
+            `<option value="all">
+                सर्व Categories
+             </option>`;
+
+
+        categories.forEach(
+            category => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    category.id;
+
+                option.textContent =
+                    category.name;
+
+                filter.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    if (select) {
+
+        select.innerHTML =
+            `<option value="">
+                Category निवडा
+             </option>`;
+
+
+        categories.forEach(
+            category => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    category.id;
+
+                option.textContent =
+                    category.name;
+
+                select.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+}
+
+
+/* =====================================================
+   EVENT BINDING
+===================================================== */
+
+function bindTransactionEvents() {
+
+
+    /* ADD */
+
+    document
+        .getElementById(
+            "addTransactionBtn"
+        )
+        ?.addEventListener(
+            "click",
+            function () {
+
+                openTransactionModal();
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "emptyAddTransactionBtn"
+        )
+        ?.addEventListener(
+            "click",
+            function () {
+
+                openTransactionModal();
+
+            }
+        );
+
+
+    /* CLOSE */
+
+    document
+        .getElementById(
+            "closeTransactionModalBtn"
+        )
+        ?.addEventListener(
+            "click",
+            closeTransactionModal
+        );
+
+
+    document
+        .getElementById(
+            "cancelTransactionBtn"
+        )
+        ?.addEventListener(
+            "click",
+            closeTransactionModal
+        );
+
+
+    /* FORM */
+
+    document
+        .getElementById(
+            "transactionForm"
+        )
+        ?.addEventListener(
+            "submit",
+            handleTransactionSubmit
+        );
+
+
+    /* TYPE */
+
+    document
+        .getElementById(
+            "transactionType"
+        )
+        ?.addEventListener(
+            "change",
+            handleTransactionTypeChange
+        );
+
+
+    /* SEARCH */
+
+    document
+        .getElementById(
+            "transactionSearch"
+        )
+        ?.addEventListener(
+            "input",
+            renderTransactionsPage
+        );
+
+
+    /* FILTERS */
+
+    document
+        .getElementById(
+            "transactionTypeFilter"
+        )
+        ?.addEventListener(
+            "change",
+            renderTransactionsPage
+        );
+
+
+    document
+        .getElementById(
+            "transactionDateFilter"
+        )
+        ?.addEventListener(
+            "change",
+            renderTransactionsPage
+        );
+
+
+    document
+        .getElementById(
+            "transactionMonthFilter"
+        )
+        ?.addEventListener(
+            "change",
+            renderTransactionsPage
+        );
+
+
+    document
+        .getElementById(
+            "transactionAccountFilter"
+        )
+        ?.addEventListener(
+            "change",
+            renderTransactionsPage
+        );
+
+
+    document
+        .getElementById(
+            "transactionCategoryFilter"
+        )
+        ?.addEventListener(
+            "change",
+            renderTransactionsPage
+        );
+
+
+    /* CLEAR */
+
+    document
+        .getElementById(
+            "clearFiltersBtn"
+        )
+        ?.addEventListener(
+            "click",
+            clearTransactionFilters
+        );
+
+
+    /* DELETE */
+
+    document
+        .getElementById(
+            "closeDeleteModalBtn"
+        )
+        ?.addEventListener(
+            "click",
+            closeDeleteModal
+        );
+
+
+    document
+        .getElementById(
+            "cancelDeleteBtn"
+        )
+        ?.addEventListener(
+            "click",
+            closeDeleteModal
+        );
+
+
+    document
+        .getElementById(
+            "confirmDeleteBtn"
+        )
+        ?.addEventListener(
+            "click",
+            confirmDeleteTransaction
+        );
+
+
+    /* OUTSIDE CLICK */
+
+    document
+        .getElementById(
+            "transactionModal"
+        )
+        ?.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === this
+                ) {
+
+                    closeTransactionModal();
+
+                }
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "deleteTransactionModal"
+        )
+        ?.addEventListener(
+            "click",
+            function (event) {
+
+                if (
+                    event.target === this
+                ) {
+
+                    closeDeleteModal();
+
+                }
+
+            }
+        );
+
+
+    /* TRANSACTION CHANGE */
+
+    window.addEventListener(
+        "transactionsChanged",
+        function () {
+
+            populateAccounts();
+
+            populateCategories();
+
+            renderTransactionsPage();
+
+        }
+    );
+}
+
+
+/* =====================================================
+   TYPE CHANGE
+===================================================== */
+
+function handleTransactionTypeChange() {
+
+    const type =
+        document.getElementById(
+            "transactionType"
+        )?.value;
+
+
+    const categoryGroup =
+        document.getElementById(
+            "transactionCategoryGroup"
+        );
+
+
+    const category =
+        document.getElementById(
+            "transactionCategory"
+        );
+
+
+    if (
+        type === "expense"
+    ) {
+
+        categoryGroup.style.display =
+            "block";
+
+        category.required =
+            true;
+
+    } else {
+
+        categoryGroup.style.display =
+            "none";
+
+        category.required =
+            false;
+
+        category.value =
+            "";
+
+    }
+}
+
+
+/* =====================================================
+   OPEN TRANSACTION MODAL
+===================================================== */
+
+function openTransactionModal(
+    transaction = null
+) {
+
+    const modal =
+        document.getElementById(
+            "transactionModal"
+        );
+
+
+    const form =
+        document.getElementById(
+            "transactionForm"
+        );
+
+
+    if (!modal || !form) {
+        return;
+    }
+
+
+    form.reset();
+
+
+    clearTransactionFormError();
+
+
+    if (transaction) {
+
+        editingTransactionId =
+            transaction.id;
+
+
+        document.getElementById(
+            "transactionModalTitle"
+        ).textContent =
+            "Transaction Edit";
+
+
+        document.getElementById(
+            "transactionId"
+        ).value =
+            transaction.id;
+
+
+        document.getElementById(
+            "transactionType"
+        ).value =
+            transaction.type;
+
+
+        document.getElementById(
+            "transactionDate"
+        ).value =
+            transaction.date;
+
+
+        document.getElementById(
+            "transactionAmount"
+        ).value =
+            transaction.amount;
+
+
+        document.getElementById(
+            "transactionAccount"
+        ).value =
+            transaction.accountId;
+
+
+        document.getElementById(
+            "transactionCategory"
+        ).value =
+            transaction.categoryId || "";
+
+
+        document.getElementById(
+            "transactionDescription"
+        ).value =
+            transaction.description || "";
+
+
+        document.getElementById(
+            "transactionNote"
+        ).value =
+            transaction.note || "";
+
+
+    } else {
+
+        editingTransactionId =
+            null;
+
+
+        document.getElementById(
+            "transactionModalTitle"
+        ).textContent =
+            "Transaction जोडा";
+
+
+        document.getElementById(
+            "transactionId"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "transactionDate"
+        ).value =
+            typeof getDateString === "function"
+                ? getDateString()
+                : new Date()
+                    .toISOString()
+                    .substring(0, 10);
+
+
+        document.getElementById(
+            "transactionType"
+        ).value =
+            "expense";
+
+    }
+
+
+    handleTransactionTypeChange();
+
+
+    modal.classList.add(
+        "show"
+    );
+}
+
+
+/* =====================================================
+   CLOSE TRANSACTION MODAL
+===================================================== */
+
+function closeTransactionModal() {
+
+    const modal =
+        document.getElementById(
+            "transactionModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    editingTransactionId =
+        null;
+
+
+    clearTransactionFormError();
+}
+
+
+/* =====================================================
+   SUBMIT TRANSACTION
+===================================================== */
+
+function handleTransactionSubmit(
+    event
+) {
+
+    event.preventDefault();
+
+
+    clearTransactionFormError();
+
+
+    const type =
+        document.getElementById(
+            "transactionType"
+        ).value;
+
+
+    const date =
+        document.getElementById(
+            "transactionDate"
+        ).value;
+
+
+    const amount =
+        Number(
+            document.getElementById(
+                "transactionAmount"
+            ).value
+        );
+
+
+    const accountId =
+        document.getElementById(
+            "transactionAccount"
+        ).value;
+
+
+    const categoryId =
+        document.getElementById(
+            "transactionCategory"
+        ).value;
+
+
+    const description =
+        document.getElementById(
+            "transactionDescription"
+        ).value
+        .trim();
+
+
+    const note =
+        document.getElementById(
+            "transactionNote"
+        ).value
+        .trim();
+
+
+    const data = {
+
+        date: date,
+
+        type: type,
+
+        amount: amount,
+
+        categoryId:
+            type === "expense"
+                ? categoryId
+                : "",
+
+        accountId:
+            accountId,
+
+        description:
+            description,
+
+        note:
+            note
+
+    };
+
+
+    let result;
+
+
+    if (editingTransactionId) {
+
+        result =
+            updateTransaction(
+                editingTransactionId,
+                data
+            );
+
+    } else {
+
+        result =
+            addTransaction(
+                data
+            );
+
+    }
+
+
+    if (!result.success) {
+
+        showTransactionFormError(
+            result.errors.join("\n")
+        );
+
+        return;
+    }
+
+
+    closeTransactionModal();
+
+
+    showTransactionToast(
+        editingTransactionId
+            ? "Transaction updated successfully."
+            : "Transaction saved successfully."
+    );
+
+
+    renderTransactionsPage();
+}
+
+
+/* =====================================================
+   RENDER PAGE
+===================================================== */
+
+function renderTransactionsPage() {
+
+    const all =
+        getAllTransactions();
+
+
+    const filtered =
+        applyTransactionFilters(
+            all
+        );
+
+
+    updateSummary(
+        all
+    );
+
+
+    updateTransactionCount(
+        filtered.length
+    );
+
+
+    renderTransactionList(
+        filtered
+    );
+}
+
+
+/* =====================================================
+   APPLY FILTERS
+===================================================== */
+
+function applyTransactionFilters(
+    transactions
+) {
+
+    let result =
+        Array.isArray(transactions)
+            ? [...transactions]
+            : [];
+
+
+    const search =
+        document.getElementById(
+            "transactionSearch"
+        )?.value
+        .trim()
+        .toLowerCase() || "";
+
+
+    const type =
+        document.getElementById(
+            "transactionTypeFilter"
+        )?.value || "all";
+
+
+    const date =
+        document.getElementById(
+            "transactionDateFilter"
+        )?.value || "";
+
+
+    const month =
+        document.getElementById(
+            "transactionMonthFilter"
+        )?.value || "";
+
+
+    const account =
+        document.getElementById(
+            "transactionAccountFilter"
+        )?.value || "all";
+
+
+    const category =
+        document.getElementById(
+            "transactionCategoryFilter"
+        )?.value || "all";
+
+
+    /* SEARCH */
+
+    if (search) {
+
+        result =
+            result.filter(
+                transaction => {
+
+                    const categoryName =
+                        getTransactionCategoryName(
+                            transaction.categoryId
+                        );
+
+
+                    const accountName =
+                        getTransactionAccountName(
+                            transaction.accountId
+                        );
+
+
+                    const text = [
+
+                        transaction.date,
+
+                        transaction.amount,
+
+                        transaction.description,
+
+                        transaction.note,
+
+                        transaction.type,
+
+                        categoryName,
+
+                        accountName
+
+                    ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                    return text.includes(
+                        search
+                    );
+
+                }
+            );
+    }
+
+
+    /* TYPE */
+
+    if (type !== "all") {
+
+        result =
+            result.filter(
+                transaction =>
+                    transaction.type ===
+                    type
+            );
+    }
+
+
+    /* DATE */
+
+    if (date) {
+
+        result =
+            result.filter(
+                transaction =>
+                    transaction.date ===
+                    date
+            );
+    }
+
+
+    /* MONTH */
+
+    if (month) {
+
+        result =
+            result.filter(
+                transaction =>
+                    String(
+                        transaction.date
+                    ).substring(0, 7) ===
+                    month
+            );
+    }
+
+
+    /* ACCOUNT */
+
+    if (account !== "all") {
+
+        result =
+            result.filter(
+                transaction =>
+                    transaction.accountId ===
+                    account
+            );
+    }
+
+
+    /* CATEGORY */
+
+    if (category !== "all") {
+
+        result =
+            result.filter(
+                transaction =>
+                    transaction.categoryId ===
+                    category
+            );
+    }
+
+
+    return sortTransactionsLatestFirst(
+        result
+    );
+}
+
+
+/* =====================================================
+   UPDATE SUMMARY
+===================================================== */
+
+function updateSummary(
+    transactions
+) {
+
+    const income =
+        getTotalIncome(
+            transactions
+        );
+
+
+    const expense =
+        getTotalExpense(
+            transactions
+        );
+
+
+    const balance =
+        income - expense;
+
+
+    setPageText(
+        "totalTransactions",
+        transactions.length
+    );
+
+
+    setPageText(
+        "totalIncome",
+        formatTransactionAmount(
+            income
+        )
+    );
+
+
+    setPageText(
+        "totalExpense",
+        formatTransactionAmount(
+            expense
+        )
+    );
+
+
+    setPageText(
+        "netBalance",
+        formatTransactionAmount(
+            balance
+        )
+    );
+}
+
+
+/* =====================================================
+   UPDATE COUNT
+===================================================== */
+
+function updateTransactionCount(
+    count
+) {
+
+    const element =
+        document.getElementById(
+            "transactionCountText"
+        );
+
+
+    if (!element) {
+        return;
+    }
+
+
+    element.textContent =
+        count + " व्यवहार";
+}
+
+
+/* =====================================================
+   RENDER TRANSACTION LIST
+===================================================== */
+
+function renderTransactionList(
+    transactions
+) {
+
+    const list =
+        document.getElementById(
+            "transactionsList"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "transactionEmptyState"
+        );
+
+
+    if (!list || !empty) {
+        return;
+    }
+
+
+    if (
+        !transactions ||
+        transactions.length === 0
+    ) {
+
+        list.innerHTML = "";
+
+        empty.style.display =
+            "block";
+
+        return;
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    list.innerHTML =
+        transactions
+            .map(
+                transaction =>
+                    createTransactionCardHTML(
+                        transaction
+                    )
+            )
+            .join("");
+
+
+    list
+        .querySelectorAll(
+            "[data-edit-transaction]"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const id =
+                            this.dataset
+                                .editTransaction;
+
+
+                        const transaction =
+                            getTransactionById(
+                                id
+                            );
+
+
+                        if (transaction) {
+
+                            openTransactionModal(
+                                transaction
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+    list
+        .querySelectorAll(
+            "[data-delete-transaction]"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const id =
+                            this.dataset
+                                .deleteTransaction;
+
+
+                        openDeleteModal(
+                            id
+                        );
+
+                    }
+                );
+
+            }
+        );
+}
+
+
+/* =====================================================
+   CREATE TRANSACTION CARD
+===================================================== */
+
+function createTransactionCardHTML(
+    transaction
+) {
+
+    const display =
+        getTransactionDisplayData(
+            transaction
+        );
+
+
+    const isIncome =
+        transaction.type ===
+        "income";
+
+
+    const typeClass =
+        isIncome
+            ? "income"
+            : "expense";
+
+
+    const sign =
+        isIncome
+            ? "+"
+            : "-";
+
+
+    const typeLabel =
+        isIncome
+            ? "जमा"
+            : "खर्च";
+
+
+    const title =
+        escapeHtml(
+            display.description ||
+            display.categoryName ||
+            typeLabel
+        );
+
+
+    const account =
+        escapeHtml(
+            display.accountName ||
+            "Account"
+        );
+
+
+    const category =
+        escapeHtml(
+            display.categoryName ||
+            ""
+        );
+
+
+    const date =
+        escapeHtml(
+            display.date ||
+            ""
+        );
+
+
+    const note =
+        escapeHtml(
+            display.note ||
+            ""
+        );
+
+
+    return `
+
+        <div class="transaction-card ${typeClass}">
+
+            <div class="transaction-card-main">
+
+
+                <div class="transaction-icon">
+
+                    ${
+                        isIncome
+                            ? "💰"
+                            : "💸"
+                    }
+
+                </div>
+
+
+                <div class="transaction-info">
+
+                    <div class="transaction-card-title">
+
+                        ${title}
+
+                    </div>
+
+
+                    <div class="transaction-card-meta">
+
+                        <span>
+                            📅 ${date}
+                        </span>
+
+                        <span>
+                            🏦 ${account}
+                        </span>
+
+                        ${
+                            category
+                                ? `
+                                <span>
+                                    🗂️ ${category}
+                                </span>
+                                `
+                                : ""
+                        }
+
+                    </div>
+
+
+                    ${
+                        note
+                            ? `
+                            <div class="transaction-note">
+                                ${note}
+                            </div>
+                            `
+                            : ""
+                    }
+
+                </div>
+
+
+                <div class="transaction-card-right">
+
+                    <div class="transaction-card-amount ${typeClass}">
+
+                        ${sign}
+                        ${formatTransactionAmount(
+                            transaction.amount
+                        )}
+
+                    </div>
+
+
+                    <div class="transaction-type-label ${typeClass}">
+
+                        ${typeLabel}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="transaction-card-actions">
+
+                <button
+                    type="button"
+                    class="edit-btn"
+                    data-edit-transaction="${escapeHtml(transaction.id)}">
+
+                    ✏️ Edit
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="delete-btn"
+                    data-delete-transaction="${escapeHtml(transaction.id)}">
+
+                    🗑️ Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+
+/* =====================================================
+   OPEN DELETE MODAL
+===================================================== */
+
+function openDeleteModal(
+    transactionId
+) {
+
+    deletingTransactionId =
+        transactionId;
+
+
+    const modal =
+        document.getElementById(
+            "deleteTransactionModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.add(
+            "show"
+        );
+
+    }
+}
+
+
+/* =====================================================
+   CLOSE DELETE MODAL
+===================================================== */
+
+function closeDeleteModal() {
+
+    const modal =
+        document.getElementById(
+            "deleteTransactionModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    deletingTransactionId =
+        null;
+}
+
+
+/* =====================================================
+   CONFIRM DELETE
+===================================================== */
+
+function confirmDeleteTransaction() {
+
+    if (!deletingTransactionId) {
+        return;
+    }
+
+
+    const result =
+        deleteTransaction(
+            deletingTransactionId
+        );
+
+
+    if (!result.success) {
+
+        showTransactionToast(
+            result.errors.join("\n"),
+            true
+        );
+
+        return;
+    }
+
+
+    closeDeleteModal();
+
+
+    showTransactionToast(
+        "Transaction deleted successfully."
+    );
+
+
+    renderTransactionsPage();
+}
+
+
+/* =====================================================
+   CLEAR FILTERS
+===================================================== */
+
+function clearTransactionFilters() {
+
+    document.getElementById(
+        "transactionSearch"
+    ).value = "";
+
+
+    document.getElementById(
+        "transactionTypeFilter"
+    ).value = "all";
+
+
+    document.getElementById(
+        "transactionDateFilter"
+    ).value = "";
+
+
+    document.getElementById(
+        "transactionMonthFilter"
+    ).value = "";
+
+
+    document.getElementById(
+        "transactionAccountFilter"
+    ).value = "all";
+
+
+    document.getElementById(
+        "transactionCategoryFilter"
+    ).value = "all";
+
+
+    renderTransactionsPage();
+}
+
+
+/* =====================================================
+   FORM ERROR
+===================================================== */
+
+function showTransactionFormError(
+    message
+) {
+
+    const error =
+        document.getElementById(
+            "transactionFormError"
+        );
+
+
+    if (!error) {
+        return;
+    }
+
+
+    error.textContent =
+        message;
+
+
+    error.style.display =
+        "block";
+}
+
+
+function clearTransactionFormError() {
+
+    const error =
+        document.getElementById(
+            "transactionFormError"
+        );
+
+
+    if (!error) {
+        return;
+    }
+
+
+    error.textContent =
+        "";
+
+
+    error.style.display =
+        "none";
+}
+
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showTransactionToast(
+    message,
+    isError = false
+) {
+
+    const toast =
+        document.getElementById(
+            "transactionToast"
+        );
+
+
+    if (!toast) {
+        return;
+    }
+
+
+    toast.textContent =
+        message;
+
+
+    toast.className =
+        "toast show" +
+        (
+            isError
+                ? " error"
+                : ""
+        );
+
+
+    setTimeout(
+        function () {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        2500
+    );
+}
+
+
+/* =====================================================
+   SAFE TEXT
+===================================================== */
+
+function setPageText(
+    id,
+    value
+) {
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if (element) {
+
+        element.textContent =
+            value;
+
+    }
+}
+
+
+/* =====================================================
+   END TRANSACTIONS PAGE
+===================================================== */
+
+</script>
+
+
+<!-- =====================================================
+     PAGE-SPECIFIC CSS
+     
+     Keeps transactions page functional even before
+     additional style.css refinements.
+===================================================== -->
+
+<style>
+
+.page-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.page-heading h2 {
+    margin: 0;
+}
+
+.page-heading p {
+    margin: 5px 0 0;
+    opacity: 0.7;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.summary-card {
+    padding: 18px;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow:
+        0 3px 12px rgba(0,0,0,0.08);
+}
+
+.summary-label {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-bottom: 8px;
+}
+
+.summary-value {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.income-card {
+    border-left: 4px solid #16803c;
+}
+
+.expense-card {
+    border-left: 4px solid #c62828;
+}
+
+.filter-card {
+    background: #fff;
+    padding: 18px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    box-shadow:
+        0 3px 12px rgba(0,0,0,0.08);
+}
+
+.section-title h3,
+.section-header h3 {
+    margin: 0;
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 15px;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 12px;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    font-size: 15px;
+    background: #fff;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    opacity: 0.65;
+}
+
+.filter-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.primary-btn,
+.secondary-btn,
+.danger-btn,
+.edit-btn,
+.delete-btn {
+    border: none;
+    border-radius: 9px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.primary-btn {
+    background: #5b0b18;
+    color: #fff;
+}
+
+.secondary-btn {
+    background: #eee;
+    color: #333;
+}
+
+.danger-btn {
+    background: #c62828;
+    color: #fff;
+}
+
+.transactions-section {
+    background: transparent;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.section-header span {
+    font-size: 13px;
+    opacity: 0.65;
+}
+
+.transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.transaction-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 15px;
+    box-shadow:
+        0 3px 12px rgba(0,0,0,0.07);
+}
+
+.transaction-card-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.transaction-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    flex-shrink: 0;
+}
+
+.transaction-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.transaction-card-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+    word-break: break-word;
+}
+
+.transaction-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    opacity: 0.65;
+}
+
+.transaction-note {
+    margin-top: 6px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.transaction-card-right {
+    text-align: right;
+    min-width: 115px;
+}
+
+.transaction-card-amount {
+    font-weight: 700;
+    font-size: 17px;
+}
+
+.transaction-card-amount.income,
+.transaction-type-label.income {
+    color: #16803c;
+}
+
+.transaction-card-amount.expense,
+.transaction-type-label.expense {
+    color: #c62828;
+}
+
+.transaction-type-label {
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.transaction-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.edit-btn {
+    background: #f1f1f1;
+}
+
+.delete-btn {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    background: #fff;
+    border-radius: 14px;
+}
+
+.empty-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.empty-state h3 {
+    margin: 8px 0;
+}
+
+.empty-state p {
+    opacity: 0.65;
+    margin-bottom: 20px;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    z-index: 9999;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: #fff;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.small-modal {
+    max-width: 430px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.modal-header h2 {
+    margin: 0;
+}
+
+.modal-header p {
+    margin: 4px 0 0;
+    opacity: 0.65;
+    font-size: 13px;
+}
+
+.modal-close {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: #eee;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.form-error {
+    white-space: pre-line;
+    padding: 10px;
+    border-radius: 8px;
+    background: #ffebee;
+    color: #b71c1c;
+    margin-top: 10px;
+}
+
+.delete-warning {
+    padding: 15px;
+    border-radius: 10px;
+    background: #fff3f3;
+    text-align: center;
+}
+
+.delete-warning-icon {
+    font-size: 35px;
+}
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 25px;
+    transform: translate(-50%, 100px);
+    background: #333;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 9px;
+    z-index: 10000;
+    opacity: 0;
+    transition: 0.25s;
+}
+
+.toast.show {
+    transform: translate(-50%, 0);
+    opacity: 1;
+}
+
+.toast.error {
+    background: #c62828;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 800px) {
+
+    .page-container {
+        padding: 14px;
+    }
+
+    .page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .transaction-card-main {
+        align-items: flex-start;
+    }
+
+    .transaction-card-right {
+        min-width: 90px;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .summary-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .summary-card {
+        padding: 14px;
+    }
+
+    .summary-value {
+        font-size: 18px;
+    }
+
+    .transaction-card-main {
+        flex-wrap: wrap;
+    }
+
+    .transaction-card-right {
+        margin-left: 56px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .transaction-card-actions {
+        justify-content: stretch;
+    }
+
+    .transaction-card-actions button {
+        flex: 1;
+    }
+
+}
+
+</style>
+
+</body>
+
+</html>
