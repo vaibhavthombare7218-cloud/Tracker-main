@@ -1,0 +1,12 @@
+{
+  "name": "रोजचा जमा खर्च अहवाल",
+  "short_name": "जमा खर्च",
+  "description": "Offline personal finance tracker",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f5f5",
+  "theme_color": "#5b0b18",
+  "lang": "mr",
+  "icons": []
+}
