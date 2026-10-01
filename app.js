@@ -148,6 +148,17 @@ function renderDashboard() {
   });
 }
 function showPage(page) {
+  // Open completed modules as standalone pages; all pages share the RJKA_v1_* keys.
+  const moduleRoutes = Object.freeze({
+    income: "income.html",
+    expense: "expense.html",
+    accounts: "account.html",
+    budgets: "budget.html"
+  });
+  if (moduleRoutes[page]) {
+    window.location.href = moduleRoutes[page];
+    return;
+  }
   const dashboard = page === "dashboard";
   document.getElementById("dashboardPage").classList.toggle("active", dashboard);
   document.getElementById("modulePage").classList.toggle("active", !dashboard);
