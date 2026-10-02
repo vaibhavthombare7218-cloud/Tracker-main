@@ -1,8 +1,96 @@
 <!doctype html>
-<html lang="mr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#5b0b18"><title>खाती (Accounts) | रोजचा जमा खर्च अहवाल</title><style>
-:root{--maroon:#5b0b18;--maroon2:#781527;--bg:#f5f2f3;--card:#fff;--text:#261d20;--muted:#75696d;--line:#eadfe2;--green:#16834b;--red:#c03945;--shadow:0 5px 20px #2b10140d}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,"Segoe UI",sans-serif}.top{background:var(--maroon);color:#fff;padding:15px max(18px,calc((100% - 1100px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:18px;font-weight:750}.top a{color:#fff;text-decoration:none;border:1px solid #ffffff66;padding:8px 12px;border-radius:10px}.wrap{max-width:1100px;margin:24px auto;padding:0 16px}.heading{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:18px}h1{font-size:25px;margin:0}p{margin:5px 0;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow);margin-bottom:16px}.card h2{font-size:17px;margin:0 0 14px}.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:13px;font-weight:650;color:#59494e}input,select,textarea{width:100%;border:1px solid #d9cbd0;border-radius:10px;padding:11px;background:white;color:var(--text);font:inherit;min-width:0}textarea{min-height:42px;resize:vertical}.btn{border:0;background:var(--maroon);color:#fff;padding:11px 16px;border-radius:10px;font:inherit;font-weight:700;cursor:pointer}.btn.secondary{background:#f3e8eb;color:var(--maroon)}.btn.danger{background:#fff0f0;color:var(--red)}.actions{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:22px;margin-top:5px;overflow-wrap:anywhere}.positive{color:var(--green)}.negative{color:var(--red)}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:620px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line);vertical-align:middle}th{font-size:12px;color:var(--muted);background:#fcfafb}td .btn{padding:6px 9px;font-size:12px}.empty{text-align:center;color:var(--muted);padding:24px}.hint{font-size:12px;color:var(--muted);margin-top:10px}.bar{height:9px;border-radius:99px;background:#f0e7e9;overflow:hidden;min-width:90px}.bar span{height:100%;display:block;background:var(--maroon);border-radius:99px}.bar.over span{background:var(--red)}@media(max-width:600px){.wrap{margin:16px auto}.card{padding:14px}.top{padding:13px 15px}h1{font-size:22px}}
-</style></head>
-<body><header class="top"><div class="brand">₹ रोजचा जमा खर्च अहवाल</div><a href="index.html">← डॅशबोर्ड</a></header>
-<main class="wrap"><div class="heading"><div><h1>खाती (Accounts)</h1><p>खाती, सुरुवातीची शिल्लक आणि उपलब्ध शिल्लक व्यवस्थापित करा.</p></div></div>
-<div id="app"></div><p class="hint">डेटा या डिव्हाइसच्या LocalStorage मध्ये सेव्ह होतो. RJKA_v1_* keys वापरल्या जातात.</p></main><script src="account.js"></script></body></html>
+
+<html lang="mr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#5b0b18">
+  <meta name="description" content="रोजचा जमा खर्च अहवाल - खाती व्यवस्थापन">
+  <title>खाती | रोजचा जमा खर्च अहवाल</title>  <link rel="stylesheet" href="style.css">
+</head><body><header class="topbar">
+  <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Menu">☰</button>  <div class="brand">
+    <div class="brand-mark">₹</div>
+    <div>
+      <div class="brand-title">रोजचा जमा खर्च अहवाल</div>
+      <div class="brand-subtitle">Offline Personal Finance</div>
+    </div>
+  </div>  <button class="icon-btn" onclick="location.href='index.html'" title="Dashboard">
+    ⌂
+  </button>
+</header><div class="app-shell">  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-heading">MAIN MENU</div><button class="nav-item" onclick="location.href='index.html'">
+  <span>⌂</span> Dashboard
+</button>
+
+<button class="nav-item" onclick="location.href='income.html'">
+  <span>＋</span> जमा
+</button>
+
+<button class="nav-item" onclick="location.href='expense.html'">
+  <span>−</span> खर्च
+</button>
+
+<button class="nav-item active">
+  <span>₹</span> खाती
+</button>
+
+<button class="nav-item" onclick="location.href='budget.html'">
+  <span>▣</span> Budget
+</button>
+
+<div class="sidebar-foot">
+  RJKA_v1<br>
+  Offline Personal Finance
+</div>
+
+  </aside>  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>  <main class="main-content"><section class="page active">
+
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">ACCOUNT MANAGEMENT</p>
+      <h1>खाती</h1>
+      <p class="muted">
+        खाती, सुरुवातीची शिल्लक आणि उपलब्ध शिल्लक व्यवस्थापित करा.
+      </p>
+    </div>
+  </div>
+
+  <div id="app"></div>
+
+  <footer class="app-footer">
+    RJKA_v1 <span>•</span> Offline Personal Finance
+  </footer>
+
+</section>
+
+  </main></div><script src="account.js"></script><script>
+(function(){
+
+  const menu = document.getElementById("menuToggle");
+  const sidebar = document.getElementById("sidebar");
+  const backdrop = document.getElementById("sidebarBackdrop");
+
+  if(menu){
+    menu.addEventListener("click",()=>{
+      sidebar.classList.toggle("open");
+      backdrop.classList.toggle("show");
+    });
+  }
+
+  if(backdrop){
+    backdrop.addEventListener("click",()=>{
+      sidebar.classList.remove("open");
+      backdrop.classList.remove("show");
+    });
+  }
+
+  document.querySelectorAll(".nav-item").forEach(item=>{
+    item.addEventListener("click",()=>{
+      sidebar.classList.remove("open");
+      backdrop.classList.remove("show");
+    });
+  });
+
+})();
+</script></body>
+</html>
