@@ -1,17 +1,215 @@
+
 <!DOCTYPE html>
-<html lang="mr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#5b0b18"><title>व्यवहार | रोजचा जमा खर्च अहवाल</title>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#5b0b18">
+<title>जमा खर्च व्यवहार</title>
 <style>
-:root{--maroon:#5b0b18;--bg:#f7f4f5;--line:#eadfe2;--muted:#75666a;--green:#16834b;--red:#bd303d}*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px system-ui,-apple-system,"Noto Sans Devanagari",sans-serif;color:#241c1e}.top{background:var(--maroon);color:white;padding:15px max(16px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between}.top a{color:white;text-decoration:none}.wrap{max-width:1120px;margin:25px auto;padding:0 15px}.heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}h1{margin:0;font-size:25px}p{color:var(--muted);margin:5px 0}.card{background:white;border:1px solid var(--line);border-radius:15px;padding:17px;margin-bottom:16px;box-shadow:0 3px 14px #28151a08}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}.field input,.field select{width:100%;padding:11px;border:1px solid #d9cdd0;border-radius:9px;font:inherit;background:#fff}.btn{border:0;border-radius:9px;padding:10px 14px;font:inherit;cursor:pointer;background:var(--maroon);color:#fff}.btn.secondary{background:#f3e9eb;color:var(--maroon)}.btn.danger{background:#fff0f0;color:var(--red);padding:7px 10px}.actions{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}.stat{border:1px solid var(--line);border-radius:12px;padding:13px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:21px;margin-top:5px;overflow-wrap:anywhere}.positive{color:var(--green)}.negative{color:var(--red)}.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:13px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:740px}th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--line);vertical-align:middle}th{font-size:12px;color:var(--muted);background:#fcfafb}td small{display:block;color:var(--muted)}.empty{text-align:center;color:var(--muted);padding:25px}.hint{font-size:12px;color:var(--muted)}@media(max-width:600px){.wrap{margin:16px auto}h1{font-size:22px}.card{padding:13px}}
-</style></head><body><header class="top"><b>₹ रोजचा जमा खर्च अहवाल</b><a href="index.html">← डॅशबोर्ड</a></header>
-<main class="wrap"><div class="heading"><div><h1>सर्व व्यवहार</h1><p>जमा आणि खर्च व्यवहार शोधा, फिल्टर करा, संपादित करा किंवा हटवा.</p></div><button class="btn secondary" id="exportBtn">CSV Export</button></div>
-<section class="card"><h3>व्यवहार नोंदवा / संपादित करा</h3><form id="txForm"><input type="hidden" id="editId"><div class="formgrid">
-<div class="field"><label for="type">व्यवहार प्रकार</label><select id="type" required><option value="expense">खर्च</option><option value="income">जमा</option></select></div>
-<div class="field"><label for="date">तारीख</label><input type="date" id="date" required></div>
-<div class="field"><label for="amount">रक्कम (₹)</label><input type="number" id="amount" min="0.01" step="0.01" required placeholder="उदा. 500"></div>
-<div class="field"><label for="category">कॅटेगरी</label><select id="category" required></select></div>
-<div class="field"><label for="account">खाते</label><select id="account" required></select></div>
-<div class="field"><label for="note">तपशील / नोंद</label><input id="note" maxlength="120" placeholder="उदा. किराणा"></div>
-</div><div class="actions" style="margin-top:13px"><button class="btn" type="submit" id="saveBtn">व्यवहार सेव्ह करा</button><button class="btn secondary" type="button" id="cancelBtn" hidden>रद्द करा</button></div></form><p class="hint">नोंदी या डिव्हाइसच्या RJKA_v1_transactions मध्ये सेव्ह होतात.</p></section>
-<section class="card"><div class="stats"><div class="stat"><small>एकूण जमा (फिल्टरनुसार)</small><strong class="positive" id="sumIncome">₹0.00</strong></div><div class="stat"><small>एकूण खर्च (फिल्टरनुसार)</small><strong class="negative" id="sumExpense">₹0.00</strong></div><div class="stat"><small>निव्वळ फरक</small><strong id="sumNet">₹0.00</strong></div></div></section>
-<section class="card"><div class="filters"><div class="field"><label for="month">महिना</label><input type="month" id="month"></div><div class="field"><label for="filterType">प्रकार</label><select id="filterType"><option value="all">सर्व</option><option value="income">फक्त जमा</option><option value="expense">फक्त खर्च</option></select></div><div class="field"><label for="filterAccount">खाते</label><select id="filterAccount"><option value="all">सर्व खाती</option></select></div><div class="field"><label for="search">शोधा</label><input id="search" placeholder="नोंद / कॅटेगरी"></div></div>
-<div class="tablewrap"><table><thead><tr><th>तारीख</th><th>प्रकार</th><th>कॅटेगरी / तपशील</th><th>खाते</th><th>रक्कम</th><th>कृती</th></tr></thead><tbody id="rows"></tbody></table></div><div class="empty" id="empty" hidden>या फिल्टरमध्ये व्यवहार सापडले नाहीत.</div></section></main><script src="transactions.js"></script></body></html>
+body{margin:0;background:#f6f3f4;color:#292124;font-family:Arial,sans-serif}
+header{background:#5b0b18;color:white;padding:20px}
+main{max-width:800px;margin:20px auto;padding:12px}
+.card{background:white;padding:18px;margin-bottom:15px;border-radius:14px}
+input,select{box-sizing:border-box;width:100%;padding:12px;margin:7px 0 14px;border:1px solid #ccc;border-radius:8px}
+button,.btn{background:#5b0b18;color:white;padding:12px 16px;border:0;border-radius:8px;text-decoration:none;display:inline-block;margin:4px 4px 4px 0;cursor:pointer}
+.tx{padding:12px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:10px}
+small{color:#76696c}.income{color:green}.expense{color:#b42332}
+</style>
+</head>
+<body>
+<header>
+<h2>जमा खर्च व्यवहार</h2>
+<div>रोजचा जमा खर्च अहवाल</div>
+</header>
+<main>
+<section class="card">
+<h3>नवीन व्यवहार</h3>
+<form id="form">
+<label>व्यवहार प्रकार</label>
+<select id="type">
+<option value="expense">खर्च</option>
+<option value="income">जमा</option>
+</select>
+
+<label>तारीख</label>
+<input id="date" type="date" required>
+
+<label>रक्कम (₹)</label>
+<input id="amount" type="number" min="0.01" step="0.01" required>
+
+<label>खाते</label>
+<select id="account" required></select>
+
+<label>कॅटेगरी</label>
+<select id="category">
+<option value="daily_grocery">दररोजचा किराणा खर्च</option>
+<option value="monthly_grocery">महिन्याचा किराणा खर्च</option>
+<option value="travel">प्रवास</option>
+<option value="shopping">खरेदी</option>
+<option value="electricity">लाईट बिल</option>
+<option value="medicine">औषधे</option>
+<option value="mobile">मोबाईल</option>
+<option value="home_emi">घरचा EMI</option>
+<option value="home_maintenance">घरचा मेंटेनन्स</option>
+<option value="other_loan">इतर लोन</option>
+<option value="fish">मच्छी</option>
+<option value="outside_food">बाहेर जेवण</option>
+<option value="insurance">विमा योजना</option>
+<option value="other">Other</option>
+</select>
+
+<label>तपशील</label>
+<input id="note" placeholder="व्यवहाराची नोंद">
+
+<button type="submit">व्यवहार सेव्ह करा</button>
+</form>
+<p id="msg"></p>
+<a class="btn" href="./index.html">डॅशबोर्ड</a>
+<a class="btn" href="./account.html">खाती</a>
+</section>
+
+<section class="card">
+<h3>व्यवहारांचा आढावा</h3>
+<p>एकूण जमा: <strong id="income">₹0.00</strong></p>
+<p>एकूण खर्च: <strong id="expense">₹0.00</strong></p>
+<p>निव्वळ रक्कम: <strong id="net">₹0.00</strong></p>
+</section>
+
+<section class="card">
+<h3>व्यवहारांची यादी</h3>
+<div id="list"></div>
+</section>
+</main>
+<script>
+"use strict";
+
+const K={
+ transactions:"RJKA_v1_transactions",
+ accounts:"RJKA_v1_accounts",
+ budgets:"RJKA_v1_budgets",
+ lending:"RJKA_v1_lending",
+ workplan:"RJKA_v1_workplan",
+ settings:"RJKA_v1_settings"
+};
+
+function read(key,fallback){
+ try{
+  const value=JSON.parse(localStorage.getItem(key));
+  return Array.isArray(value)?value:fallback;
+ }catch(e){return fallback;}
+}
+function save(key,value){
+ localStorage.setItem(key,JSON.stringify(value));
+}
+function init(){
+ let accounts=read(K.accounts,null);
+ if(!accounts||accounts.length===0){
+  accounts=[
+   {id:"RJKA-ACC-001",name:"UPI",openingBalance:0},
+   {id:"RJKA-ACC-002",name:"Cash",openingBalance:0},
+   {id:"RJKA-ACC-003",name:"Bank",openingBalance:0}
+  ];
+  save(K.accounts,accounts);
+ }
+ if(localStorage.getItem(K.transactions)===null)save(K.transactions,[]);
+ if(localStorage.getItem(K.budgets)===null)save(K.budgets,[]);
+ if(localStorage.getItem(K.lending)===null)save(K.lending,[]);
+ if(localStorage.getItem(K.workplan)===null)save(K.workplan,[]);
+ if(localStorage.getItem(K.settings)===null)
+  save(K.settings,{currency:"₹",firstDayOfWeek:"monday",financialYearStartMonth:4});
+}
+function money(n){
+ return "₹"+(Number(n)||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function fillAccounts(){
+ const select=document.getElementById("account");
+ select.replaceChildren();
+ read(K.accounts,[]).forEach(a=>{
+  const option=document.createElement("option");
+  option.value=a.id;
+  option.textContent=a.name;
+  select.append(option);
+ });
+}
+function render(){
+ const txs=read(K.transactions,[]);
+ const accounts=read(K.accounts,[]);
+ const income=txs.filter(t=>t.type==="income").reduce((s,t)=>s+(Number(t.amount)||0),0);
+ const expense=txs.filter(t=>t.type==="expense").reduce((s,t)=>s+(Number(t.amount)||0),0);
+
+ document.getElementById("income").textContent=money(income);
+ document.getElementById("expense").textContent=money(expense);
+ document.getElementById("net").textContent=money(income-expense);
+
+ const list=document.getElementById("list");
+ list.replaceChildren();
+
+ txs.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))).forEach(t=>{
+  const row=document.createElement("div");
+  row.className="tx";
+
+  const info=document.createElement("div");
+  const title=document.createElement("strong");
+  title.textContent=t.note||t.category||t.type;
+  const detail=document.createElement("small");
+  const account=accounts.find(a=>a.id===t.accountId);
+  detail.textContent=(t.date||"")+" · "+(account?account.name:"खाते उपलब्ध नाही");
+  info.append(title,document.createElement("br"),detail);
+
+  const amount=document.createElement("strong");
+  amount.className=t.type==="income"?"income":"expense";
+  amount.textContent=(t.type==="income"?"+":"−")+money(t.amount);
+
+  row.append(info,amount);
+  list.append(row);
+ });
+ if(!txs.length)list.textContent="अद्याप कोणताही व्यवहार नोंदवलेला नाही.";
+}
+
+document.getElementById("date").value=new Date().toLocaleDateString("en-CA");
+
+document.getElementById("form").addEventListener("submit",function(e){
+ e.preventDefault();
+
+ const amount=Number(document.getElementById("amount").value);
+ const accountId=document.getElementById("account").value;
+ const date=document.getElementById("date").value;
+
+ if(!accountId){
+  document.getElementById("msg").textContent="कृपया आधी खाते जोडा.";
+  return;
+ }
+ if(!Number.isFinite(amount)||amount<=0||!date){
+  document.getElementById("msg").textContent="योग्य तारीख आणि रक्कम भरा.";
+  return;
+ }
+
+ const txs=read(K.transactions,[]);
+ txs.push({
+  id:"RJKA-TX-"+Date.now(),
+  type:document.getElementById("type").value,
+  date:date,
+  amount:amount,
+  accountId:accountId,
+  category:document.getElementById("category").value,
+  note:document.getElementById("note").value.trim(),
+  createdAt:new Date().toISOString()
+ });
+
+ try{
+  save(K.transactions,txs);
+  document.getElementById("amount").value="";
+  document.getElementById("note").value="";
+  document.getElementById("msg").textContent="व्यवहार सेव्ह झाला.";
+  render();
+ }catch(err){
+  document.getElementById("msg").textContent="सेव्ह करताना त्रुटी: "+err.message;
+ }
+});
+
+try{init();fillAccounts();render();}
+catch(e){document.getElementById("msg").textContent="त्रुटी: "+e.message;}
+</script>
+</body>
+</html>
