@@ -147,21 +147,25 @@ function renderDashboard() {
     row.append(dot, name, amount); accountEl.append(row);
   });
 }
-function showPage(page) {
-  // Open completed modules as standalone pages; all pages share the RJKA_v1_* keys.
-  
-const moduleRoutes = Object.freeze({
+const moduleRoutes = {
   income: "income.html",
   expense: "expense.html",
   accounts: "account.html",
   transactions: "transactions.html",
   budgets: "budget.html"
-});
+};
 
+function showPage(page) {
   if (moduleRoutes[page]) {
-    window.location.href = moduleRoutes[page];
+    window.location.href = new URL(
+      moduleRoutes[page],
+      window.location.href
+    ).href;
     return;
   }
+
+  // उर्वरित विद्यमान showPage कोड तसाच ठेवा.
+}
   const dashboard = page === "dashboard";
   document.getElementById("dashboardPage").classList.toggle("active", dashboard);
   document.getElementById("modulePage").classList.toggle("active", !dashboard);
