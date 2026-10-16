@@ -398,9 +398,8 @@ const moduleRoutes = Object.freeze({
   accounts: "account.html",
   transactions: "transactions.html",
   budgets: "budget.html",
-  reports: "reports.html"
+  lending: "lending.html"
 });
-
 
 /* =========================================================
    SHOW PAGE - FIXED
