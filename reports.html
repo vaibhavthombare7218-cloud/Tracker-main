@@ -1,0 +1,934 @@
+
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#5b0b18">
+  <title>जमा खर्च अहवाल</title>
+
+  <style>
+    :root {
+      --maroon: #5b0b18;
+      --maroon-light: #821c2d;
+      --bg: #f5f3f3;
+      --card: #ffffff;
+      --text: #242424;
+      --muted: #666666;
+      --border: #e5dadd;
+      --green: #168447;
+      --red: #c62828;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, "Noto Sans Devanagari", sans-serif;
+    }
+
+    header {
+      background: var(--maroon);
+      color: white;
+      padding: 17px 15px;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-btn {
+      color: white;
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 12px;
+      margin: 7px 0 0 36px;
+      opacity: 0.9;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: auto;
+      padding: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px #0000000b;
+      border: 1px solid var(--border);
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input, select, button {
+      font: inherit;
+    }
+
+    input[type="month"],
+    input[type="date"],
+    select {
+      width: 100%;
+      min-height: 43px;
+      padding: 9px;
+      border: 1px solid #cfc5c8;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 11px 14px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .primary {
+      background: var(--maroon);
+      color: white;
+    }
+
+    .secondary {
+      background: #eee5e7;
+      color: var(--maroon);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .summary {
+      padding: 14px 10px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid var(--border);
+      min-width: 0;
+    }
+
+    .summary .label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 9px;
+    }
+
+    .summary .value {
+      font-size: 18px;
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+
+    .income {
+      color: var(--green);
+    }
+
+    .expense {
+      color: var(--red);
+    }
+
+    .balance {
+      color: var(--maroon);
+    }
+
+    h2 {
+      font-size: 17px;
+      margin: 0 0 14px;
+      color: var(--maroon);
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: white;
+    }
+
+    th, td {
+      border-bottom: 1px solid #eee5e7;
+      padding: 10px 8px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #f4e9eb;
+      color: var(--maroon);
+    }
+
+    td.amount {
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 22px 8px;
+    }
+
+    .notice {
+      background: #fff8e8;
+      color: #6b4c00;
+      border: 1px solid #f0dfad;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 13px;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .report-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin: -5px 0 12px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 10px 25px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 520px) {
+      main {
+        padding: 10px;
+      }
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-grid {
+        gap: 7px;
+      }
+
+      .summary {
+        padding: 11px 8px;
+      }
+
+      .summary .label {
+        font-size: 11px;
+      }
+
+      .summary .value {
+        font-size: 15px;
+      }
+
+      header h1 {
+        font-size: 18px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+
+      header {
+        background: white !important;
+        color: black !important;
+        padding: 5px 0 12px;
+        border-bottom: 2px solid #333;
+      }
+
+      header p {
+        color: black;
+      }
+
+      main {
+        max-width: none;
+        padding: 8px 0;
+      }
+
+      .no-print,
+      .filters-card,
+      footer {
+        display: none !important;
+      }
+
+      .card,
+      .summary {
+        box-shadow: none;
+        break-inside: avoid;
+        border: 1px solid #bbb;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .table-wrap {
+        overflow: visible;
+      }
+
+      table {
+        font-size: 10px;
+      }
+
+      th, td {
+        padding: 6px 4px;
+        white-space: normal;
+      }
+
+      h2 {
+        color: black;
+      }
+
+      .income, .expense, .balance {
+        color: black !important;
+      }
+
+      @page {
+        size: auto;
+        margin: 12mm;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-row">
+      <a class="back-btn no-print" href="index.html" aria-label="मुख्यपृष्ठ">‹</a>
+      <h1>जमा खर्च अहवाल</h1>
+    </div>
+    <p>महिन्यानुसार आणि आठवड्यानुसार संपूर्ण अहवाल</p>
+  </header>
+
+  <main>
+    <div id="notice" class="notice"></div>
+
+    <section class="card filters-card no-print">
+      <h2>अहवाल निवडा</h2>
+
+      <div class="filters">
+        <div>
+          <label for="reportType">अहवालाचा प्रकार</label>
+          <select id="reportType">
+            <option value="month">महिन्याचा अहवाल</option>
+            <option value="week">आठवड्याचा अहवाल</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="monthSelect">महिना</label>
+          <input type="month" id="monthSelect">
+        </div>
+      </div>
+
+      <div id="weekFilter" class="hidden" style="margin-top:12px">
+        <label for="weekSelect">आठवडा निवडा</label>
+        <select id="weekSelect"></select>
+      </div>
+
+      <div class="buttons">
+        <button class="primary" id="showBtn" type="button">
+          अहवाल दाखवा
+        </button>
+        <button class="secondary" id="printBtn" type="button">
+          प्रिंट / PDF
+        </button>
+        <button class="secondary" id="refreshBtn" type="button">
+          रिफ्रेश
+        </button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 id="reportTitle">महिन्याचा अहवाल</h2>
+      <p id="reportSubtitle" class="report-subtitle"></p>
+
+      <div class="summary-grid">
+        <div class="summary">
+          <div class="label">एकूण जमा</div>
+          <div id="totalIncome" class="value income">₹0.00</div>
+        </div>
+
+        <div class="summary">
+          <div class="label">एकूण खर्च</div>
+          <div id="totalExpense" class="value expense">₹0.00</div>
+        </div>
+
+        <div class="summary">
+          <div class="label">निव्वळ शिल्लक</div>
+          <div id="netBalance" class="value balance">₹0.00</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="weeklyCard" class="card">
+      <div class="section-heading">
+        <h2>आठवड्यानुसार सारांश</h2>
+      </div>
+
+      <p class="report-subtitle">
+        आठवड्याची सुरुवात सोमवारपासून आणि शेवट रविवारला.
+      </p>
+
+      <div id="weeklyTable" class="table-wrap"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-heading">
+        <h2>व्यवहारांचा तपशील</h2>
+        <span id="transactionCount" class="report-subtitle"></span>
+      </div>
+
+      <div id="transactionsTable" class="table-wrap"></div>
+    </section>
+  </main>
+
+  <footer>
+    रोजचा जमा खर्च अहवाल · RJKA_v1
+  </footer>
+
+  <script>
+    "use strict";
+
+    const KEYS = {
+      transactions: "RJKA_v1_transactions",
+      accounts: "RJKA_v1_accounts",
+      settings: "RJKA_v1_settings"
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    let currency = "₹";
+    let allTransactions = [];
+    let accountNames = {};
+
+    function readStorage(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (raw === null) return fallback;
+        return JSON.parse(raw);
+      } catch (error) {
+        console.error("Storage read error:", key, error);
+        return fallback;
+      }
+    }
+
+    function money(value) {
+      const amount = Number(value) || 0;
+      return currency + amount.toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function parseDate(value) {
+      if (!value) return null;
+
+      const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+      if (match) {
+        const year = Number(match[1]);
+        const month = Number(match[2]);
+        const day = Number(match[3]);
+        const date = new Date(year, month - 1, day);
+
+        if (
+          date.getFullYear() === year &&
+          date.getMonth() === month - 1 &&
+          date.getDate() === day
+        ) {
+          return date;
+        }
+
+        return null;
+      }
+
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return null;
+
+      return new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      );
+    }
+
+    function dateKey(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function formatDate(value) {
+      const date = parseDate(value);
+      if (!date) return String(value || "-");
+
+      return date.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
+    }
+
+    function formatRange(start, end) {
+      return formatDate(dateKey(start)) + " ते " +
+        formatDate(dateKey(end));
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function loadData() {
+      const transactions = readStorage(KEYS.transactions, []);
+      const accounts = readStorage(KEYS.accounts, []);
+      const settings = readStorage(KEYS.settings, {});
+
+      allTransactions = Array.isArray(transactions)
+        ? transactions
+        : [];
+
+      accountNames = {};
+
+      if (Array.isArray(accounts)) {
+        accounts.forEach((account) => {
+          if (account && account.id != null) {
+            accountNames[String(account.id)] = account.name || "-";
+          }
+        });
+      }
+
+      if (settings && typeof settings.currency === "string") {
+        currency = settings.currency;
+      } else {
+        currency = "₹";
+      }
+
+      $("notice").style.display = "none";
+
+      if (!Array.isArray(transactions)) {
+        showNotice(
+          "व्यवहारांचा डेटा अपेक्षित स्वरूपात नाही. व्यवहार पेजवरील डेटा तपासा."
+        );
+      }
+    }
+
+    function showNotice(message) {
+      $("notice").textContent = message;
+      $("notice").style.display = "block";
+    }
+
+    function validTransactions() {
+      return allTransactions
+        .filter((tx) => {
+          if (!tx || typeof tx !== "object") return false;
+          if (!parseDate(tx.date)) return false;
+
+          const type = String(tx.type || "").toLowerCase();
+          return type === "income" || type === "expense";
+        })
+        .map((tx) => ({
+          ...tx,
+          type: String(tx.type).toLowerCase(),
+          amount: Number(tx.amount) || 0
+        }))
+        .sort((a, b) => {
+          const dateCompare = String(b.date).localeCompare(String(a.date));
+          if (dateCompare !== 0) return dateCompare;
+
+          return String(b.createdAt || "").localeCompare(
+            String(a.createdAt || "")
+          );
+        });
+    }
+
+    function sumTransactions(transactions) {
+      let income = 0;
+      let expense = 0;
+
+      transactions.forEach((tx) => {
+        if (tx.type === "income") {
+          income += tx.amount;
+        } else if (tx.type === "expense") {
+          expense += tx.amount;
+        }
+      });
+
+      return {
+        income,
+        expense,
+        balance: income - expense,
+        count: transactions.length
+      };
+    }
+
+    function getSelectedMonth() {
+      const value = $("monthSelect").value;
+      if (!/^\d{4}-\d{2}$/.test(value)) return null;
+
+      const [year, month] = value.split("-").map(Number);
+
+      return {
+        year,
+        monthIndex: month - 1,
+        start: new Date(year, month - 1, 1),
+        end: new Date(year, month, 0)
+      };
+    }
+
+    function getMonthTransactions(monthInfo) {
+      if (!monthInfo) return [];
+
+      const first = dateKey(monthInfo.start);
+      const last = dateKey(monthInfo.end);
+
+      return validTransactions().filter((tx) => {
+        const key = String(tx.date).slice(0, 10);
+        return key >= first && key <= last;
+      });
+    }
+
+    function getWeeks(monthInfo) {
+      const weeks = [];
+      if (!monthInfo) return weeks;
+
+      let cursor = new Date(monthInfo.start);
+
+      while (cursor <= monthInfo.end) {
+        const weekStart = new Date(cursor);
+        const day = weekStart.getDay();
+
+        // सोमवार = 1; रविवार = 0
+        const daysSinceMonday = (day + 6) % 7;
+        weekStart.setDate(weekStart.getDate() - daysSinceMonday);
+
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekEnd.getDate() + 6);
+
+        const visibleStart = new Date(
+          Math.max(weekStart.getTime(), monthInfo.start.getTime())
+        );
+
+        const visibleEnd = new Date(
+          Math.min(weekEnd.getTime(), monthInfo.end.getTime())
+        );
+
+        const key = dateKey(visibleStart) + "_" + dateKey(visibleEnd);
+
+        if (!weeks.some((week) => week.key === key)) {
+          weeks.push({
+            key,
+            start: visibleStart,
+            end: visibleEnd,
+            fullStart: weekStart,
+            fullEnd: weekEnd
+          });
+        }
+
+        cursor = new Date(visibleEnd);
+        cursor.setDate(cursor.getDate() + 1);
+      }
+
+      return weeks;
+    }
+
+    function transactionsInRange(transactions, start, end) {
+      const first = dateKey(start);
+      const last = dateKey(end);
+
+      return transactions.filter((tx) => {
+        const key = String(tx.date).slice(0, 10);
+        return key >= first && key <= last;
+      });
+    }
+
+    function updateWeekOptions() {
+      const monthInfo = getSelectedMonth();
+      const weeks = getWeeks(monthInfo);
+      const select = $("weekSelect");
+      const oldValue = select.value;
+
+      select.innerHTML = "";
+
+      weeks.forEach((week, index) => {
+        const option = document.createElement("option");
+        option.value = week.key;
+        option.textContent =
+          "आठवडा " + (index + 1) + " (" +
+          formatRange(week.start, week.end) + ")";
+        select.appendChild(option);
+      });
+
+      if (weeks.some((week) => week.key === oldValue)) {
+        select.value = oldValue;
+      }
+
+      return weeks;
+    }
+
+    function renderSummary(summary) {
+      $("totalIncome").textContent = money(summary.income);
+      $("totalExpense").textContent = money(summary.expense);
+      $("netBalance").textContent = money(summary.balance);
+
+      $("netBalance").className =
+        "value " + (summary.balance < 0 ? "expense" : "balance");
+    }
+
+    function renderWeeklyTable(monthTransactions, monthInfo) {
+      const weeks = getWeeks(monthInfo);
+      const target = $("weeklyTable");
+
+      if (!weeks.length) {
+        target.innerHTML = '<div class="empty">आठवड्याचा डेटा उपलब्ध नाही.</div>';
+        return;
+      }
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>आठवडा</th>
+              <th>जमा</th>
+              <th>खर्च</th>
+              <th>शिल्लक</th>
+              <th>व्यवहार</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      weeks.forEach((week, index) => {
+        const weekTransactions = transactionsInRange(
+          monthTransactions,
+          week.start,
+          week.end
+        );
+
+        const summary = sumTransactions(weekTransactions);
+
+        html += `
+          <tr>
+            <td>
+              ${index + 1}<br>
+              <small>${escapeHTML(formatRange(week.start, week.end))}</small>
+            </td>
+            <td class="amount income">${escapeHTML(money(summary.income))}</td>
+            <td class="amount expense">${escapeHTML(money(summary.expense))}</td>
+            <td class="amount">${escapeHTML(money(summary.balance))}</td>
+            <td>${summary.count}</td>
+          </tr>
+        `;
+      });
+
+      html += "</tbody></table>";
+      target.innerHTML = html;
+    }
+
+    function renderTransactions(transactions) {
+      const target = $("transactionsTable");
+
+      $("transactionCount").textContent =
+        "एकूण " + transactions.length + " व्यवहार";
+
+      if (!transactions.length) {
+        target.innerHTML =
+          '<div class="empty">निवडलेल्या कालावधीत कोणतेही व्यवहार नाहीत.</div>';
+        return;
+      }
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>तारीख</th>
+              <th>प्रकार</th>
+              <th>तपशील</th>
+              <th>खाते</th>
+              <th>रक्कम</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      transactions.forEach((tx) => {
+        const isIncome = tx.type === "income";
+        const typeLabel = isIncome ? "जमा" : "खर्च";
+        const category = tx.category || "-";
+        const note = tx.note || "";
+        const detail = note
+          ? String(category) + " — " + String(note)
+          : String(category);
+
+        const accountId = tx.accountId == null
+          ? ""
+          : String(tx.accountId);
+
+        const accountName = accountNames[accountId] ||
+          (accountId ? accountId : "-");
+
+        html += `
+          <tr>
+            <td>${escapeHTML(formatDate(tx.date))}</td>
+            <td class="${isIncome ? "income" : "expense"}">
+              ${typeLabel}
+            </td>
+            <td>${escapeHTML(detail)}</td>
+            <td>${escapeHTML(accountName)}</td>
+            <td class="amount ${isIncome ? "income" : "expense"}">
+              ${escapeHTML(money(tx.amount))}
+            </td>
+          </tr>
+        `;
+      });
+
+      html += "</tbody></table>";
+      target.innerHTML = html;
+    }
+
+    function renderReport() {
+      loadData();
+
+      const monthInfo = getSelectedMonth();
+      if (!monthInfo) {
+        showNotice("कृपया अहवालासाठी महिना निवडा.");
+        return;
+      }
+
+      const type = $("reportType").value;
+      const monthTransactions = getMonthTransactions(monthInfo);
+      const weeks = updateWeekOptions();
+
+      let selectedTransactions = monthTransactions;
+
+      $("weeklyCard").classList.toggle("hidden", type === "week");
+
+      const monthLabel = monthInfo.start.toLocaleDateString("mr-IN", {
+        month: "long",
+        year: "numeric"
+      });
+
+      if (type === "month") {
+        $("reportTitle").textContent = "महिन्याचा अहवाल";
+        $("reportSubtitle").textContent = monthLabel;
+
+        renderSummary(sumTransactions(monthTransactions));
+        renderWeeklyTable(monthTransactions, monthInfo);
+      } else {
+        $("weekFilter").classList.remove("hidden");
+
+        const chosenKey = $("weekSelect").value;
+        const selectedWeek = weeks.find((week) => week.key === chosenKey)
+          || weeks[0];
+
+        if (!selectedWeek) {
+          selectedTransactions = [];
+          $("reportTitle").textContent = "आठवड्याचा अहवाल";
+          $("reportSubtitle").textContent = monthLabel;
+        } else {
+          selectedTransactions = transactionsInRange(
+            monthTransactions,
+            selectedWeek.start,
+            selectedWeek.end
+          );
+
+          $("reportTitle").textContent = "आठवड्याचा अहवाल";
+          $("reportSubtitle").textContent =
+            monthLabel + " · " +
+            formatRange(selectedWeek.start, selectedWeek.end);
+        }
+
+        renderSummary(sumTransactions(selectedTransactions));
+      }
+
+      renderTransactions(selectedTransactions);
+    }
+
+    function setDefaultMonth() {
+      const now = new Date();
+      $("monthSelect").value =
+        now.getFullYear() + "-" +
+        String(now.getMonth() + 1).padStart(2, "0");
+    }
+
+    $("reportType").addEventListener("change", () => {
+      const isWeek = $("reportType").value === "week";
+      $("weekFilter").classList.toggle("hidden", !isWeek);
+      renderReport();
+    });
+
+    $("monthSelect").addEventListener("change", renderReport);
+    $("weekSelect").addEventListener("change", renderReport);
+    $("showBtn").addEventListener("click", renderReport);
+
+    $("refreshBtn").addEventListener("click", () => {
+      renderReport();
+    });
+
+    $("printBtn").addEventListener("click", () => {
+      window.print();
+    });
+
+    setDefaultMonth();
+    renderReport();
+  </script>
+</body>
+</html>
