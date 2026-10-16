@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#5b0b18">
+  <title>कर्ज | जमा खर्च</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --maroon: #5b0b18;
+      --light: #fff5f6;
+      --border: #ead8dc;
+      --text: #282124;
+      --muted: #766b6e;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Arial, "Noto Sans Devanagari", sans-serif;
+      background: #f8f5f5;
+    }
+
+    .loan-wrap {
+      max-width: 900px;
+      margin: auto;
+      padding: 16px;
+    }
+
+    .loan-header {
+      background: var(--maroon);
+      color: white;
+      padding: 18px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+    }
+
+    .loan-header h1 { margin: 0 0 8px; font-size: 23px; }
+    .loan-header p { margin: 0; font-size: 14px; }
+
+    .loan-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .loan-btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .loan-primary { background: var(--maroon); color: white; }
+    .loan-secondary { background: white; color: var(--maroon); border: 1px solid var(--border); }
+
+    .loan-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .loan-stat, .loan-card, .loan-form-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .loan-stat small { display: block; color: var(--muted); margin-bottom: 8px; }
+    .loan-stat strong { font-size: 19px; overflow-wrap: anywhere; }
+    .loan-section-title { font-size: 18px; margin: 20px 0 12px; }
+    .loan-form-card { margin-bottom: 16px; }
+
+    .loan-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .loan-field { display: flex; flex-direction: column; gap: 6px; }
+    .loan-field label { font-size: 14px; font-weight: 600; }
+    .loan-field input, .loan-field select, .loan-field textarea {
+      width: 100%;
+      min-width: 0;
+      padding: 11px;
+      border: 1px solid #d8c9cc;
+      border-radius: 8px;
+      background: white;
+      font: inherit;
+    }
+
+    .loan-field textarea { resize: vertical; }
+    .loan-full { grid-column: 1 / -1; }
+    .loan-list { display: grid; gap: 12px; }
+
+    .loan-card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .loan-card h3 { margin: 0 0 7px; font-size: 17px; }
+    .loan-meta { color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .loan-badge {
+      display: inline-block;
+      padding: 5px 8px;
+      border-radius: 20px;
+      background: var(--light);
+      color: var(--maroon);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .loan-money-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 10px;
+      margin-top: 10px;
+      border-top: 1px solid #f0e5e7;
+      font-size: 14px;
+    }
+
+    .loan-card-buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .loan-empty { text-align: center; padding: 24px 12px; color: var(--muted); background: white; border-radius: 12px; }
+
+    @media (max-width: 540px) {
+      .loan-summary { grid-template-columns: 1fr; }
+      .loan-grid { grid-template-columns: 1fr; }
+      .loan-full { grid-column: auto; }
+      .loan-stat strong { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="loan-wrap">
+    <header class="loan-header">
+      <h1>💰 कर्ज व्यवस्थापन</h1>
+      <p>दिलेल्या व घेतलेल्या कर्जाची नोंद आणि परतफेड</p>
+    </header>
+
+    <div class="loan-actions">
+      <button class="loan-btn loan-secondary" id="homeBtn" type="button">← मुख्यपृष्ठ</button>
+      <button class="loan-btn loan-primary" id="showFormBtn" type="button">＋ नवीन कर्ज</button>
+    </div>
+
+    <section class="loan-summary">
+      <div class="loan-stat">
+        <small>दिलेल्या कर्जाची बाकी</small>
+        <strong id="givenOutstanding">₹0.00</strong>
+      </div>
+      <div class="loan-stat">
+        <small>घेतलेल्या कर्जाची बाकी</small>
+        <strong id="takenOutstanding">₹0.00</strong>
+      </div>
+      <div class="loan-stat">
+        <small>एकूण बाकी कर्ज</small>
+        <strong id="totalOutstanding">₹0.00</strong>
+      </div>
+    </section>
+
+    <section class="loan-form-card" id="loanFormSection" hidden>
+      <h2 class="loan-section-title" id="formTitle">नवीन कर्ज नोंदवा</h2>
+      <form id="loanForm">
+        <input type="hidden" id="loanId">
+
+        <div class="loan-grid">
+          <div class="loan-field">
+            <label for="loanType">कर्जाचा प्रकार *</label>
+            <select id="loanType" required>
+              <option value="given">मी दुसऱ्याला कर्ज दिले</option>
+              <option value="taken">मी दुसऱ्याकडून कर्ज घेतले</option>
+            </select>
+          </div>
+
+          <div class="loan-field">
+            <label for="loanPerson">व्यक्तीचे नाव *</label>
+            <input id="loanPerson" type="text" maxlength="100" required placeholder="व्यक्तीचे नाव">
+          </div>
+
+          <div class="loan-field">
+            <label for="loanAmount">मूळ कर्जाची रक्कम (₹) *</label>
+            <input id="loanAmount" type="number" min="0.01" max="1000000000" step="0.01" required placeholder="उदा. 10000">
+          </div>
+
+          <div class="loan-field">
+            <label for="loanDate">कर्जाची तारीख *</label>
+            <input id="loanDate" type="date" required>
+          </div>
+
+          <div class="loan-field loan-full">
+            <label for="loanNote">नोंद (ऐच्छिक)</label>
+            <textarea id="loanNote" rows="2" maxlength="500" placeholder="अतिरिक्त माहिती"></textarea>
+          </div>
+        </div>
+
+        <div class="loan-actions" style="margin-top:14px;margin-bottom:0">
+          <button class="loan-btn loan-primary" type="submit">नोंद सेव्ह करा</button>
+          <button class="loan-btn loan-secondary" id="cancelFormBtn" type="button">रद्द करा</button>
+        </div>
+      </form>
+    </section>
+
+    <h2 class="loan-section-title">परतफेड नोंदवा</h2>
+    <section class="loan-form-card">
+      <form id="repaymentForm">
+        <div class="loan-grid">
+          <div class="loan-field loan-full">
+            <label for="repaymentLoan">कर्जाची नोंद निवडा *</label>
+            <select id="repaymentLoan" required>
+              <option value="">कर्ज निवडा</option>
+            </select>
+          </div>
+          <div class="loan-field">
+            <label for="repaymentAmount">परतफेड रक्कम (₹) *</label>
+            <input id="repaymentAmount" type="number" min="0.01" max="1000000000" step="0.01" required placeholder="रक्कम">
+          </div>
+          <div class="loan-field">
+            <label for="repaymentDate">परतफेड तारीख *</label>
+            <input id="repaymentDate" type="date" required>
+          </div>
+          <div class="loan-field loan-full">
+            <label for="repaymentNote">परतफेडीची नोंद (ऐच्छिक)</label>
+            <input id="repaymentNote" type="text" maxlength="300" placeholder="उदा. UPI द्वारे">
+          </div>
+        </div>
+        <div class="loan-actions" style="margin-top:14px;margin-bottom:0">
+          <button class="loan-btn loan-primary" type="submit">परतफेड सेव्ह करा</button>
+        </div>
+      </form>
+    </section>
+
+    <h2 class="loan-section-title">कर्जाच्या नोंदी</h2>
+    <div class="loan-list" id="loanList"></div>
+  </main>
+
+  <script src="lending.js"></script>
+</body>
+</html>
