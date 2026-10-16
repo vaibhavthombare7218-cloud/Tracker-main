@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="mr">
 <head>
@@ -9,150 +10,251 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <header class="topbar">
-    <button class="icon-btn menu-toggle" id="menuToggle" aria-label="मेनू उघडा">☰</button>
     <div class="brand">
       <div class="brand-mark">₹</div>
-      <div><div class="brand-title">रोजचा जमा खर्च अहवाल</div><div class="brand-subtitle">वैयक्तिक आर्थिक व्यवस्थापन</div></div>
+      <div>
+        <div class="brand-title">रोजचा जमा खर्च अहवाल</div>
+        <div class="brand-subtitle">वैयक्तिक आर्थिक व्यवस्थापन</div>
+      </div>
     </div>
-    <button class="icon-btn" id="refreshBtn" title="रिफ्रेश" aria-label="रिफ्रेश">↻</button>
+
+    <button class="icon-btn" id="refreshBtn"
+      title="रिफ्रेश" aria-label="रिफ्रेश">↻</button>
   </header>
 
   <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-  
     <main class="main-content">
+
+      <!-- DASHBOARD -->
       <section id="dashboardPage" class="page active">
+
         <div class="page-heading">
-          <div><p class="eyebrow">OVERVIEW</p><h1>डॅशबोर्ड</h1><p class="muted">तुमच्या आर्थिक व्यवहारांचा आढावा</p></div>
-          <div class="month-select"><label for="dashboardMonth">महिना</label><input type="month" id="dashboardMonth"></div>
+          <div>
+            <p class="eyebrow">OVERVIEW</p>
+            <h1>डॅशबोर्ड</h1>
+            <p class="muted">तुमच्या आर्थिक व्यवहारांचा आढावा</p>
+          </div>
+
+          <div class="month-select">
+            <label for="dashboardMonth">महिना</label>
+            <input type="month" id="dashboardMonth">
+          </div>
         </div>
 
+        <!-- SUMMARY CARDS -->
         <div class="summary-grid">
-          <article class="summary-card balance-card"><div class="summary-label">एकूण शिल्लक</div><div class="summary-value" id="totalBalance">₹0.00</div><div class="summary-note">सर्व खात्यांमधील उपलब्ध शिल्लक</div></article>
-          <article class="summary-card"><div class="summary-label">या महिन्यातील जमा</div><div class="summary-value positive" id="monthIncome">₹0.00</div><div class="summary-note">निवडलेल्या महिन्यात</div></article>
-          <article class="summary-card"><div class="summary-label">या महिन्यातील खर्च</div><div class="summary-value negative" id="monthExpense">₹0.00</div><div class="summary-note">निवडलेल्या महिन्यात</div></article>
-          <article class="summary-card"><div class="summary-label">महिन्याची निव्वळ बचत</div><div class="summary-value" id="monthNet">₹0.00</div><div class="summary-note">जमा वजा खर्च</div></article>
+          <article class="summary-card balance-card">
+            <div class="summary-label">एकूण शिल्लक</div>
+            <div class="summary-value" id="totalBalance">₹0.00</div>
+            <div class="summary-note">सर्व खात्यांमधील उपलब्ध शिल्लक</div>
+          </article>
+
+          <article class="summary-card">
+            <div class="summary-label">या महिन्यातील जमा</div>
+            <div class="summary-value positive" id="monthIncome">₹0.00</div>
+            <div class="summary-note">निवडलेल्या महिन्यात</div>
+          </article>
+
+          <article class="summary-card">
+            <div class="summary-label">या महिन्यातील खर्च</div>
+            <div class="summary-value negative" id="monthExpense">₹0.00</div>
+            <div class="summary-note">निवडलेल्या महिन्यात</div>
+          </article>
+
+          <article class="summary-card">
+            <div class="summary-label">महिन्याची निव्वळ बचत</div>
+            <div class="summary-value" id="monthNet">₹0.00</div>
+            <div class="summary-note">जमा वजा खर्च</div>
+          </article>
         </div>
 
+        <!-- RECENT TRANSACTIONS AND ACCOUNTS -->
         <div class="content-grid">
           <article class="panel">
-            <div class="panel-heading"><div><h2>अलीकडील व्यवहार</h2><p class="muted">शेवटचे 5 व्यवहार</p></div><button class="text-btn" data-goto="transactions">सर्व पहा →</button></div>
-            <div id="recentTransactions" class="transaction-list"><div class="empty-state">अद्याप कोणतेही व्यवहार नाहीत.</div></div>
+            <div class="panel-heading">
+              <div>
+                <h2>अलीकडील व्यवहार</h2>
+                <p class="muted">शेवटचे 5 व्यवहार</p>
+              </div>
+              <button class="text-btn" data-goto="transactions">
+                सर्व पहा →
+              </button>
+            </div>
+
+            <div id="recentTransactions" class="transaction-list">
+              <div class="empty-state">अद्याप कोणतेही व्यवहार नाहीत.</div>
+            </div>
           </article>
+
           <article class="panel">
-            <div class="panel-heading"><div><h2>खात्यांचा सारांश</h2><p class="muted">खात्यानुसार शिल्लक</p></div><button class="text-btn" data-goto="accounts">खाती पहा →</button></div>
-            <div id="accountSummary" class="account-list"><div class="empty-state">खाती उपलब्ध नाहीत.</div></div>
+            <div class="panel-heading">
+              <div>
+                <h2>खात्यांचा सारांश</h2>
+                <p class="muted">खात्यानुसार शिल्लक</p>
+              </div>
+              <button class="text-btn" data-goto="accounts">
+                खाती पहा →
+              </button>
+            </div>
+
+            <div id="accountSummary" class="account-list">
+              <div class="empty-state">खाती उपलब्ध नाहीत.</div>
+            </div>
           </article>
         </div>
 
-        
-<section class="navigation-section" aria-labelledby="navigationTitle">
-  <div class="panel-heading navigation-heading">
-    <div>
-      <h2 id="navigationTitle">सर्व पर्याय</h2>
-      <p class="muted">हवे ते काम सुरू करण्यासाठी कार्ड निवडा</p>
-    </div>
-  </div>
+        <!-- NAVIGATION CARDS -->
+        <section class="navigation-section"
+          aria-labelledby="navigationTitle">
 
-  <div class="navigation-cards">
-    <button class="navigation-card home-card" data-goto="dashboard">
-      <span class="navigation-icon">⌂</span>
-      <span class="navigation-copy">
-        <b>मुख्यपृष्ठ</b><small>आर्थिक आढावा</small>
-      </span>
-      <span class="navigation-arrow">›</span>
-    </button>
+          <div class="panel-heading navigation-heading">
+            <div>
+              <h2 id="navigationTitle">सर्व पर्याय</h2>
+              <p class="muted">हवे ते काम सुरू करण्यासाठी कार्ड निवडा</p>
+            </div>
+          </div>
 
-    <button class="navigation-card" data-goto="income">
-      <span class="navigation-icon income-icon">＋</span>
-      <span class="navigation-copy">
-        <b>जमा</b><small>नवीन उत्पन्न नोंदवा</small>
-      </span>
-      <span class="navigation-arrow">›</span>
-    </button>
+          <div class="navigation-cards">
 
-    <button class="navigation-card" data-goto="expense">
-      <span class="navigation-icon expense-icon">－</span>
-      <span class="navigation-copy">
-        <b>खर्च</b><small>नवीन खर्च नोंदवा</small>
-      </span>
-      <span class="navigation-arrow">›</span>
-    </button>
+            <button class="navigation-card home-card"
+              data-goto="dashboard">
+              <span class="navigation-icon">⌂</span>
+              <span class="navigation-copy">
+                <b>मुख्यपृष्ठ</b>
+                <small>आर्थिक आढावा</small>
+              </span>
+              <span class="navigation-arrow">›</span>
+            </button>
 
-    <button class="navigation-card" data-goto="transactions">
-      <span class="navigation-icon">⇄</span>
-      <span class="navigation-copy">
-        <b>व्यवहार</b><small>जमा आणि खर्च नोंदी</small>
-      </span>
-      <span class="navigation-arrow">›</span>
-    </button>
+            <button class="navigation-card" data-goto="income">
+              <span class="navigation-icon income-icon">＋</span>
+              <span class="navigation-copy">
+                <b>जमा</b>
+                <small>नवीन उत्पन्न नोंदवा</small>
+              </span>
+              <span class="navigation-arrow">›</span>
+            </button>
 
-    <button class="navigation-card" data-goto="accounts">
-      <span class="navigation-icon">▣</span>
-      <span class="navigation-copy">
-        <b>खाती</b><small>UPI, Cash, Bank व इतर</small>
-      </span>
-      <span class="navigation-arrow">›</span>
-    </button>
+            <button class="navigation-card" data-goto="expense">
+              <span class="navigation-icon expense-icon">－</span>
+              <span class="navigation-copy">
+                <b>खर्च</b>
+                <small>नवीन खर्च नोंदवा</small>
+              </span>
+              <span class="navigation-arrow">›</span>
+            </button>
 
-    <button class="navigation-card" data-goto="budgets">
-      <span class="navigation-icon budget-icon">◷</span>
-      <span class="navigation-copy">
-        <b>बजेट</b><small>मासिक बजेट तपासा</small>
-      </span>
-      <span class="navigation-arrow">›</span>
-    </button>
+            <button class="navigation-card" data-goto="transactions">
+              <span class="navigation-icon">⇄</span>
+              <span class="navigation-copy">
+                <b>व्यवहार</b>
+                <small>जमा आणि खर्च नोंदी</small>
+              </span>
+              <span class="navigation-arrow">›</span>
+            </button>
 
-    <button class="navigation-card" data-goto="lending">
-      <span class="navigation-icon">⇆</span>
-      <span class="navigation-copy">
-        <b>कर्ज</b><small>कर्ज व परतफेड नोंदी</small>
-      </span>
-      <span class="navigation-arrow">›</span>
-    </button>
+            <button class="navigation-card" data-goto="accounts">
+              <span class="navigation-icon">▣</span>
+              <span class="navigation-copy">
+                <b>खाती</b>
+                <small>UPI, Cash, Bank व इतर</small>
+              </span>
+              <span class="navigation-arrow">›</span>
+            </button>
 
-    <button class="navigation-card" data-goto="workplan">
-      <span class="navigation-icon">☷</span>
-      <span class="navigation-copy">
-        <b>कामाचे नियोजन</b><small>दैनिक कामांची यादी</small>
-      </span>
-      <span class="navigation-arrow">›</span>
-    </button>
+            <button class="navigation-card" data-goto="budgets">
+              <span class="navigation-icon budget-icon">◷</span>
+              <span class="navigation-copy">
+                <b>बजेट</b>
+                <small>मासिक बजेट तपासा</small>
+              </span>
+              <span class="navigation-arrow">›</span>
+            </button>
 
-    <button class="navigation-card" data-goto="reports">
-      <span class="navigation-icon">▤</span>
-      <span class="navigation-copy">
-        <b>अहवाल</b><small>आर्थिक सारांश</small>
-      </span>
-      <span class="navigation-arrow">›</span>
-    </button>
+            <button class="navigation-card" data-goto="lending">
+              <span class="navigation-icon">⇆</span>
+              <span class="navigation-copy">
+                <b>कर्ज</b>
+                <small>कर्ज व परतफेड नोंदी</small>
+              </span>
+              <span class="navigation-arrow">›</span>
+            </button>
 
-    <button class="navigation-card" data-goto="settings">
-      <span class="navigation-icon">⚙</span>
-      <span class="navigation-copy">
-        <b>सेटिंग</b><small>अ‍ॅप सेटिंग्ज</small>
-      </span>
-      <span class="navigation-arrow">›</span>
-    </button>
-  </div>
-</section>
+            <button class="navigation-card" data-goto="workplan">
+              <span class="navigation-icon">☷</span>
+              <span class="navigation-copy">
+                <b>कामाचे नियोजन</b>
+                <small>दैनिक कामांची यादी</small>
+              </span>
+              <span class="navigation-arrow">›</span>
+            </button>
 
+            <button class="navigation-card" data-goto="reports">
+              <span class="navigation-icon">▤</span>
+              <span class="navigation-copy">
+                <b>अहवाल</b>
+                <small>आर्थिक सारांश</small>
+              </span>
+              <span class="navigation-arrow">›</span>
+            </button>
+
+            <button class="navigation-card" data-goto="settings">
+              <span class="navigation-icon">⚙</span>
+              <span class="navigation-copy">
+                <b>सेटिंग</b>
+                <small>अ‍ॅप सेटिंग्ज</small>
+              </span>
+              <span class="navigation-arrow">›</span>
+            </button>
+
+          </div>
+        </section>
+      </section>
+      <!-- DASHBOARD SECTION CLOSED -->
+
+      <!-- MODULE PAGE -->
       <section id="modulePage" class="page">
-        <div class="page-heading"><div><p class="eyebrow">RJKA PERSONAL FINANCE</p><h1 id="moduleTitle">मॉड्यूल</h1></div></div>
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">RJKA PERSONAL FINANCE</p>
+            <h1 id="moduleTitle">मॉड्यूल</h1>
+          </div>
+        </div>
+
         <article class="panel module-panel">
           <div class="module-symbol" id="moduleSymbol">⌁</div>
+
           <h2 id="moduleHeading">मॉड्यूल तयार होत आहे</h2>
-          <p id="moduleDescription" class="muted">या मॉड्यूलची कार्यक्षमता पुढील टप्प्यात जोडली जाईल.</p>
-          <div class="module-note"><b>Core Foundation तयार आहे.</b><br>या टप्प्यात अ‍ॅपचे मुख्य लेआउट, नेव्हिगेशन, डेटा स्टोरेज आणि डॅशबोर्डची मूलभूत रचना तयार केली आहे.</div>
-          <button class="primary-btn" data-goto="dashboard">डॅशबोर्डवर परत जा</button>
+
+          <p id="moduleDescription" class="muted">
+            या मॉड्यूलची कार्यक्षमता पुढील टप्प्यात जोडली जाईल.
+          </p>
+
+          <div class="module-note">
+            <b>Core Foundation तयार आहे.</b>
+            <br>
+            या टप्प्यात अ‍ॅपचे मुख्य लेआउट, नेव्हिगेशन,
+            डेटा स्टोरेज आणि डॅशबोर्डची मूलभूत रचना तयार केली आहे.
+          </div>
+
+          <button class="primary-btn" data-goto="dashboard">
+            डॅशबोर्डवर परत जा
+          </button>
         </article>
       </section>
 
-      <footer class="app-footer">रोजचा जमा खर्च अहवाल <span>•</span> Version 1.0.0 <span>•</span> Offline PWA</footer>
+      <footer class="app-footer">
+        रोजचा जमा खर्च अहवाल
+        <span>•</span> Version 1.0.0
+        <span>•</span> Offline PWA
+      </footer>
+
     </main>
   </div>
+
   <script src="app.js"></script>
 </body>
 </html>
