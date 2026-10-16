@@ -4,3 +4,130 @@
 @media(max-width:1100px){.summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.main-content{padding:25px 22px}.summary-value{font-size:23px}}
 @media(max-width:760px){.topbar{height:64px;padding:0 13px}.menu-toggle{display:block}.brand{gap:9px}.brand-mark{width:37px;height:37px;border-radius:11px;font-size:21px}.brand-title{font-size:13px}.brand-subtitle{font-size:9px}.app-shell{min-height:calc(100vh - 64px)}.sidebar{position:fixed;z-index:31;top:64px;bottom:0;left:0;width:270px;transform:translateX(-105%);transition:transform .22s ease;box-shadow:12px 0 30px #21040a1c}.sidebar.open{transform:translateX(0)}.sidebar-backdrop.show{display:block;position:fixed;inset:64px 0 0;background:#17030770;z-index:30}.main-content{padding:22px 14px 12px}.page-heading{align-items:flex-start;margin-bottom:17px}.page-heading h1{font-size:21px}.month-select{flex-direction:column;align-items:flex-end;gap:4px}.month-select input{max-width:145px;padding:8px}.summary-grid{gap:10px;margin-bottom:13px}.summary-card{padding:14px 12px;border-radius:12px}.summary-label{font-size:10px;margin-bottom:9px}.summary-value{font-size:20px}.summary-note{font-size:9px;line-height:1.5}.content-grid{grid-template-columns:1fr;gap:12px;margin-bottom:12px}.panel{padding:15px;border-radius:12px}.panel-heading h2{font-size:14px}.quick-actions{grid-template-columns:1fr;gap:8px}.quick-action{padding:10px}.module-panel{padding:38px 16px;margin:12px auto}.app-footer{font-size:9px}}
 @media(max-width:360px){.summary-value{font-size:17px}.brand-title{font-size:12px}.main-content{padding-left:10px;padding-right:10px}}
+
+/* RJKA_v1 - Home Cards Navigation */
+
+.navigation-section {
+  margin-bottom: 22px;
+}
+
+.navigation-heading {
+  margin-bottom: 12px;
+}
+
+.navigation-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.navigation-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  text-align: left;
+  color: var(--ink);
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform .15s ease, border-color .15s ease;
+}
+
+.navigation-card:hover {
+  border-color: #d5aeb5;
+  background: #fffafb;
+  transform: translateY(-2px);
+}
+
+.navigation-card:focus-visible {
+  outline: 2px solid #ead5d9;
+  outline-offset: 2px;
+}
+
+.navigation-card.home-card {
+  border-color: #d8b7bd;
+  background: #fffafb;
+}
+
+.navigation-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--maroon-soft);
+  color: var(--maroon);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.navigation-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.navigation-copy b {
+  display: block;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.navigation-copy small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+  margin-top: 3px;
+}
+
+.navigation-arrow {
+  font-size: 23px;
+  color: #a58a90;
+}
+
+@media (max-width: 1000px) {
+  .navigation-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .navigation-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .navigation-card {
+    gap: 9px;
+    padding: 12px 10px;
+    border-radius: 12px;
+  }
+
+  .navigation-icon {
+    flex-basis: 35px;
+    width: 35px;
+    height: 35px;
+    font-size: 19px;
+  }
+
+  .navigation-copy b {
+    font-size: 12px;
+  }
+
+  .navigation-copy small {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 360px) {
+  .navigation-cards {
+    grid-template-columns: 1fr;
+  }
+}
