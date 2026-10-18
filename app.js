@@ -400,6 +400,7 @@ const moduleRoutes = Object.freeze({
   budgets: "budget.html",
   lending: "lending.html",
   reports: "reports.html",
+settings: "settings.html",
   "monthly-summary": "monthly-summary.html"
 });
 
