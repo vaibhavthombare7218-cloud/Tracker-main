@@ -16,6 +16,7 @@ const APP_FILES = [
 "./expense.js",
 "./budget.html",
 "./reports.html",
+"./monthly-summary.html",
 "./budget.js"
 ];
 
