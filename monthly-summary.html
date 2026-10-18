@@ -3,322 +3,546 @@
 <html lang="mr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#5b0b18">
-  <title>महिन्याचा आर्थिक सारांश</title>
-  <link rel="stylesheet" href="style.css">
+  <title>महिन्यानुसार सारांश | RJKA_v1</title>
 
   <style>
+    :root {
+      --maroon: #5b0b18;
+      --bg: #f5f5f5;
+      --border: #e5e5e5;
+      --green: #147d42;
+      --red: #c62828;
+      --blue: #1756a9;
+    }
+
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background: #f8f5f5;
-      color: #282124;
-      font-family: Arial, sans-serif;
+      font-family: Arial, "Noto Sans Devanagari", sans-serif;
+      background: var(--bg);
+      color: #222;
     }
 
-    .wrap {
-      max-width: 850px;
+    header {
+      background: var(--maroon);
+      color: white;
+      padding: 16px;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-button {
+      color: white;
+      text-decoration: none;
+      font-size: 26px;
+      border: 1px solid #ffffff70;
+      border-radius: 8px;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 { font-size: 21px; margin: 0; }
+
+    header p {
+      font-size: 13px;
+      margin: 5px 0 0;
+    }
+
+    main {
+      max-width: 1100px;
       margin: auto;
       padding: 16px;
     }
 
-    .header {
-      background: #5b0b18;
-      color: white;
-      padding: 20px;
-      border-radius: 12px;
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-bottom: 16px;
     }
 
-    .header a {
-      color: white;
-      text-decoration: none;
-    }
-
-    .header h1 {
-      font-size: 22px;
-      margin: 14px 0 6px;
-    }
-
-    .panel, .stat {
-      background: white;
-      border: 1px solid #ead8dc;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 14px;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    input, button { font: inherit; }
-
-    input[type="month"] {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d8c9cc;
-      border-radius: 8px;
-      background: white;
-      min-height: 44px;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
+    .toolbar h2 {
+      margin: 0;
+      font-size: 19px;
     }
 
     button {
-      padding: 11px 14px;
       border: 0;
+      padding: 11px 15px;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    .primary {
-      background: #5b0b18;
+    .print-button {
+      background: var(--maroon);
       color: white;
     }
 
-    .secondary {
-      background: #f1e6e8;
-      color: #5b0b18;
+    .refresh-button {
+      background: #e8e8e8;
+      color: #222;
     }
 
-    .grid {
+    .summary-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
+      margin-bottom: 20px;
     }
 
-    .stat { margin: 0; }
-
-    .stat span {
-      display: block;
-      color: #766b6e;
-      font-size: 14px;
-      margin-bottom: 12px;
+    .summary-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      min-width: 0;
     }
 
-    .stat strong {
-      font-size: 25px;
+    .label {
+      color: #666;
+      font-size: 13px;
+      margin-bottom: 9px;
+    }
+
+    .amount {
+      font-size: 21px;
+      font-weight: bold;
       overflow-wrap: anywhere;
     }
 
-    .income { color: #168447; }
-    .expense { color: #c62828; }
-    .loan { color: #5b0b18; }
+    .income { color: var(--green); }
+    .expense { color: var(--red); }
+    .loan { color: var(--blue); }
+    .savings { color: var(--maroon); }
+
+    .table-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .table-heading {
+      padding: 16px;
+      font-size: 17px;
+      font-weight: bold;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 13px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #f8f0f2;
+      color: var(--maroon);
+    }
+
+    tfoot td {
+      background: #fafafa;
+      font-weight: bold;
+      border-top: 2px solid var(--border);
+    }
+
+    .month-name { font-weight: bold; }
+
+    .empty {
+      text-align: center;
+      padding: 25px;
+      color: #666;
+    }
 
     .note {
-      font-size: 12px;
-      line-height: 1.6;
-      color: #766b6e;
+      margin-top: 14px;
+      padding: 13px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.8;
     }
 
-    #periodLabel {
-      font-size: 14px;
-      color: #766b6e;
+    .error {
+      display: none;
+      background: #fff0f0;
+      color: #a40000;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
     }
 
-    @media (min-width: 560px) {
-      .grid { grid-template-columns: 1fr 1fr; }
-      .stat:last-child { grid-column: 1 / -1; }
+    @media (max-width: 800px) {
+      .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 480px) {
+      main { padding: 12px; }
+      h1 { font-size: 18px; }
+      .summary-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .summary-card { padding: 12px; }
+      .amount { font-size: 17px; }
+      .toolbar h2 { width: 100%; }
     }
 
     @media print {
+      @page { size: A4 landscape; margin: 10mm; }
+
       body { background: white; }
-      .wrap { max-width: none; padding: 0; }
-      .header {
+
+      header {
         background: white !important;
-        color: black;
-        border-bottom: 2px solid #333;
-        border-radius: 0;
+        color: black !important;
+        padding: 0 0 12px;
+        border-bottom: 2px solid var(--maroon);
       }
-      .header a, .no-print { display: none !important; }
-      .income, .expense, .loan { color: black !important; }
-      .panel, .stat { break-inside: avoid; }
+
+      .back-button, .toolbar button { display: none !important; }
+
+      main { max-width: none; padding: 12px 0; }
+
+      .summary-grid { grid-template-columns: repeat(4, 1fr); }
+
+      .table-wrap { overflow: visible; }
+
+      table { min-width: 0; }
+
+      th, td {
+        white-space: normal;
+        font-size: 10px;
+        padding: 8px;
+      }
+
+      .summary-card, .table-card, .note { break-inside: avoid; }
     }
   </style>
 </head>
 
 <body>
-<div class="wrap">
-
-  <header class="header">
-    <a class="no-print" href="index.html">
-      ‹ मुख्यपृष्ठावर परत
-    </a>
-    <h1>महिन्याचा आर्थिक सारांश</h1>
-    <div>जमा, खर्च आणि कर्जाचा मासिक आढावा</div>
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="back-button" aria-label="मागे जा">‹</a>
+      <div>
+        <h1>महिन्यानुसार सारांश</h1>
+        <p>रोजचा जमा खर्च अहवाल · RJKA_v1</p>
+      </div>
+    </div>
   </header>
 
-  <section class="panel no-print">
-    <label for="monthSelect">महिना निवडा</label>
-    <input type="month" id="monthSelect">
-
-    <div class="actions">
-      <button id="showBtn" class="primary" type="button">
-        अहवाल दाखवा
-      </button>
-      <button id="printBtn" class="secondary" type="button">
-        प्रिंट / PDF
-      </button>
-      <button id="refreshBtn" class="secondary" type="button">
-        रिफ्रेश
-      </button>
+  <main>
+    <div class="toolbar">
+      <h2>आर्थिक सारांश</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="refresh-button" id="refreshBtn" type="button">↻ Refresh</button>
+        <button class="print-button" id="printBtn" type="button">Print / Save PDF</button>
+      </div>
     </div>
-  </section>
 
-  <p id="periodLabel"></p>
+    <div class="error" id="errorBox" role="alert"></div>
 
-  <section class="grid">
+    <section class="summary-grid">
+      <div class="summary-card">
+        <div class="label">एकूण जमा</div>
+        <div class="amount income" id="totalIncome">₹0.00</div>
+      </div>
 
-    <article class="stat">
-      <span>महिन्याचा एकूण जमा</span>
-      <strong id="incomeTotal" class="income">₹0.00</strong>
-      <p class="note">
-        निवडलेल्या महिन्यातील सर्व जमा व्यवहार.
-      </p>
-    </article>
+      <div class="summary-card">
+        <div class="label">एकूण खर्च</div>
+        <div class="amount expense" id="totalExpense">₹0.00</div>
+      </div>
 
-    <article class="stat">
-      <span>महिन्याचा एकूण खर्च</span>
-      <strong id="expenseTotal" class="expense">₹0.00</strong>
-      <p class="note">
-        निवडलेल्या महिन्यातील सर्व खर्च व्यवहार.
-      </p>
-    </article>
+      <div class="summary-card">
+        <div class="label">एकूण घेतलेले कर्ज</div>
+        <div class="amount loan" id="totalLoan">₹0.00</div>
+      </div>
 
-    <article class="stat">
-      <span>महिन्याचे एकूण कर्ज</span>
-      <strong id="loanTotal" class="loan">₹0.00</strong>
-      <p class="note">
-        त्या महिन्यात घेतलेल्या कर्जाची एकूण मूळ रक्कम.
-        परतफेड वजा केलेली नाही.
-      </p>
-    </article>
+      <div class="summary-card">
+        <div class="label">एकूण बचत</div>
+        <div class="amount savings" id="totalSavings">₹0.00</div>
+      </div>
+    </section>
 
-  </section>
-</div>
+    <section class="table-card">
+      <div class="table-heading">
+        महिन्यानुसार जमा, खर्च, घेतलेले कर्ज आणि बचत
+      </div>
 
-<script>
-"use strict";
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>अ. क्र.</th>
+              <th>महिना</th>
+              <th>एकूण जमा</th>
+              <th>एकूण खर्च</th>
+              <th>घेतलेले कर्ज</th>
+              <th>महिन्याची बचत</th>
+            </tr>
+          </thead>
 
-(function () {
-  const $ = id => document.getElementById(id);
+          <tbody id="summaryBody">
+            <tr>
+              <td colspan="6" class="empty">सारांश लोड होत आहे...</td>
+            </tr>
+          </tbody>
 
-  function currentMonth() {
-    const d = new Date();
-    return d.getFullYear() + "-" +
-      String(d.getMonth() + 1).padStart(2, "0");
-  }
+          <tfoot id="summaryFoot"></tfoot>
+        </table>
+      </div>
+    </section>
 
-  function readData(key) {
-    try {
-      const value = JSON.parse(
-        localStorage.getItem(key) || "[]"
-      );
-      return Array.isArray(value) ? value : [];
-    } catch (error) {
-      console.error("Data read error:", key, error);
-      return [];
-    }
-  }
+    <div class="note">
+      <strong>बचतीचे गणित:</strong> महिन्याचा एकूण जमा − महिन्याचा एकूण खर्च.<br>
+      <strong>कर्ज:</strong> फक्त नवीन घेतलेल्या कर्जाची रक्कम दाखवली जाईल.
+      कर्जाची परतफेड बचतीतून वजा केली जाणार नाही आणि कर्ज बचतीत जोडले जाणार नाही.
+    </div>
+  </main>
 
-  function getCurrency() {
-    try {
-      const settings = JSON.parse(
-        localStorage.getItem("RJKA_v1_settings") || "{}"
-      );
-      return settings.currency || "₹";
-    } catch (error) {
-      return "₹";
-    }
-  }
+  <script>
+    "use strict";
 
-  function money(amount) {
-    return getCurrency() +
-      Number(amount || 0).toLocaleString("en-IN", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-  }
+    const TRANSACTIONS_KEY = "RJKA_v1_transactions";
+    const LENDING_KEY = "RJKA_v1_lending";
 
-  function renderReport() {
-    const month = $("monthSelect").value;
-
-    if (!/^\d{4}-\d{2}$/.test(month)) {
-      $("periodLabel").textContent = "कृपया महिना निवडा.";
-      return;
-    }
-
-    const transactions = readData("RJKA_v1_transactions")
-      .filter(tx =>
-        String(tx.date || "").slice(0, 7) === month
-      );
-
-    const income = transactions
-      .filter(tx =>
-        String(tx.type || "").toLowerCase() === "income"
-      )
-      .reduce((sum, tx) =>
-        sum + (Number(tx.amount) || 0), 0
-      );
-
-    const expense = transactions
-      .filter(tx =>
-        String(tx.type || "").toLowerCase() === "expense"
-      )
-      .reduce((sum, tx) =>
-        sum + (Number(tx.amount) || 0), 0
-      );
-
-    const loans = readData("RJKA_v1_lending")
-      .filter(loan =>
-        loan &&
-        loan.type === "taken" &&
-        String(loan.date || "").slice(0, 7) === month
-      )
-      .reduce((sum, loan) =>
-        sum + (Number(loan.amount) || 0), 0
-      );
-
-    const parts = month.split("-").map(Number);
-
-    const monthLabel = new Date(
-      parts[0], parts[1] - 1, 1
-    ).toLocaleDateString("mr-IN", {
+    const monthFormatter = new Intl.DateTimeFormat("mr-IN", {
       month: "long",
       year: "numeric"
     });
 
-    $("periodLabel").textContent =
-      "निवडलेला महिना: " + monthLabel;
+    const moneyFormatter = new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
 
-    $("incomeTotal").textContent = money(income);
-    $("expenseTotal").textContent = money(expense);
-    $("loanTotal").textContent = money(loans);
-  }
+    function readStorage(key) {
+      const raw = localStorage.getItem(key);
+      if (!raw) return [];
 
-  $("monthSelect").value = currentMonth();
+      const data = JSON.parse(raw);
 
-  $("showBtn").addEventListener("click", renderReport);
-  $("monthSelect").addEventListener("change", renderReport);
-  $("refreshBtn").addEventListener("click", renderReport);
+      if (Array.isArray(data)) return data;
+      if (data && Array.isArray(data.items)) return data.items;
+      if (data && Array.isArray(data.transactions)) return data.transactions;
+      if (data && Array.isArray(data.loans)) return data.loans;
 
-  $("printBtn").addEventListener("click", function () {
-    window.print();
-  });
+      return [];
+    }
 
-  renderReport();
-})();
-</script>
+    function parseAmount(value) {
+      const amount = Number(value);
+      return Number.isFinite(amount) && amount > 0 ? amount : 0;
+    }
+
+    function parseDate(value) {
+      if (!value) return null;
+
+      const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+      if (match) {
+        const year = Number(match[1]);
+        const month = Number(match[2]);
+        const day = Number(match[3]);
+        const date = new Date(year, month - 1, day);
+
+        if (
+          date.getFullYear() !== year ||
+          date.getMonth() !== month - 1 ||
+          date.getDate() !== day
+        ) return null;
+
+        return date;
+      }
+
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    function monthKey(date) {
+      return date.getFullYear() + "-" +
+        String(date.getMonth() + 1).padStart(2, "0");
+    }
+
+    function monthLabel(key) {
+      const parts = key.split("-");
+      return monthFormatter.format(
+        new Date(Number(parts[0]), Number(parts[1]) - 1, 1)
+      );
+    }
+
+    function money(amount) {
+      return moneyFormatter.format(amount);
+    }
+
+    function showError(message) {
+      const box = document.getElementById("errorBox");
+      box.textContent = message;
+      box.style.display = "block";
+    }
+
+    function renderSummary() {
+      document.getElementById("errorBox").style.display = "none";
+
+      let transactions;
+      let loans;
+
+      try {
+        transactions = readStorage(TRANSACTIONS_KEY);
+        loans = readStorage(LENDING_KEY);
+      } catch (error) {
+        showError("डेटा वाचता आला नाही. Storage मधील माहिती तपासा.");
+        console.error(error);
+        return;
+      }
+
+      const monthly = {};
+
+      function ensureMonth(key) {
+        if (!monthly[key]) {
+          monthly[key] = { income: 0, expense: 0, loan: 0 };
+        }
+        return monthly[key];
+      }
+
+      // जमा आणि खर्च
+      transactions.forEach(function (item) {
+        const date = parseDate(item.date);
+        if (!date) return;
+
+        const type = String(item.type || item.transactionType || "")
+          .trim().toLowerCase();
+
+        const amount = parseAmount(item.amount);
+        const row = ensureMonth(monthKey(date));
+
+        if (["income", "जमा", "उत्पन्न"].includes(type)) {
+          row.income += amount;
+        } else if (["expense", "खर्च"].includes(type)) {
+          row.expense += amount;
+        }
+      });
+
+      // फक्त घेतलेले कर्ज; परतफेड वजा करू नका.
+      loans.forEach(function (item) {
+        if (String(item.type || "").trim().toLowerCase() !== "taken") {
+          return;
+        }
+
+        const date = parseDate(item.date);
+        if (!date) return;
+
+        ensureMonth(monthKey(date)).loan += parseAmount(item.amount);
+      });
+
+      const keys = Object.keys(monthly).sort(function (a, b) {
+        return b.localeCompare(a);
+      });
+
+      let totalIncome = 0;
+      let totalExpense = 0;
+      let totalLoan = 0;
+
+      keys.forEach(function (key) {
+        totalIncome += monthly[key].income;
+        totalExpense += monthly[key].expense;
+        totalLoan += monthly[key].loan;
+      });
+
+      const totalSavings = totalIncome - totalExpense;
+
+      document.getElementById("totalIncome").textContent = money(totalIncome);
+      document.getElementById("totalExpense").textContent = money(totalExpense);
+      document.getElementById("totalLoan").textContent = money(totalLoan);
+      document.getElementById("totalSavings").textContent = money(totalSavings);
+
+      const body = document.getElementById("summaryBody");
+      const foot = document.getElementById("summaryFoot");
+
+      if (keys.length === 0) {
+        body.innerHTML =
+          '<tr><td colspan="6" class="empty">' +
+          'अजून कोणतीही जमा, खर्च किंवा कर्जाची नोंद उपलब्ध नाही.' +
+          '</td></tr>';
+        foot.innerHTML = "";
+        return;
+      }
+
+      body.innerHTML = keys.map(function (key, index) {
+        const row = monthly[key];
+        const savings = row.income - row.expense;
+
+        return `
+          <tr>
+            <td>${index + 1}</td>
+            <td class="month-name">${monthLabel(key)}</td>
+            <td class="income">${money(row.income)}</td>
+            <td class="expense">${money(row.expense)}</td>
+            <td class="loan">${money(row.loan)}</td>
+            <td class="${savings >= 0 ? "income" : "expense"}">
+              ${money(savings)}
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      foot.innerHTML = `
+        <tr>
+          <td colspan="2">एकूण</td>
+          <td class="income">${money(totalIncome)}</td>
+          <td class="expense">${money(totalExpense)}</td>
+          <td class="loan">${money(totalLoan)}</td>
+          <td class="${totalSavings >= 0 ? "income" : "expense"}">
+            ${money(totalSavings)}
+          </td>
+        </tr>
+      `;
+    }
+
+    document.getElementById("refreshBtn").addEventListener(
+      "click", renderSummary
+    );
+
+    document.getElementById("printBtn").addEventListener(
+      "click", function () { window.print(); }
+    );
+
+    window.addEventListener("pageshow", renderSummary);
+
+    window.addEventListener("storage", function (event) {
+      if (
+        event.key === TRANSACTIONS_KEY ||
+        event.key === LENDING_KEY
+      ) renderSummary();
+    });
+
+    renderSummary();
+  </script>
 </body>
 </html>
