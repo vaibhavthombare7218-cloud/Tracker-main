@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#5b0b18">
+  <title>सेटिंग्ज | रोजचा जमा खर्च अहवाल</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      background: #f7f3f4;
+      color: #222;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: #5b0b18;
+      color: white;
+      padding: 18px 15px;
+    }
+
+    header h2 {
+      margin: 0 0 6px;
+      font-size: 21px;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    main {
+      max-width: 650px;
+      margin: auto;
+      padding: 15px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 7px #0000000d;
+    }
+
+    .section h3 {
+      color: #5b0b18;
+      margin: 0 0 14px;
+      font-size: 17px;
+    }
+
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .setting-row:last-child {
+      border-bottom: none;
+    }
+
+    .setting-row label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    select, input {
+      max-width: 48%;
+      padding: 9px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      background: white;
+      font-size: 14px;
+    }
+
+    button, .action-link {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #5b0b18;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #eee5e7;
+      color: #5b0b18;
+    }
+
+    .note {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #666;
+    }
+
+    .status {
+      font-size: 13px;
+      overflow-wrap: anywhere;
+      margin-top: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 15px 25px;
+      color: #777;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>⚙️ सेटिंग्ज</h2>
+  <p>रोजचा जमा खर्च अहवाल</p>
+</header>
+
+<main>
+  <section class="section">
+    <h3>⚙️ सामान्य सेटिंग्ज</h3>
+
+    <div class="setting-row">
+      <label for="currency">चलन</label>
+      <select id="currency">
+        <option value="₹">₹ भारतीय रुपये</option>
+      </select>
+    </div>
+
+    <div class="setting-row">
+      <label for="weekStart">आठवड्याचा पहिला दिवस</label>
+      <select id="weekStart">
+        <option value="monday">सोमवार</option>
+        <option value="sunday">रविवार</option>
+      </select>
+    </div>
+
+    <div class="setting-row">
+      <label for="fyMonth">आर्थिक वर्ष सुरू होण्याचा महिना</label>
+      <select id="fyMonth">
+        <option value="1">जानेवारी</option>
+        <option value="4">एप्रिल</option>
+        <option value="7">जुलै</option>
+        <option value="10">ऑक्टोबर</option>
+      </select>
+    </div>
+
+    <button id="saveSettings">सेटिंग्ज सेव्ह करा</button>
+    <p class="status" id="settingsStatus" aria-live="polite"></p>
+  </section>
+
+  <section class="section">
+    <h3>💳 खाते व्यवस्थापन</h3>
+    <p class="note">
+      UPI, Cash आणि Bank ही खाती अ‍ॅपमध्ये सुरुवातीपासून उपलब्ध असतील.
+      खाती व्यवस्थापित करण्यासाठी खालील पर्याय वापरा.
+    </p>
+    <a class="action-link" href="accounts.html">खाते व्यवस्थापन उघडा</a>
+  </section>
+
+  <section class="section">
+    <h3>🏷️ जमा व खर्चाच्या श्रेणी</h3>
+    <p class="note">
+      किराणा, प्रवास, औषधे, लाईट बिल, EMI आणि इतर खर्चांच्या श्रेणी
+      व्यवस्थापित करण्याची सुविधा पुढील टप्प्यात जोडता येईल.
+    </p>
+  </section>
+
+  <section class="section">
+    <h3>📦 डेटा बॅकअप व रिस्टोअर</h3>
+    <p class="note">
+      बॅकअपमध्ये जमा-खर्च व्यवहार, खाती, बजेट, कर्ज, कामाचे नियोजन
+      आणि सेटिंग्ज यांचा समावेश असावा.
+    </p>
+
+    <button id="backupBtn">बॅकअप डाउनलोड करा (JSON)</button>
+
+    <label for="restoreFile" style="display:block;margin-top:16px;font-size:14px;">
+      बॅकअप फाइलमधून डेटा रिस्टोअर करा
+    </label>
+    <input id="restoreFile" type="file" accept=".json,application/json"
+      style="max-width:100%;width:100%;box-sizing:border-box;margin-top:8px;">
+
+    <button id="restoreBtn" class="secondary">डेटा रिस्टोअर करा</button>
+    <p class="note">
+      रिस्टोअर करण्यापूर्वी सध्याच्या डेटाचा बॅकअप घ्या.
+      चुकीची फाइल निवडल्यास डेटा बदलू शकतो.
+    </p>
+    <p class="status" id="backupStatus" aria-live="polite"></p>
+  </section>
+
+  <section class="section">
+    <h3>📄 अहवाल व एक्सपोर्ट</h3>
+    <button id="printBtn">या पेजची प्रिंट / PDF</button>
+    <p class="note">
+      व्यवहार, बजेट आणि अहवालांसाठी संबंधित पेजवरील एक्सपोर्ट सुविधा वापरा.
+    </p>
+  </section>
+
+  <section class="section">
+    <h3>ℹ️ अ‍ॅपची माहिती</h3>
+    <div class="setting-row">
+      <label>अ‍ॅपचे नाव</label>
+      <span>जमा खर्च</span>
+    </div>
+    <div class="setting-row">
+      <label>आवृत्ती</label>
+      <span>1.0.0</span>
+    </div>
+    <p class="note">
+      हे ऑफलाइन वापरासाठी बनवलेले वैयक्तिक जमा-खर्च व्यवस्थापन अ‍ॅप आहे.
+    </p>
+  </section>
+
+  <a class="action-link" href="index.html">← मुख्यपृष्ठावर परत जा</a>
+</main>
+
+<footer>RJKA_v1 · आवृत्ती 1.0.0</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  const SETTINGS_KEY = "RJKA_v1_settings";
+
+  const DATA_KEYS = [
+    "RJKA_v1_transactions",
+    "RJKA_v1_accounts",
+    "RJKA_v1_budgets",
+    "RJKA_v1_lending",
+    "RJKA_v1_workplan",
+    "RJKA_v1_settings"
+  ];
+
+  const $ = id => document.getElementById(id);
+
+  function readSettings() {
+    try {
+      const value = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
+      return value && typeof value === "object" && !Array.isArray(value)
+        ? value : {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function showSettings() {
+    const settings = readSettings();
+
+    $("currency").value = settings.currency || "₹";
+    $("weekStart").value = settings.firstDayOfWeek || "monday";
+    $("fyMonth").value = String(settings.financialYearStartMonth || 4);
+  }
+
+  $("saveSettings").addEventListener("click", function () {
+    const settings = readSettings();
+
+    settings.currency = $("currency").value;
+    settings.firstDayOfWeek = $("weekStart").value;
+    settings.financialYearStartMonth = Number($("fyMonth").value);
+
+    try {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+      $("settingsStatus").textContent = "सेटिंग्ज सेव्ह झाल्या.";
+    } catch (error) {
+      $("settingsStatus").textContent =
+        "सेटिंग्ज सेव्ह करता आल्या नाहीत. ब्राउझर स्टोरेज तपासा.";
+    }
+  });
+
+  $("backupBtn").addEventListener("click", function () {
+    const backup = {
+      app: "RJKA_v1",
+      version: "1.0.0",
+      createdAt: new Date().toISOString(),
+      data: {}
+    };
+
+    DATA_KEYS.forEach(key => {
+      const value = localStorage.getItem(key);
+      if (value !== null) {
+        try {
+          backup.data[key] = JSON.parse(value);
+        } catch (error) {
+          backup.data[key] = value;
+        }
+      }
+    });
+
+    const blob = new Blob(
+      [JSON.stringify(backup, null, 2)],
+      { type: "application/json;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "RJKA_v1_backup_" +
+      new Date().toISOString().slice(0, 10) + ".json";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+
+    $("backupStatus").textContent = "बॅकअप फाइल डाउनलोड करण्याची विनंती केली आहे.";
+  });
+
+  $("restoreBtn").addEventListener("click", async function () {
+    const file = $("restoreFile").files[0];
+
+    if (!file) {
+      $("backupStatus").textContent = "कृपया JSON बॅकअप फाइल निवडा.";
+      return;
+    }
+
+    if (!confirm(
+      "रिस्टोअर केल्यावर निवडलेल्या RJKA_v1 डेटाच्या नोंदी बदलल्या जाऊ शकतात. आधी बॅकअप घेतला आहे का?"
+    )) {
+      return;
+    }
+
+    try {
+      const backup = JSON.parse(await file.text());
+
+      if (
+        !backup ||
+        backup.app !== "RJKA_v1" ||
+        !backup.data ||
+        typeof backup.data !== "object" ||
+        Array.isArray(backup.data)
+      ) {
+        throw new Error("invalid backup");
+      }
+
+      const entries = Object.entries(backup.data);
+
+      if (!entries.length || entries.some(([key, value]) =>
+        !DATA_KEYS.includes(key) ||
+        (value !== null && typeof value === "object" &&
+          !Array.isArray(value) &&
+          Object.keys(value).some(k => k === "__proto__"))
+      )) {
+        throw new Error("invalid keys");
+      }
+
+      // Validate everything before changing any stored data.
+      const prepared = entries.map(([key, value]) => [
+        key, JSON.stringify(value)
+      ]);
+
+      // Preserve the current values so a failed write can be rolled back.
+      const previous = new Map(
+        prepared.map(([key]) => [key, localStorage.getItem(key)])
+      );
+
+      try {
+        prepared.forEach(([key, value]) =>
+          localStorage.setItem(key, value)
+        );
+      } catch (error) {
+        previous.forEach((value, key) => {
+          if (value === null) localStorage.removeItem(key);
+          else localStorage.setItem(key, value);
+        });
+        throw error;
+      }
+
+      $("backupStatus").textContent =
+        "डेटा रिस्टोअर झाला. कृपया अ‍ॅप पुन्हा उघडा.";
+      showSettings();
+    } catch (error) {
+      $("backupStatus").textContent =
+        "रिस्टोअर अयशस्वी. योग्य RJKA_v1 JSON बॅकअप फाइल वापरा.";
+    }
+  });
+
+  $("printBtn").addEventListener("click", function () {
+    window.print();
+  });
+
+  showSettings();
+})();
+</script>
+
+</body>
+</html>
