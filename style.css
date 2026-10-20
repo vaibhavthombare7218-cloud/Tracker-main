@@ -131,3 +131,38 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* RJKA_v1 - Navigation Link Formatting Fix */
+a,
+a:visited,
+a:hover,
+a:active {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Back button */
+.back-btn {
+    color: #ffffff !important;
+    background-color: #5b0b18;
+    text-decoration: none !important;
+}
+
+/* Index / Home reference */
+.index-link,
+.home-link {
+    color: #5b0b18 !important;
+    text-decoration: none !important;
+    font-weight: 600;
+}
+
+/* Buttons and navigation */
+button,
+.btn {
+    text-decoration: none;
+}
+
+/* Consistent app theme */
+:root {
+    --maroon: #5b0b18;
+    }
