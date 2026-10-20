@@ -166,3 +166,43 @@ button,
 :root {
     --maroon: #5b0b18;
     }
+
+
+/* Dashboard button - Accounts and Reports */
+.page-navigation {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 18px 0 8px;
+    width: 100%;
+}
+
+.dashboard-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    background: #ffffff;
+    color: #5b0b18 !important;
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none !important;
+    box-sizing: border-box;
+}
+
+.dashboard-btn:hover,
+.dashboard-btn:focus {
+    background: #f7e9ec;
+    color: #5b0b18 !important;
+    outline: none;
+}
+
+.dashboard-btn span {
+    font-size: 20px;
+    line-height: 1;
+}
