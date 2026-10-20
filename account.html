@@ -1,144 +1,462 @@
-
 <!DOCTYPE html>
 <html lang="mr">
 <head>
- <link rel="stylesheet" href="./style.css">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#5b0b18">
-<title>खाती | रोजचा जमा खर्च अहवाल</title>
-<style>
-body{margin:0;background:#f6f3f4;color:#292124;font-family:Arial,sans-serif}
-header{background:#5b0b18;color:white;padding:20px}
-main{max-width:700px;margin:20px auto;padding:12px}
-.card{background:white;padding:18px;margin-bottom:15px;border-radius:14px}
-input{box-sizing:border-box;width:100%;padding:12px;margin:7px 0 14px;border:1px solid #ccc;border-radius:8px}
-button,.btn{background:#5b0b18;color:white;padding:12px 16px;border:0;border-radius:8px;text-decoration:none;display:inline-block;margin:4px 4px 4px 0;cursor:pointer}
-.account{padding:12px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:12px}
-small{color:#76696c}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#5b0b18">
+
+  <title>खाती | रोजचा जमा खर्च अहवाल</title>
+
+  <link rel="stylesheet" href="./style.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f6f3f4;
+      color: #292124;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: #5b0b18;
+      color: #ffffff;
+      padding: 16px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    header h2 {
+      margin: 0;
+      font-size: 23px;
+    }
+
+    .header-subtitle {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #f5e8ea;
+    }
+
+    main {
+      width: 100%;
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 12px;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 18px;
+      margin-bottom: 16px;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(50, 10, 20, 0.08);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 18px;
+      color: #5b0b18;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 7px 0 16px;
+      border: 1px solid #d6c8cb;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #292124;
+      font-size: 16px;
+    }
+
+    input:focus {
+      outline: 2px solid #5b0b18;
+      outline-offset: 1px;
+    }
+
+    /* सर्व बटणांसाठी एकसारखा मरून रंग */
+    .btn,
+    button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      min-height: 44px;
+      padding: 11px 16px;
+      background: #5b0b18;
+      color: #ffffff !important;
+      border: 1px solid #5b0b18;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none !important;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn:hover,
+    button:hover {
+      background: #7a1728;
+      border-color: #7a1728;
+      color: #ffffff !important;
+    }
+
+    .btn:active,
+    button:active {
+      background: #430712;
+    }
+
+    /* Header मधील डॅशबोर्ड बटण */
+    .dashboard-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 42px;
+      padding: 10px 14px;
+      background: #ffffff;
+      color: #5b0b18 !important;
+      border: 2px solid #ffffff;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none !important;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .dashboard-btn:hover {
+      background: #f4e7e9;
+      color: #5b0b18 !important;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .button-group .btn {
+      margin: 0;
+    }
+
+    .account {
+      padding: 14px 4px;
+      border-bottom: 1px solid #eee5e7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .account:last-child {
+      border-bottom: none;
+    }
+
+    .account strong {
+      color: #5b0b18;
+      white-space: nowrap;
+    }
+
+    #msg {
+      color: #5b0b18;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    small {
+      color: #76696c;
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 14px;
+      }
+
+      header h2 {
+        font-size: 20px;
+      }
+
+      .header-top {
+        align-items: center;
+      }
+
+      .dashboard-btn {
+        padding: 9px 11px;
+        font-size: 13px;
+      }
+
+      main {
+        margin: 12px auto;
+        padding: 10px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      .button-group .btn {
+        flex: 1 1 auto;
+      }
+    }
+  </style>
 </head>
+
 <body>
+
 <header>
-<h2>खाती (Accounts)</h2> <a href="./index.html" class="dashboard-btn">
-    <span aria-hidden="true">←</span>
-    डॅशबोर्ड
-  </a>
-</div>
-<div>रोजचा जमा खर्च अहवाल</div>
+  <div class="header-top">
+    <h2>खाती (Accounts)</h2>
+
+    <a href="./index.html" class="dashboard-btn">
+      <span aria-hidden="true">←</span>
+      डॅशबोर्ड
+    </a>
+  </div>
+
+  <div class="header-subtitle">
+    रोजचा जमा खर्च अहवाल
+  </div>
 </header>
+
 <main>
-<section class="card">
-<h3>नवीन खाते जोडा</h3>
-<form id="accountForm">
-<label>खात्याचे नाव</label>
-<input id="name" required placeholder="UPI / Cash / Bank">
-<label>सुरुवातीची शिल्लक (₹)</label>
-<input id="balance" type="number" min="0" step="0.01" value="0" required>
-<button type="submit">खाते सेव्ह करा</button>
-</form>
-<p id="msg"></p>
-<a class="btn" href="./index.html">डॅशबोर्ड</a>
-<a class="btn" href="./transactions.html">व्यवहार</a>
-</section>
-<section class="card">
-<h3>माझी खाती</h3>
-<div id="list"></div>
-</section>
+
+  <section class="card">
+    <h3>नवीन खाते जोडा</h3>
+
+    <form id="accountForm">
+      <label for="name">खात्याचे नाव</label>
+      <input
+        id="name"
+        type="text"
+        required
+        maxlength="60"
+        placeholder="UPI / Cash / Bank"
+      >
+
+      <label for="balance">सुरुवातीची शिल्लक (₹)</label>
+      <input
+        id="balance"
+        type="number"
+        min="0"
+        step="0.01"
+        value="0"
+        required
+      >
+
+      <button type="submit">खाते सेव्ह करा</button>
+    </form>
+
+    <p id="msg" role="status" aria-live="polite"></p>
+
+    <div class="button-group">
+      <a class="btn" href="./index.html">← डॅशबोर्ड</a>
+      <a class="btn" href="./transactions.html">व्यवहार</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>माझी खाती</h3>
+    <div id="list"></div>
+  </section>
+
 </main>
+
 <script>
 "use strict";
 
-const K={
- transactions:"RJKA_v1_transactions",
- accounts:"RJKA_v1_accounts",
- budgets:"RJKA_v1_budgets",
- lending:"RJKA_v1_lending",
- workplan:"RJKA_v1_workplan",
- settings:"RJKA_v1_settings"
+const K = {
+  transactions: "RJKA_v1_transactions",
+  accounts: "RJKA_v1_accounts",
+  budgets: "RJKA_v1_budgets",
+  lending: "RJKA_v1_lending",
+  workplan: "RJKA_v1_workplan",
+  settings: "RJKA_v1_settings"
 };
 
-function read(key, fallback){
- try{
-  const value=JSON.parse(localStorage.getItem(key));
-  return Array.isArray(value)?value:fallback;
- }catch(e){return fallback;}
+function read(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return Array.isArray(value) ? value : fallback;
+  } catch (e) {
+    return fallback;
+  }
 }
-function save(key,value){
- localStorage.setItem(key,JSON.stringify(value));
+
+function save(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
-function init(){
- let accounts=read(K.accounts,null);
- if(!accounts || accounts.length===0){
-  accounts=[
-   {id:"RJKA-ACC-001",name:"UPI",openingBalance:0},
-   {id:"RJKA-ACC-002",name:"Cash",openingBalance:0},
-   {id:"RJKA-ACC-003",name:"Bank",openingBalance:0}
-  ];
-  save(K.accounts,accounts);
- }
- if(localStorage.getItem(K.transactions)===null)save(K.transactions,[]);
- if(localStorage.getItem(K.budgets)===null)save(K.budgets,[]);
- if(localStorage.getItem(K.lending)===null)save(K.lending,[]);
- if(localStorage.getItem(K.workplan)===null)save(K.workplan,[]);
- if(localStorage.getItem(K.settings)===null)
-  save(K.settings,{currency:"₹",firstDayOfWeek:"monday",financialYearStartMonth:4});
+
+function init() {
+  let accounts = read(K.accounts, null);
+
+  if (!accounts || accounts.length === 0) {
+    accounts = [
+      {
+        id: "RJKA-ACC-001",
+        name: "UPI",
+        openingBalance: 0
+      },
+      {
+        id: "RJKA-ACC-002",
+        name: "Cash",
+        openingBalance: 0
+      },
+      {
+        id: "RJKA-ACC-003",
+        name: "Bank",
+        openingBalance: 0
+      }
+    ];
+
+    save(K.accounts, accounts);
+  }
+
+  if (localStorage.getItem(K.transactions) === null) {
+    save(K.transactions, []);
+  }
+
+  if (localStorage.getItem(K.budgets) === null) {
+    save(K.budgets, []);
+  }
+
+  if (localStorage.getItem(K.lending) === null) {
+    save(K.lending, []);
+  }
+
+  if (localStorage.getItem(K.workplan) === null) {
+    save(K.workplan, []);
+  }
+
+  if (localStorage.getItem(K.settings) === null) {
+    save(K.settings, {
+      currency: "₹",
+      firstDayOfWeek: "monday",
+      financialYearStartMonth: 4
+    });
+  }
 }
-function money(n){
- return "₹"+(Number(n)||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function money(n) {
+  return "₹" + (Number(n) || 0).toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 }
-function render(){
- const accounts=read(K.accounts,[]);
- const txs=read(K.transactions,[]);
- const list=document.getElementById("list");
- list.replaceChildren();
 
- if(!accounts.length){
-  list.textContent="खाती उपलब्ध नाहीत.";
-  return;
- }
+function render() {
+  const accounts = read(K.accounts, []);
+  const txs = read(K.transactions, []);
+  const list = document.getElementById("list");
 
- accounts.forEach(a=>{
-  const movement=txs.reduce((sum,t)=>{
-   if(t.accountId!==a.id)return sum;
-   return sum+(t.type==="income"?1:t.type==="expense"?-1:0)*(Number(t.amount)||0);
-  },0);
+  list.replaceChildren();
 
-  const row=document.createElement("div");
-  row.className="account";
-  const title=document.createElement("span");
-  title.textContent=a.name;
-  const amount=document.createElement("strong");
-  amount.textContent=money((Number(a.openingBalance)||0)+movement);
-  row.append(title,amount);
-  list.append(row);
- });
+  if (!accounts.length) {
+    list.textContent = "खाती उपलब्ध नाहीत.";
+    return;
+  }
+
+  accounts.forEach(a => {
+    const movement = txs.reduce((sum, t) => {
+      if (t.accountId !== a.id) return sum;
+
+      const amount = Number(t.amount) || 0;
+
+      if (t.type === "income") return sum + amount;
+      if (t.type === "expense") return sum - amount;
+
+      return sum;
+    }, 0);
+
+    const row = document.createElement("div");
+    row.className = "account";
+
+    const title = document.createElement("span");
+    title.textContent = a.name;
+
+    const amount = document.createElement("strong");
+    amount.textContent = money(
+      (Number(a.openingBalance) || 0) + movement
+    );
+
+    row.append(title, amount);
+    list.append(row);
+  });
 }
-document.getElementById("accountForm").addEventListener("submit",function(e){
- e.preventDefault();
- const name=document.getElementById("name").value.trim();
- const balance=Number(document.getElementById("balance").value);
- if(!name||!Number.isFinite(balance)||balance<0)return;
 
- const accounts=read(K.accounts,[]);
- if(accounts.some(a=>a.name.toLowerCase()===name.toLowerCase())){
-  document.getElementById("msg").textContent="हे खाते आधीपासून आहे.";
-  return;
- }
+document
+  .getElementById("accountForm")
+  .addEventListener("submit", function(e) {
+    e.preventDefault();
 
- accounts.push({
-  id:"RJKA-ACC-"+Date.now(),
-  name:name,
-  openingBalance:balance
- });
- save(K.accounts,accounts);
- document.getElementById("name").value="";
- document.getElementById("balance").value="0";
- document.getElementById("msg").textContent="खाते सेव्ह झाले.";
- render();
-});
-try{init();render();}
-catch(e){document.getElementById("list").textContent="त्रुटी: "+e.message;}
+    const name = document.getElementById("name").value.trim();
+    const balance = Number(
+      document.getElementById("balance").value
+    );
+
+    const msg = document.getElementById("msg");
+
+    if (!name || !Number.isFinite(balance) || balance < 0) {
+      msg.textContent = "कृपया खात्याचे नाव आणि योग्य शिल्लक भरा.";
+      return;
+    }
+
+    const accounts = read(K.accounts, []);
+
+    if (
+      accounts.some(
+        a => String(a.name).trim().toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      msg.textContent = "हे खाते आधीपासून आहे.";
+      return;
+    }
+
+    accounts.push({
+      id: "RJKA-ACC-" + Date.now(),
+      name: name,
+      openingBalance: balance
+    });
+
+    try {
+      save(K.accounts, accounts);
+
+      document.getElementById("name").value = "";
+      document.getElementById("balance").value = "0";
+
+      msg.textContent = "खाते यशस्वीरीत्या सेव्ह झाले.";
+      render();
+    } catch (error) {
+      msg.textContent = "खाते सेव्ह करता आले नाही. कृपया पुन्हा प्रयत्न करा.";
+    }
+  });
+
+try {
+  init();
+  render();
+} catch (e) {
+  document.getElementById("list").textContent =
+    "त्रुटी: " + e.message;
+}
 </script>
+
 </body>
 </html>
