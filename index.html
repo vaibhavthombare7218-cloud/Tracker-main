@@ -263,5 +263,19 @@
   </div>
 
   <script src="app.js"></script>
+  
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js", {
+      scope: "./"
+    }).then((registration) => {
+      console.log("RJKA PWA ready", registration.scope);
+    }).catch((error) => {
+      console.error("PWA registration failed", error);
+    });
+  });
+}
+</script>
 </body>
 </html>
