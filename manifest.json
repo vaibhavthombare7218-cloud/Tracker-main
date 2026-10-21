@@ -1,12 +1,35 @@
+
 {
+  "id": "./",
   "name": "रोजचा जमा खर्च अहवाल",
   "short_name": "जमा खर्च",
-  "description": "Offline personal finance tracker",
+  "description": "वैयक्तिक जमा खर्च, बजेट, कर्ज आणि कामाचे नियोजन",
+  "lang": "mr",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f7f5f5",
+  "orientation": "portrait",
+  "background_color": "#f6f3f4",
   "theme_color": "#5b0b18",
-  "lang": "mr",
-  "icons": []
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "मुख्यपृष्ठ",
+      "url": "./index.html"
+    }
+  ]
 }
