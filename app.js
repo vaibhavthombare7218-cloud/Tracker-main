@@ -398,7 +398,7 @@ const moduleRoutes = Object.freeze({
   accounts: "account.html",
   transactions: "transactions.html",
   budgets: "budget.html",
-  lending: "lending.html",
+  lending: "workplan.html",
   reports: "reports.html",
 settings: "settings.html",
   "monthly-summary": "monthly-summary.html"
