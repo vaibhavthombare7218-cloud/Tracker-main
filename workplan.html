@@ -1,0 +1,806 @@
+
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#5b0b18">
+<title>कामाचे नियोजन | रोजचा जमा खर्च अहवाल</title>
+<link rel="stylesheet" href="./style.css">
+
+<style>
+:root {
+  --maroon: #5b0b18;
+  --bg: #f6f3f4;
+  --text: #292124;
+  --muted: #766b6e;
+  --border: #e8dfe1;
+  --green: #217a42;
+  --orange: #9a5b00;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, "Noto Sans Devanagari", sans-serif;
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 2px solid #a64a5b;
+  outline-offset: 2px;
+}
+.topbar {
+  background: var(--maroon);
+  color: white;
+  padding: 17px 16px;
+}
+.topbar-inner {
+  max-width: 850px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.back-btn {
+  color: white;
+  text-decoration: none;
+  font-size: 25px;
+  padding: 4px 8px;
+}
+.topbar h1 { font-size: 21px; margin: 0 0 5px; }
+.topbar p { font-size: 12px; margin: 0; color: #f2dfe2; }
+.container {
+  max-width: 850px;
+  margin: auto;
+  padding: 15px;
+}
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.summary-card {
+  padding: 14px 10px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.summary-card span { display: block; font-size: 12px; color: var(--muted); }
+.summary-card strong { display: block; font-size: 27px; margin-top: 7px; }
+.summary-card:nth-child(1) strong { color: var(--maroon); }
+.summary-card:nth-child(2) strong { color: var(--green); }
+.summary-card:nth-child(3) strong { color: var(--orange); }
+.primary-btn {
+  background: var(--maroon);
+  color: white;
+  border: 0;
+  padding: 12px 16px;
+  border-radius: 9px;
+  font-weight: 600;
+}
+.secondary-btn {
+  background: white;
+  color: var(--maroon);
+  border: 1px solid var(--maroon);
+  padding: 9px 12px;
+  border-radius: 8px;
+}
+.add-btn { width: 100%; margin-bottom: 16px; }
+.panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+.panel h2 { font-size: 17px; margin: 0 0 14px; }
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.field { min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.field input, .field select, .field textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid #d9cdd0;
+  border-radius: 8px;
+  background: white;
+  color: var(--text);
+}
+.field textarea { min-height: 72px; resize: vertical; }
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.day-option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px;
+  background: #f8f3f4;
+  border-radius: 7px;
+  font-size: 13px;
+}
+.form-actions { display: flex; gap: 9px; margin-top: 14px; }
+.tabs {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  margin-bottom: 7px;
+}
+.tab {
+  flex: 0 0 auto;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text);
+  border-radius: 20px;
+  font-size: 13px;
+}
+.tab.active { background: var(--maroon); color: white; border-color: var(--maroon); }
+.list-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.list-heading h2 { margin: 0; font-size: 17px; }
+.task {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 13px;
+  margin-bottom: 10px;
+}
+.task-top { display: flex; gap: 10px; align-items: flex-start; }
+.task-check { width: 20px; height: 20px; accent-color: var(--maroon); margin-top: 2px; }
+.task-main { flex: 1; min-width: 0; }
+.task-name { font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+.task.done .task-name { text-decoration: line-through; color: var(--muted); }
+.task-meta { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.7; }
+.task-note { font-size: 13px; margin-top: 7px; overflow-wrap: anywhere; }
+.badges { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.badge {
+  display: inline-block;
+  padding: 4px 7px;
+  border-radius: 5px;
+  font-size: 11px;
+  background: #f0ecee;
+  color: #51464a;
+}
+.badge.high { background: #fbe3e5; color: #a21d2c; }
+.badge.medium { background: #fff0d8; color: #8a5300; }
+.badge.complete { background: #e2f4e7; color: #216e39; }
+.task-actions { display: flex; flex-wrap: wrap; gap: 7px; margin: 11px 0 0 30px; }
+.task-actions button { font-size: 12px; padding: 7px 10px; }
+.edit-btn { border: 1px solid #d9cdd0; background: white; border-radius: 6px; }
+.delete-btn { border: 1px solid #edc4c8; background: #fff4f4; color: #a21d2c; border-radius: 6px; }
+.empty { text-align: center; color: var(--muted); padding: 25px 10px; font-size: 14px; }
+.error { color: #b42332; font-size: 13px; margin-top: 9px; }
+.hidden { display: none !important; }
+.footer-note { font-size: 12px; text-align: center; color: var(--muted); padding: 8px; }
+
+@media(max-width: 420px) {
+  .container { padding: 10px; }
+  .summary { gap: 6px; }
+  .summary-card { padding: 12px 8px; }
+  .summary-card strong { font-size: 23px; }
+  .form-grid { gap: 10px; }
+  .panel { padding: 12px; }
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="./index.html" aria-label="मुख्यपृष्ठावर जा">‹</a>
+    <div>
+      <h1>कामाचे नियोजन</h1>
+      <p>आजचे काम • पुढील नियोजन • नियमित कामे</p>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="summary">
+    <div class="summary-card">
+      <span>एकूण कामे</span>
+      <strong id="totalCount">0</strong>
+    </div>
+    <div class="summary-card">
+      <span>पूर्ण</span>
+      <strong id="doneCount">0</strong>
+    </div>
+    <div class="summary-card">
+      <span>बाकी</span>
+      <strong id="pendingCount">0</strong>
+    </div>
+  </section>
+
+  <button class="primary-btn add-btn" id="addTaskBtn" type="button">
+    + नवीन काम जोडा
+  </button>
+
+  <section class="panel hidden" id="formPanel">
+    <h2 id="formTitle">नवीन काम</h2>
+    <form id="taskForm">
+      <div class="form-grid">
+        <div class="field full">
+          <label for="taskName">कामाचे नाव *</label>
+          <input id="taskName" maxlength="150" required
+                 placeholder="उदा. वीज बिल भरणे">
+        </div>
+
+        <div class="field">
+          <label for="taskDate">कामाची तारीख *</label>
+          <input id="taskDate" type="date" required>
+        </div>
+
+        <div class="field">
+          <label for="taskTime">वेळ (ऐच्छिक)</label>
+          <input id="taskTime" type="time">
+        </div>
+
+        <div class="field">
+          <label for="taskPriority">प्राधान्य</label>
+          <select id="taskPriority">
+            <option value="high">अत्यंत महत्त्वाचे</option>
+            <option value="medium">महत्त्वाचे</option>
+            <option value="normal" selected>सामान्य</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="taskRepeat">पुनरावृत्ती</label>
+          <select id="taskRepeat">
+            <option value="none">एकदाच</option>
+            <option value="daily">दररोज</option>
+            <option value="weekly">दर आठवड्याला</option>
+          </select>
+        </div>
+
+        <div class="field full hidden" id="daysField">
+          <label>आठवड्याचे दिवस निवडा *</label>
+          <div class="days">
+            <label class="day-option"><input type="checkbox" name="weekday" value="1"> सोम</label>
+            <label class="day-option"><input type="checkbox" name="weekday" value="2"> मंगळ</label>
+            <label class="day-option"><input type="checkbox" name="weekday" value="3"> बुध</label>
+            <label class="day-option"><input type="checkbox" name="weekday" value="4"> गुरु</label>
+            <label class="day-option"><input type="checkbox" name="weekday" value="5"> शुक्र</label>
+            <label class="day-option"><input type="checkbox" name="weekday" value="6"> शनि</label>
+            <label class="day-option"><input type="checkbox" name="weekday" value="0"> रवि</label>
+          </div>
+        </div>
+
+        <div class="field full hidden" id="endDateField">
+          <label for="taskEndDate">पुनरावृत्तीची शेवटची तारीख (ऐच्छिक)</label>
+          <input id="taskEndDate" type="date">
+        </div>
+
+        <div class="field full">
+          <label for="taskNote">नोंद (ऐच्छिक)</label>
+          <textarea id="taskNote" maxlength="1000"
+                    placeholder="कामाबद्दल अधिक माहिती..."></textarea>
+        </div>
+      </div>
+
+      <div id="formError" class="error" role="alert"></div>
+      <div class="form-actions">
+        <button class="primary-btn" type="submit" id="saveTaskBtn">सेव्ह करा</button>
+        <button class="secondary-btn" type="button" id="cancelFormBtn">रद्द करा</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="panel">
+    <div class="field">
+      <label for="filterDate">तारीख निवडा</label>
+      <input id="filterDate" type="date">
+    </div>
+    <div class="tabs" style="margin-top:13px" id="tabs">
+      <button class="tab active" data-tab="today">आजची कामे</button>
+      <button class="tab" data-tab="upcoming">पुढील कामे</button>
+      <button class="tab" data-tab="recurring">नियमित कामे</button>
+      <button class="tab" data-tab="history">मागील कामे</button>
+      <button class="tab" data-tab="all">सर्व कामे</button>
+    </div>
+    <div class="list-heading">
+      <h2 id="listTitle">आजची कामे</h2>
+      <span id="listCount" class="badge">0 कामे</span>
+    </div>
+    <div id="taskList" aria-live="polite"></div>
+  </section>
+
+  <p class="footer-note">
+    तुमची माहिती या डिव्हाइसवर सेव्ह होते. नियमित कामे निवडलेल्या वेळापत्रकानुसार तयार होतात.
+  </p>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  const STORAGE_KEY = "RJKA_v1_workplan";
+  const $ = id => document.getElementById(id);
+
+  let data = { version: 1, tasks: [] };
+  let activeTab = "today";
+  let editingId = null;
+  let storageAvailable = true;
+
+  function localDate(date = new Date()) {
+    return date.getFullYear() + "-" +
+      String(date.getMonth() + 1).padStart(2, "0") + "-" +
+      String(date.getDate()).padStart(2, "0");
+  }
+
+  function shiftDate(dateString, days) {
+    const d = new Date(dateString + "T12:00:00");
+    d.setDate(d.getDate() + days);
+    return localDate(d);
+  }
+
+  function makeId() {
+    return "wp_" + Date.now().toString(36) + "_" +
+      Math.random().toString(36).slice(2, 9);
+  }
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    })[char]);
+  }
+
+  function loadData() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.tasks)) {
+          data = parsed;
+        }
+      }
+    } catch (error) {
+      storageAvailable = false;
+      showStorageError("माहिती वाचता आली नाही. ब्राउझर स्टोरेज तपासा.");
+    }
+  }
+
+  function saveData() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      storageAvailable = true;
+      return true;
+    } catch (error) {
+      storageAvailable = false;
+      showStorageError("माहिती सेव्ह झाली नाही. डिव्हाइसची जागा किंवा ब्राउझर सेटिंग तपासा.");
+      return false;
+    }
+  }
+
+  function showStorageError(message) {
+    $("formError").textContent = message;
+  }
+
+  function getTemplate(templateId) {
+    return data.tasks.find(t =>
+      t.id === templateId && t.kind === "template"
+    );
+  }
+
+  // प्रत्येक पुनरावृत्तीच्या तारखेसाठी स्वतंत्र नोंद.
+  function generateOccurrences() {
+    const today = localDate();
+    const first = shiftDate(today, -30);
+    const last = shiftDate(today, 90);
+    let changed = false;
+
+    const templates = data.tasks.filter(t =>
+      t.kind === "template" && t.repeat !== "none"
+    );
+
+    for (const template of templates) {
+      let date = template.date > first ? template.date : first;
+
+      while (date <= last) {
+        const withinEnd = !template.endDate || date <= template.endDate;
+        const afterStart = date >= template.date;
+        const weekday = new Date(date + "T12:00:00").getDay();
+
+        const matches = template.repeat === "daily" ||
+          (template.repeat === "weekly" &&
+            Array.isArray(template.weekdays) &&
+            template.weekdays.includes(weekday));
+
+        if (afterStart && withinEnd && matches) {
+          const exists = data.tasks.some(t =>
+            t.kind === "occurrence" &&
+            t.templateId === template.id &&
+            t.date === date
+          );
+
+          if (!exists) {
+            data.tasks.push({
+              id: makeId(),
+              kind: "occurrence",
+              templateId: template.id,
+              date: date,
+              name: template.name,
+              time: template.time || "",
+              priority: template.priority || "normal",
+              note: template.note || "",
+              done: false,
+              createdAt: new Date().toISOString()
+            });
+            changed = true;
+          }
+        }
+
+        date = shiftDate(date, 1);
+      }
+    }
+
+    if (changed) saveData();
+  }
+
+  function isRecurring(t) {
+    return t.kind === "template" && t.repeat !== "none";
+  }
+
+  function allVisibleTasks() {
+    return data.tasks.filter(t => t.kind !== "template");
+  }
+
+  function updateSummary() {
+    const today = localDate();
+    const tasks = allVisibleTasks().filter(t => t.date === today);
+    $("totalCount").textContent = tasks.length;
+    $("doneCount").textContent = tasks.filter(t => t.done).length;
+    $("pendingCount").textContent = tasks.filter(t => !t.done).length;
+  }
+
+  function priorityText(priority) {
+    return {
+      high: "अत्यंत महत्त्वाचे",
+      medium: "महत्त्वाचे",
+      normal: "सामान्य"
+    }[priority] || "सामान्य";
+  }
+
+  function repeatText(t) {
+    if (t.kind === "template") {
+      if (t.repeat === "daily") return "दररोज";
+      if (t.repeat === "weekly") return "दर आठवड्याला";
+    }
+    if (t.kind === "occurrence") return "नियमित काम";
+    return "एकदाच";
+  }
+
+  function dateText(date) {
+    if (!date) return "";
+    const parts = date.split("-");
+    return parts[2] + "/" + parts[1] + "/" + parts[0];
+  }
+
+  function getFilteredTasks() {
+    const today = localDate();
+    const selectedDate = $("filterDate").value || today;
+    const tasks = allVisibleTasks();
+
+    if (activeTab === "today") {
+      return tasks.filter(t => t.date === selectedDate)
+        .sort(sortTasks);
+    }
+
+    if (activeTab === "upcoming") {
+      return tasks.filter(t => t.date > today)
+        .sort(sortTasks);
+    }
+
+    if (activeTab === "recurring") {
+      return data.tasks.filter(t => isRecurring(t))
+        .sort(sortTasks);
+    }
+
+    if (activeTab === "history") {
+      return tasks.filter(t => t.date < today)
+        .sort((a, b) => sortTasks(b, a));
+    }
+
+    return data.tasks.filter(t =>
+      t.kind === "task" || t.kind === "occurrence" ||
+      t.kind === "template"
+    ).sort(sortTasks);
+  }
+
+  function sortTasks(a, b) {
+    const dateCompare = (a.date || "").localeCompare(b.date || "");
+    if (dateCompare !== 0) return dateCompare;
+    return (a.time || "99:99").localeCompare(b.time || "99:99");
+  }
+
+  function renderTasks() {
+    updateSummary();
+
+    const titles = {
+      today: "निवडलेल्या दिवसाची कामे",
+      upcoming: "पुढील कामे",
+      recurring: "नियमित कामांचे वेळापत्रक",
+      history: "मागील कामे",
+      all: "सर्व कामे"
+    };
+    $("listTitle").textContent = titles[activeTab];
+
+    const tasks = getFilteredTasks();
+    $("listCount").textContent = tasks.length + " कामे";
+
+    if (!tasks.length) {
+      $("taskList").innerHTML =
+        '<div class="empty">या विभागात कामे नाहीत.<br>नवीन काम जोडण्यासाठी वरील बटण वापरा.</div>';
+      return;
+    }
+
+    $("taskList").innerHTML = tasks.map(t => {
+      const isTemplate = t.kind === "template";
+      const priorityClass = t.priority === "high" ? "high" :
+        t.priority === "medium" ? "medium" : "";
+      const status = isTemplate ? "नियमित" : (t.done ? "पूर्ण" : "बाकी");
+
+      const weekdays = t.repeat === "weekly" && t.weekdays
+        ? " • " + t.weekdays.map(n =>
+          ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"][n]
+        ).join(", ")
+        : "";
+
+      return `
+        <article class="task ${t.done ? "done" : ""}">
+          <div class="task-top">
+            ${isTemplate ? "" : `
+              <input class="task-check" type="checkbox"
+                data-action="toggle" data-id="${escapeHTML(t.id)}"
+                aria-label="${t.done ? "काम अपूर्ण करा" : "काम पूर्ण करा"}"
+                ${t.done ? "checked" : ""}>
+            `}
+            <div class="task-main">
+              <div class="task-name">${escapeHTML(t.name)}</div>
+              <div class="task-meta">
+                ${isTemplate ? "सुरुवात: " : ""}
+                ${escapeHTML(dateText(t.date))}
+                ${t.time ? " • " + escapeHTML(t.time) : ""}
+                ${t.endDate && isTemplate ? " • समाप्ती: " + escapeHTML(dateText(t.endDate)) : ""}
+              </div>
+              <div class="badges">
+                <span class="badge ${priorityClass}">${escapeHTML(priorityText(t.priority))}</span>
+                <span class="badge">${escapeHTML(repeatText(t) + weekdays)}</span>
+                <span class="badge ${t.done ? "complete" : ""}">${status}</span>
+              </div>
+              ${t.note ? `<div class="task-note">${escapeHTML(t.note)}</div>` : ""}
+            </div>
+          </div>
+          <div class="task-actions">
+            <button type="button" class="edit-btn"
+              data-action="edit" data-id="${escapeHTML(t.id)}">बदल करा</button>
+            <button type="button" class="delete-btn"
+              data-action="delete" data-id="${escapeHTML(t.id)}">
+              ${isTemplate ? "नियमित काम हटवा" : "हटवा"}
+            </button>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  function openForm(task = null) {
+    editingId = task ? task.id : null;
+    $("formPanel").classList.remove("hidden");
+    $("formTitle").textContent = task ? "कामात बदल करा" : "नवीन काम जोडा";
+    $("saveTaskBtn").textContent = task ? "बदल सेव्ह करा" : "काम सेव्ह करा";
+    $("formError").textContent = "";
+
+    $("taskName").value = task ? task.name : "";
+    $("taskDate").value = task ? task.date : localDate();
+    $("taskTime").value = task ? (task.time || "") : "";
+    $("taskPriority").value = task ? task.priority : "normal";
+    $("taskNote").value = task ? (task.note || "") : "";
+    $("taskRepeat").value = task ? (task.repeat || "none") : "none";
+    $("taskEndDate").value = task ? (task.endDate || "") : "";
+
+    document.querySelectorAll('input[name="weekday"]').forEach(box => {
+      box.checked = !!(task && task.weekdays &&
+        task.weekdays.includes(Number(box.value)));
+    });
+
+    // आधीपासून तयार झालेली नियमित नोंद बदलताना तिची पुनरावृत्ती
+    // नव्याने बदलू नये; बदल फक्त त्या दिवसापुरता असेल.
+    $("taskRepeat").disabled = !!(task &&
+      (task.kind === "occurrence" || task.kind === "template"));
+
+    updateRepeatFields();
+    $("formPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function closeForm() {
+    $("formPanel").classList.add("hidden");
+    $("taskRepeat").disabled = false;
+    editingId = null;
+    $("formError").textContent = "";
+  }
+
+  function updateRepeatFields() {
+    const repeat = $("taskRepeat").value;
+    $("daysField").classList.toggle("hidden", repeat !== "weekly");
+    $("endDateField").classList.toggle("hidden", repeat === "none");
+  }
+
+  function handleSave(event) {
+    event.preventDefault();
+    $("formError").textContent = "";
+
+    const name = $("taskName").value.trim();
+    const date = $("taskDate").value;
+    const repeat = $("taskRepeat").value;
+    const endDate = $("taskEndDate").value;
+
+    if (!name || !date) {
+      $("formError").textContent = "कामाचे नाव आणि तारीख भरणे आवश्यक आहे.";
+      return;
+    }
+
+    if (endDate && endDate < date && repeat !== "none") {
+      $("formError").textContent = "शेवटची तारीख सुरुवातीच्या तारखेपेक्षा आधीची असू शकत नाही.";
+      return;
+    }
+
+    const weekdays = Array.from(
+      document.querySelectorAll('input[name="weekday"]:checked')
+    ).map(box => Number(box.value));
+
+    if (repeat === "weekly" && weekdays.length === 0) {
+      $("formError").textContent = "किमान एक वार निवडा.";
+      return;
+    }
+
+    const task = {
+      name,
+      date,
+      time: $("taskTime").value,
+      priority: $("taskPriority").value,
+      note: $("taskNote").value.trim(),
+      repeat,
+      weekdays: repeat === "weekly" ? weekdays : [],
+      endDate: repeat === "none" ? "" : endDate,
+      done: false
+    };
+
+    if (editingId) {
+      const existing = data.tasks.find(t => t.id === editingId);
+      if (!existing) {
+        $("formError").textContent = "हे काम सापडले नाही. पुन्हा प्रयत्न करा.";
+        return;
+      }
+
+      if (existing.kind === "template") {
+        Object.assign(existing, task, { kind: "template" });
+      } else {
+        // आधीच्या दिवसाची स्थिती जशी आहे तशीच ठेवा.
+        Object.assign(existing, {
+          name: task.name,
+          date: task.date,
+          time: task.time,
+          priority: task.priority,
+          note: task.note
+        });
+      }
+    } else {
+      const newTask = {
+        id: makeId(),
+        ...task,
+        kind: repeat === "none" ? "task" : "template",
+        createdAt: new Date().toISOString()
+      };
+      data.tasks.push(newTask);
+    }
+
+    if (!saveData()) return;
+
+    generateOccurrences();
+    closeForm();
+    renderTasks();
+  }
+
+  function toggleTask(id, checked) {
+    const task = data.tasks.find(t => t.id === id);
+    if (!task || task.kind === "template") return;
+
+    task.done = checked;
+    task.completedAt = checked ? new Date().toISOString() : null;
+
+    if (saveData()) renderTasks();
+  }
+
+  function deleteTask(id) {
+    const task = data.tasks.find(t => t.id === id);
+    if (!task) return;
+
+    const isTemplate = task.kind === "template";
+    const message = isTemplate
+      ? "हे नियमित काम आणि त्याच्या तयार झालेल्या सर्व नोंदी हटवायच्या आहेत का?"
+      : "हे काम हटवायचे आहे का?";
+
+    if (!confirm(message)) return;
+
+    if (isTemplate) {
+      data.tasks = data.tasks.filter(t =>
+        t.id !== id && !(t.kind === "occurrence" && t.templateId === id)
+      );
+    } else {
+      data.tasks = data.tasks.filter(t => t.id !== id);
+    }
+
+    if (saveData()) renderTasks();
+  }
+
+  $("addTaskBtn").addEventListener("click", () => openForm());
+  $("cancelFormBtn").addEventListener("click", closeForm);
+  $("taskForm").addEventListener("submit", handleSave);
+  $("taskRepeat").addEventListener("change", updateRepeatFields);
+  $("filterDate").value = localDate();
+  $("filterDate").addEventListener("change", () => {
+    if (activeTab === "today") renderTasks();
+  });
+
+  $("tabs").addEventListener("click", event => {
+    const button = event.target.closest("[data-tab]");
+    if (!button) return;
+
+    activeTab = button.dataset.tab;
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.classList.toggle("active", tab === button);
+    });
+    renderTasks();
+  });
+
+  $("taskList").addEventListener("change", event => {
+    const input = event.target.closest('[data-action="toggle"]');
+    if (input) toggleTask(input.dataset.id, input.checked);
+  });
+
+  $("taskList").addEventListener("click", event => {
+    const button = event.target.closest("[data-action]");
+    if (!button) return;
+
+    const task = data.tasks.find(t => t.id === button.dataset.id);
+    if (!task) return;
+
+    if (button.dataset.action === "edit") {
+      openForm(task);
+    } else if (button.dataset.action === "delete") {
+      deleteTask(task.id);
+    }
+  });
+
+  loadData();
+  generateOccurrences();
+  renderTasks();
+})();
+</script>
+</body>
+</html>
